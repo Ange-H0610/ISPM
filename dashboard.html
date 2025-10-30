@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Dashboard - MyBudgetLocal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-body gradient-theme">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-buttons">
+      <img src="logo\logo.png" alt="Logo" class="nav-logo">
+      <h1 class="site-title">MyBudgetLocal</h1>
+    </div>
+    <div class="nav-buttons">
+      <span id="userGreeting" class="user-greeting">Bonjour, Utilisateur</span>
+      <select id="themeSwitcher" class="btn">
+        <option value="gradient-theme">Thème Vert</option>
+        <option value="light-theme">Blanc</option>
+        <option value="dark-theme">Noir</option>
+      </select>
+      <button id="logoutBtn" class="btn">Déconnexion</button>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard-container">
+
+    <!-- REVENUS -->
+    <h3>Revenus</h3>
+    <table class="budget-table revenus">
+      <tr><td>Salaire et autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+      <tr><td>Pensions / Allocations</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+      <tr><td>Loyers / Revenus du capital</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+      <tr><td>Autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+    </table>
+
+    <!-- DEPENSES -->
+    <h3>Dépenses</h3>
+    <table class="budget-table depenses">
+      <tr><td>Loyer et charges</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+      <tr><td>Alimentation</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+      <tr><td>Transports</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+      <tr><td>Loisirs / Culture</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+      <tr><td>Autres dépenses</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+    </table>
+
+    <button id="calcBtn" class="btn">Calculer Total</button>
+    <p>Total Revenus: <span id="totalRevenus">0</span> Ariary</p>
+    <p>Total Dépenses: <span id="totalDepenses">0</span> Ariary</p>
+    <p><strong>Solde restant: <span id="soldeFinal">0</span> Ariary</strong></p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

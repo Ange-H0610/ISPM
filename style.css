@@ -362,7 +362,7 @@ strong { font-size:1.1rem; }
   }
 }
 /* =======================
- PARAMÈTRES
+   MODALE PARAMÈTRES
 ======================= */
 .modal {
   display: none;
@@ -443,7 +443,7 @@ strong { font-size:1.1rem; }
   to { transform: translateY(0); opacity: 1; }
 }
 
-
+/* Responsive for modal */
 @media (max-width: 600px) {
   .modal-content {
     width: 95%;
@@ -454,7 +454,7 @@ strong { font-size:1.1rem; }
   }
 }
 
-
+/* small improvements for mode badge */
 #modeBadge {
   background: rgba(255,255,255,0.04);
   padding: 8px 12px;
@@ -464,6 +464,7 @@ strong { font-size:1.1rem; }
   font-weight: 600;
 }
 
+/* Ensure canvas styling */
 #financeChart {
   border-radius: 10px;
   background: rgba(255,255,255,0.03);
@@ -471,3 +472,4 @@ strong { font-size:1.1rem; }
   padding: 6px;
   display: block;
 }
+

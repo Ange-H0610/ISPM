@@ -15,7 +15,11 @@ function formatNumber(n, lang = "fr") {
   }
 }
 
-
+/* ======================
+   Traductions (simple)
+   keys utilisés via data-i18n dans HTML
+   mg = malagasy (simple translations)
+   ====================== */
 const TRANSLATIONS = {
   fr: {
     siteTitle: "Mon Dashboard - MyBudgetLocal",
@@ -121,7 +125,10 @@ const TRANSLATIONS = {
   }
 };
 
-
+/* =========================
+   UTIL - Appliquer traductions
+   Elements HTML utilises data-i18n et data-i18n-placeholder
+   ========================= */
 function applyTranslations(lang) {
   const dict = TRANSLATIONS[lang] || TRANSLATIONS.fr;
   // innerText replacement
@@ -147,7 +154,7 @@ function applyTranslations(lang) {
 }
 
 /* =========================
-   Sauvegarde 
+   Sauvegarde / Chargement settings
    ========================= */
 const defaultSettings = {
   lang: "fr",
@@ -168,7 +175,9 @@ function saveSettings(s) {
   localStorage.setItem("mb_settings", JSON.stringify(s));
 }
 
-
+/* =========================
+   MAIN - Signup & Login (existing)
+   ========================= */
 // ---------- Signup page ----------
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
@@ -233,7 +242,9 @@ if (loginForm) {
   });
 }
 
-
+/* =========================
+   DASHBOARD: protection + fonctionnalités
+   ========================= */
 if (window.location.pathname.includes("dashboard.html")) {
   // Settings load
   let settings = loadSettings();
@@ -254,9 +265,9 @@ if (window.location.pathname.includes("dashboard.html")) {
     if (theme === "light") {
       document.body.classList.add("light-theme");
     } else {
-    
+      // dark default keep gradient-theme if desired (original)
       document.body.classList.add("gradient-theme");
-    
+      // also mark as dark-theme for class-specific rules
       document.body.classList.add("dark-theme");
     }
   }
@@ -326,7 +337,7 @@ if (window.location.pathname.includes("dashboard.html")) {
       settings.goal = btn.dataset.goal;
       saveSettings(settings);
       updateModeBadgeText();
-     
+      // optional: adjust UI behavior depending on mode (not implemented heavy logic)
     });
   });
 
@@ -386,6 +397,7 @@ if (window.location.pathname.includes("dashboard.html")) {
       const elDeps = document.getElementById("totalDepenses");
       const elSolde = document.getElementById("soldeFinal");
 
+      // store raw for translation/formatting updates
       if (elRevs) {
         elRevs.dataset.raw = totalRevenus;
         elRevs.innerText = formatNumber(totalRevenus, settings.lang);
@@ -399,6 +411,7 @@ if (window.location.pathname.includes("dashboard.html")) {
         elSolde.innerText = formatNumber(solde, settings.lang);
       }
 
+      // If chart visible, redraw
       if (settings.view === "graphique") drawChart();
     });
   }
@@ -413,6 +426,7 @@ if (window.location.pathname.includes("dashboard.html")) {
     });
   }
 
+  // Simple chart drawing (vanilla canvas) - montre totals Revenus vs Depenses
   function drawChart() {
     if (!ctx) return;
     // compute totals

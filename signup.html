@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyBudgetLocal - Inscription</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="signup-page">
+
+  <div class="auth-wrapper">
+    <div class="logo-top">
+      <img src="logo\logo.png" alt="Logo MyBudgetLocal" class="main-logo">
+    </div>
+
+    <div class="auth-card">
+      <h1 class="big-title">Créez votre compte</h1>
+      <p class="subtitle">Rejoignez MyBudgetLocal pour gérer facilement votre budget local.</p>
+
+      <form id="signupForm" class="auth-form" novalidate>
+        <input type="text" id="signupName" placeholder="Nom complet" required autocomplete="name">
+        <input type="email" id="signupEmail" placeholder="Email" required autocomplete="email">
+        <input type="password" id="signupPass" placeholder="Mot de passe" required autocomplete="new-password">
+        <button type="submit" class="btn primary-btn">CRÉER UN COMPTE</button>
+      </form>
+
+      <p class="switch-auth">
+        Déjà inscrit ? <a href="index.html">Se connecter</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mon Dashboard - MyBudgetLocal</title>
+  <title data-i18n="siteTitle">Mon Dashboard - MyBudgetLocal</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="dashboard-body gradient-theme">
@@ -11,46 +11,100 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-buttons">
-      <img src="logo\logo.png" alt="Logo" class="nav-logo">
-      <h1 class="site-title">MyBudgetLocal</h1>
+      <img src="logo/logo.png" alt="Logo" class="nav-logo">
+      <h1 class="site-title" data-i18n="siteTitle">MyBudgetLocal</h1>
     </div>
     <div class="nav-buttons">
       <span id="userGreeting" class="user-greeting">Bonjour, Utilisateur</span>
-      <select id="themeSwitcher" class="btn">
-        <option value="gradient-theme">Thème Vert</option>
-        <option value="light-theme">Blanc</option>
-        <option value="dark-theme">Noir</option>
-      </select>
-      <button id="logoutBtn" class="btn">Déconnexion</button>
+
+      <!-- Paramètres -->
+      <button id="settingsBtn" class="btn"> <span data-i18n="params">Paramètres</span></button>
+
+      <button id="logoutBtn" class="btn" data-i18n="logout">Déconnexion</button>
     </div>
   </nav>
 
   <!-- DASHBOARD -->
   <div class="dashboard-container">
 
+    <p class="subtitle" id="modeBadge" style="margin-bottom:1rem;"></p>
+
     <!-- REVENUS -->
-    <h3>Revenus</h3>
-    <table class="budget-table revenus">
-      <tr><td>Salaire et autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
-      <tr><td>Pensions / Allocations</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
-      <tr><td>Loyers / Revenus du capital</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
-      <tr><td>Autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+    <h3 data-i18n="revenusTitle">Revenus</h3>
+    <table class="budget-table revenus" id="revenusTable">
+      <tr><td data-i18n="revenu1">Salaire et autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+      <tr><td data-i18n="revenu2">Pensions / Allocations</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+      <tr><td data-i18n="revenu3">Loyers / Revenus du capital</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+      <tr><td data-i18n="revenu4">Autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
     </table>
 
     <!-- DEPENSES -->
-    <h3>Dépenses</h3>
-    <table class="budget-table depenses">
-      <tr><td>Loyer et charges</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-      <tr><td>Alimentation</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-      <tr><td>Transports</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-      <tr><td>Loisirs / Culture</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-      <tr><td>Autres dépenses</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+    <h3 data-i18n="depensesTitle">Dépenses</h3>
+    <table class="budget-table depenses" id="depensesTable">
+      <tr><td data-i18n="depense1">Loyer et charges</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+      <tr><td data-i18n="depense2">Alimentation</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+      <tr><td data-i18n="depense3">Transports</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+      <tr><td data-i18n="depense4">Loisirs / Culture</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+      <tr><td data-i18n="depense5">Autres dépenses</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
     </table>
 
-    <button id="calcBtn" class="btn">Total</button>
-    <p>Total Revenus: <span id="totalRevenus">0</span> Ariary</p>
-    <p>Total Dépenses: <span id="totalDepenses">0</span> Ariary</p>
-    <p><strong>Solde restant: <span id="soldeFinal">0</span> Ariary</strong></p>
+    <div style="display:flex; gap:12px; align-items:center; margin-top:10px; flex-wrap:wrap;">
+      <button id="calcBtn" class="btn" data-i18n="calcBtn">Calculer Total</button>
+      <div style="min-width: 220px;">
+        <p><span data-i18n="totalRevenusLabel">Total Revenus:</span> <span id="totalRevenus">0</span> Ariary</p>
+        <p><span data-i18n="totalDepensesLabel">Total Dépenses:</span> <span id="totalDepenses">0</span> Ariary</p>
+        <p><strong><span data-i18n="soldeLabel">Solde restant:</span> <span id="soldeFinal">0</span> Ariary</strong></p>
+      </div>
+    </div>
+
+    <!-- Zone de visualisation (tableau ou graphique) -->
+    <div id="viewArea" style="margin-top:20px;">
+   
+      <canvas id="financeChart" width="700" height="280" style="max-width:100%; display:none;"></canvas>
+    </div>
+
+  </div>
+
+  <!-- Modale Paramètres -->
+  <div id="settingsModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <span class="close-settings" aria-label="Fermer">&times;</span>
+      <h2 id="settingsTitle" data-i18n="params">Paramètres</h2>
+
+      <div class="param-section">
+        <h3 data-i18n="langue">Langue</h3>
+        <div class="param-options" id="langueOptions">
+          <button class="lang-btn" data-lang="fr">Français 🇫🇷</button>
+          <button class="lang-btn" data-lang="en">English 🇬🇧</button>
+          <button class="lang-btn" data-lang="mg">Malagasy 🇲🇬</button>
+        </div>
+      </div>
+
+      <div class="param-section">
+        <h3 data-i18n="theme">Thème</h3>
+        <div class="param-options">
+          <button class="theme-btn" data-theme="light" data-i18n="clair">Clair ☀️</button>
+          <button class="theme-btn" data-theme="dark" data-i18n="sombre">Sombre 🌙</button>
+        </div>
+      </div>
+
+      <div class="param-section">
+        <h3 data-i18n="objectifs">Objectifs Financiers</h3>
+        <div class="param-options">
+          <button class="goal-btn" data-goal="epargne" data-i18n="epargne">Épargne 💰</button>
+          <button class="goal-btn" data-goal="emprunt" data-i18n="emprunt">Emprunt 💳</button>
+          <button class="goal-btn" data-goal="investissement" data-i18n="investissement">Investissement 📈</button>
+        </div>
+      </div>
+
+      <div class="param-section">
+        <h3 data-i18n="visualisation">Visualisation</h3>
+        <div class="param-options">
+          <button class="view-btn" data-view="tableau" data-i18n="tableau">Tableau 📊</button>
+          <button class="view-btn" data-view="graphique" data-i18n="graphique">Graphique 📈</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>

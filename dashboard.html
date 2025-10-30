@@ -17,8 +17,8 @@
     <div class="nav-buttons">
       <span id="userGreeting" class="user-greeting">Bonjour, Utilisateur</span>
 
-      <!-- Paramètres -->
-      <button id="settingsBtn" class="btn"> <span data-i18n="params">Paramètres</span></button>
+      <!-- Paramètres (ouvre une modale) -->
+      <button id="settingsBtn" class="btn">⚙️ <span data-i18n="params">Paramètres</span></button>
 
       <button id="logoutBtn" class="btn" data-i18n="logout">Déconnexion</button>
     </div>
@@ -59,7 +59,8 @@
 
     <!-- Zone de visualisation (tableau ou graphique) -->
     <div id="viewArea" style="margin-top:20px;">
-   
+      <!-- Table: on réutilise les tables HTML ci-dessus comme "tableau" -->
+      <!-- Graphique: canvas cachée par défaut -->
       <canvas id="financeChart" width="700" height="280" style="max-width:100%; display:none;"></canvas>
     </div>
 

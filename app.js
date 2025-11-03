@@ -499,3 +499,160 @@ if (window.location.pathname.includes("dashboard.html")) {
     if (settings.view === "graphique") drawChart();
   });
 }
+document.addEventListener("DOMContentLoaded", function() {
+
+  // --- MODAL PARAMÈTRES ---
+  const modal = document.getElementById("settingsModal");
+  const settingsBtn = document.getElementById("settingsBtn");
+  const closeBtn = document.querySelector(".close-settings");
+
+  settingsBtn.onclick = () => modal.style.display = "block";
+  closeBtn.onclick = () => modal.style.display = "none";
+  window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
+
+  // --- CHANGER LANGUE ---
+  const langButtons = document.querySelectorAll("#submenu-langue button");
+  langButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      langButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      changeLanguage(btn.textContent.toLowerCase());
+    });
+  });
+
+  function changeLanguage(lang) {
+    const elems = document.querySelectorAll("[data-i18n]");
+    elems.forEach(el => {
+      el.textContent = translations[lang][el.getAttribute("data-i18n")] || el.textContent;
+    });
+  }
+
+  const translations = {
+    "français": {
+      "siteTitle":"Mon Dashboard - MyBudgetLocal",
+      "params":"Paramètres",
+      "logout":"Déconnexion",
+      "tableau":"Tableau",
+      "graphique":"Graphique",
+      "revenusTitle":"Revenus",
+      "depensesTitle":"Dépenses",
+      "calcBtn":"Total",
+      "totalRevenusLabel":"Total Revenus:",
+      "totalDepensesLabel":"Total Dépenses:",
+      "soldeLabel":"Solde restant:"
+    },
+    "english": {
+      "siteTitle":"My Dashboard - MyBudgetLocal",
+      "params":"Settings",
+      "logout":"Logout",
+      "tableau":"Table",
+      "graphique":"Chart",
+      "revenusTitle":"Income",
+      "depensesTitle":"Expenses",
+      "calcBtn":"Calculate",
+      "totalRevenusLabel":"Total Income:",
+      "totalDepensesLabel":"Total Expenses:",
+      "soldeLabel":"Remaining Balance:"
+    },
+    "malagasy": {
+      "siteTitle":"Dashboard-ko - MyBudgetLocal",
+      "params":"Paramètres",
+      "logout":"Mivoaka",
+      "tableau":"Tabilao",
+      "graphique":"Sary",
+      "revenusTitle":"Vola miditra",
+      "depensesTitle":"Vola mivoaka",
+      "calcBtn":"Kajy",
+      "totalRevenusLabel":"Fitambarana Vola miditra:",
+      "totalDepensesLabel":"Fitambarana Vola mivoaka:",
+      "soldeLabel":"Sisa azo:"
+    }
+  };
+
+  // --- CHANGER THEME ---
+  const themeButtons = document.querySelectorAll("#submenu-theme button");
+  themeButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      themeButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.body.className = btn.textContent.toLowerCase() === "sombre" ? "dark-theme" : "light-theme";
+    });
+  });
+
+  // --- CHANGER OBJECTIF ---
+  const objectifButtons = document.querySelectorAll("#submenu-objectifs button");
+  objectifButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      objectifButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("modeBadge").textContent = "Mode: " + btn.textContent;
+    });
+  });
+
+  // --- VISUALISATION ---
+  const vizButtons = document.querySelectorAll("#submenu-visualisation button");
+  const tableSection = document.getElementById("tableSection");
+  const chartSection = document.getElementById("chartSection");
+  vizButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      vizButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      if(btn.textContent.toLowerCase().includes("tableau") || btn.textContent.toLowerCase().includes("table")) {
+        tableSection.style.display = "block";
+        chartSection.style.display = "none";
+      } else {
+        tableSection.style.display = "none";
+        chartSection.style.display = "block";
+        renderChart();
+      }
+    });
+  });
+
+  // --- CALCUL TOTAL ---
+  const calcBtn = document.getElementById("calcBtn");
+  calcBtn.addEventListener("click", () => {
+    const totalRevenus = Array.from(document.querySelectorAll("#revenusTable .valeur"))
+                              .reduce((sum, td) => sum + Number(td.textContent),0);
+    const totalDepenses = Array.from(document.querySelectorAll("#depensesTable .valeur"))
+                               .reduce((sum, td) => sum + Number(td.textContent),0);
+    document.getElementById("totalRevenus").textContent = totalRevenus;
+    document.getElementById("totalDepenses").textContent = totalDepenses;
+    document.getElementById("soldeFinal").textContent = totalRevenus - totalDepenses;
+  });
+
+  // --- CHART ---
+  let financeChart;
+  function renderChart() {
+    const revenus = Array.from(document.querySelectorAll("#revenusTable .valeur")).map(td => Number(td.textContent));
+    const depenses = Array.from(document.querySelectorAll("#depensesTable .valeur")).map(td => Number(td.textContent));
+    const labels = Array.from(document.querySelectorAll("#revenusTable .nom")).map(td => td.textContent)
+                   .concat(Array.from(document.querySelectorAll("#depensesTable .nom")).map(td => td.textContent));
+
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Revenus',
+          data: revenus.concat(Array(depenses.length).fill(0)),
+          backgroundColor: 'rgba(75, 192, 192, 0.6)'
+        },
+        {
+          label: 'Dépenses',
+          data: Array(revenus.length).fill(0).concat(depenses),
+          backgroundColor: 'rgba(255, 99, 132, 0.6)'
+        }
+      ]
+    };
+
+    const config = {
+      type: 'bar',
+      data: data,
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    };
+
+    if(financeChart) financeChart.destroy();
+    const ctx = document.getElementById('financeChart').getContext('2d');
+    financeChart = new Chart(ctx, config);
+  }
+
+});

@@ -5,68 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n="siteTitle">Mon Dashboard - MyBudgetLocal</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Chart.js (izay efa nampiasainao) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="dashboard-body gradient-theme">
+<body class="dashboard-body light-theme">
 
   <!-- NAVBAR -->
   <nav class="navbar">
-    <div class="nav-buttons">
+    <div class="nav-left">
       <img src="logo/logo.png" alt="Logo" class="nav-logo">
       <h1 class="site-title" data-i18n="siteTitle">MyBudgetLocal</h1>
     </div>
-    <div class="nav-buttons">
+
+    <div class="nav-right">
+      <input type="date" id="dateSelector" value="">
       <span id="userGreeting" class="user-greeting">Bonjour, Utilisateur</span>
-
-      <!-- Paramètres (ouvre une modale) -->
-      <button id="settingsBtn" class="btn">⚙️ <span data-i18n="params">Paramètres</span></button>
-
-      <button id="logoutBtn" class="btn" data-i18n="logout">Déconnexion</button>
+      <button id="settingsBtn" class="btn violet-btn">⚙️ <span data-i18n="params">Paramètres</span></button>
+      <button id="logoutBtn" class="btn violet-btn" data-i18n="logout">Déconnexion</button>
     </div>
   </nav>
 
-  <!-- DASHBOARD -->
-  <div class="dashboard-container">
+  <!-- DASHBOARD MAIN - simplified (summary moved to modal) -->
+  <div class="dashboard-container modern-dashboard">
 
+    <!-- small badge for mode -->
     <p class="subtitle" id="modeBadge" style="margin-bottom:1rem;"></p>
 
-    <!-- REVENUS -->
-    <h3 data-i18n="revenusTitle">Revenus</h3>
-    <table class="budget-table revenus" id="revenusTable">
-      <tr><td data-i18n="revenu1">Salaire et autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
-      <tr><td data-i18n="revenu2">Pensions / Allocations</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
-      <tr><td data-i18n="revenu3">Loyers / Revenus du capital</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
-      <tr><td data-i18n="revenu4">Autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
-    </table>
+    <!-- TABLES (visualisation / inputs remain here) -->
+    <div class="tables-zone">
+      <!-- REVENUS -->
+      <div class="table-box">
+        <h3 data-i18n="revenusTitle">Revenus</h3>
+        <table class="budget-table revenus" id="revenusTable">
+          <tr><td data-i18n="revenu1">Salaire et autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+          <tr><td data-i18n="revenu2">Pensions / Allocations</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+          <tr><td data-i18n="revenu3">Loyers / Revenus du capital</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+          <tr><td data-i18n="revenu4">Autres revenus</td><td><input type="number" value="0" class="budget-input revenu"></td></tr>
+        </table>
+      </div>
 
-    <!-- DEPENSES -->
-    <h3 data-i18n="depensesTitle">Dépenses</h3>
-    <table class="budget-table depenses" id="depensesTable">
-      <tr><td data-i18n="depense1">Loyer et charges</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-      <tr><td data-i18n="depense2">Alimentation</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-      <tr><td data-i18n="depense3">Transports</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-      <tr><td data-i18n="depense4">Loisirs / Culture</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-      <tr><td data-i18n="depense5">Autres dépenses</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
-    </table>
-
-    <div style="display:flex; gap:12px; align-items:center; margin-top:10px; flex-wrap:wrap;">
-      <button id="calcBtn" class="btn" data-i18n="calcBtn">Total</button>
-      <div style="min-width: 220px;">
-        <p><span data-i18n="totalRevenusLabel">Total Revenus:</span> <span id="totalRevenus">0</span> Ariary</p>
-        <p><span data-i18n="totalDepensesLabel">Total Dépenses:</span> <span id="totalDepenses">0</span> Ariary</p>
-        <p><strong><span data-i18n="soldeLabel">Solde restant:</span> <span id="soldeFinal">0</span> Ariary</strong></p>
+      <!-- DÉPENSES -->
+      <div class="table-box">
+        <h3 data-i18n="depensesTitle">Dépenses</h3>
+        <table class="budget-table depenses" id="depensesTable">
+          <tr><td data-i18n="depense1">Loyer et charges</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+          <tr><td data-i18n="depense2">Alimentation</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+          <tr><td data-i18n="depense3">Transports</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+          <tr><td data-i18n="depense4">Loisirs / Culture</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+          <tr><td data-i18n="depense5">Autres dépenses</td><td><input type="number" value="0" class="budget-input depense"></td></tr>
+        </table>
       </div>
     </div>
 
-    <!-- Zone de visualisation (tableau ou graphique) -->
-    <div id="viewArea" style="margin-top:20px;">
-      <!-- Table: on réutilise les tables HTML ci-dessus comme "tableau" -->
-      <!-- Graphique: canvas cachée par défaut -->
-      <canvas id="financeChart" width="700" height="280" style="max-width:100%; display:none;"></canvas>
+    <!-- BOUTON CALCUL -->
+    <div class="totals-zone">
+      <button id="calcBtn" class="btn violet-btn" data-i18n="calcBtn">Calculer</button>
+      <div class="total-display">
+        <p><span data-i18n="totalRevenusLabel">Total Revenus :</span> <strong id="totalRevenusDisplay">0</strong> Ariary</p>
+        <p><span data-i18n="totalDepensesLabel">Total Dépenses :</span> <strong id="totalDepensesDisplay">0</strong> Ariary</p>
+        <p><strong><span data-i18n="soldeLabel">Solde restant :</span> <span id="soldeFinalDisplay">0</span> Ariary</strong></p>
+      </div>
     </div>
 
+    <!-- GRAPHIQUE (affiché dans modal si choisis) -->
+    <div id="viewArea" class="chart-zone" style="display:none;">
+      <div class="chart-container">
+        <canvas id="financeChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <canvas id="expensePieChart"></canvas>
+      </div>
+    </div>
   </div>
 
-  <!-- Modale Paramètres -->
+  <!-- MODALE PARAMÈTRES (mise à jour) -->
   <div id="settingsModal" class="modal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
       <span class="close-settings" aria-label="Fermer">&times;</span>
@@ -92,19 +104,48 @@
       <div class="param-section">
         <h3 data-i18n="objectifs">Objectifs Financiers</h3>
         <div class="param-options">
-          <button class="goal-btn" data-goal="epargne" data-i18n="epargne">Épargne </button>
-          <button class="goal-btn" data-goal="emprunt" data-i18n="emprunt">Emprunt </button>
+          <button class="goal-btn" data-goal="epargne" data-i18n="epargne">Épargne</button>
+          <button class="goal-btn" data-goal="emprunt" data-i18n="emprunt">Emprunt</button>
           <button class="goal-btn" data-goal="investissement" data-i18n="investissement">Investissement</button>
         </div>
       </div>
 
+      <!-- VISUALISATION: tableau (jour/mois/année) ou graphique -->
       <div class="param-section">
         <h3 data-i18n="visualisation">Visualisation</h3>
-        <div class="param-options">
-          <button class="view-btn" data-view="tableau" data-i18n="tableau">Tableau</button>
-          <button class="view-btn" data-view="graphique" data-i18n="graphique">Graphique</button>
+        <div class="param-options" id="visualisationOptions">
+          <button class="viz-btn" data-view="tableau" data-i18n="tableau">Tableau</button>
+          <button class="viz-btn" data-view="graphique" data-i18n="graphique">Graphique</button>
+        </div>
+
+        <!-- Contenu visualization: tableau summary par période -->
+        <div id="visualisationContent" style="margin-top:12px;">
+          <!-- Choix période -->
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+            <label style="font-weight:600;">Période:</label>
+            <select id="periodSelect">
+              <option value="jour">Jour</option>
+              <option value="mois" selected>Mois</option>
+              <option value="annee">Année</option>
+            </select>
+            <input type="date" id="vizDate" style="margin-left:6px;">
+            <button id="refreshViz" class="btn" style="padding:6px 10px;margin-left:6px;">Actualiser</button>
+          </div>
+
+          <!-- Tableau résumé -->
+          <div id="vizTable" style="background:rgba(0,0,0,0.03);padding:12px;border-radius:10px;">
+            <p><strong>Total Revenus:</strong> <span id="vizTotalRevenus">0</span> Ariary</p>
+            <p><strong>Total Dépenses:</strong> <span id="vizTotalDepenses">0</span> Ariary</p>
+            <p><strong>Solde:</strong> <span id="vizSolde">0</span> Ariary</p>
+          </div>
+
+          <!-- Canvas graphique petit aperçu -->
+          <div id="vizChartWrap" style="margin-top:12px;display:none;">
+            <canvas id="vizChart" width="500" height="220"></canvas>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 

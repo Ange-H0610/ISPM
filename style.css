@@ -36,6 +36,29 @@ html,body{ height:100%; margin:0; font-family:Inter, "Segoe UI", Roboto, Arial, 
 .menu-item .ico{ width:28px; text-align:center; }
 .menu-item.active, .menu-item:hover{ background:var(--accent-grad); color:var(--green-600); }
 
+/* Enlever le fond vert sy centrage tsara */
+.sidebar-header {
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+}
+
+/* Style ho an’ny logo */
+.dashboard-logo {
+  width: 80px;         /* azo ovaina raha kely/ lehibe loatra */
+  height: auto;
+  border-radius: 10px; /* kely arrondi tsara */
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Effet kely rehefa manindry na manodina */
+.dashboard-logo:hover {
+  transform: scale(1.05);
+}
+
 /* footer inside sidebar */
 .sidebar-footer{ margin-top:auto; display:flex; flex-direction:column; gap:10px; }
 .promo{ background:linear-gradient(180deg, rgba(15,122,58,0.08), rgba(47,180,95,0.03)); border-radius:12px; padding:10px; }

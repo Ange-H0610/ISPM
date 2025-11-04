@@ -1,8 +1,3 @@
-/* Functionality preserved: SPA router, transactions state, dashboard summary,
-   statistics chart, profile, goals, settings (lang/theme/font size).
-   Visuals updated to match screenshot layout (3-column).
-*/
-
 const STORAGE = 'mybudget_v2_state';
 let state = {
   lang: 'fr',
@@ -17,18 +12,39 @@ let state = {
   goals: { epargne:84500, emprunt:0, investissement:25000 }
 };
 
-// load saved
+// Charger l'état sauvegardé
 try{
   const raw = localStorage.getItem(STORAGE);
   if(raw) state = JSON.parse(raw);
-}catch(e){ console.warn('load err', e); }
+}catch(e){ console.warn('Erreur de chargement', e); }
 
+// Traductions françaises
 const i18 = {
-  fr:{ dashboard:'Dashboard', transactions:'Transactions', statistics:'Statistiques', profile:'Profil', goals:'Objectifs', settings:'Paramètres', currentBalance:'Solde actuel', recent:'Activités récentes', add:'Ajouter', income:'Revenu', expense:'Dépense' },
-  en:{ dashboard:'Dashboard', transactions:'Transactions', statistics:'Statistics', profile:'Profile', goals:'Goals', settings:'Settings', currentBalance:'Current Balance', recent:'Recent Activity', add:'Add', income:'Income', expense:'Expense' },
-  mg:{ dashboard:'Tabilao', transactions:'Transactions', statistics:'Statistika', profile:'Mombamomba', goals:'Tanjon’ny vola', settings:'Fikirakirana', currentBalance:'Sisa', recent:'Hetsika farany', add:'Ampio', income:'Vola miditra', expense:'Fandaniana' }
+  fr:{
+    dashboard:'Tableau de bord',
+    transactions:'Transactions',
+    statistics:'Statistiques',
+    profile:'Profil',
+    goals:'Objectifs',
+    settings:'Paramètres',
+    currentBalance:'Solde actuel',
+    recent:'Activités récentes',
+    add:'Ajouter',
+    income:'Revenu',
+    expense:'Dépense',
+    placeholderLabel:'Libellé (ex: Salaire)',
+    placeholderAmount:'Montant',
+    noTransactions:'Aucune transaction',
+    saveProfile:'Sauvegarder',
+    profileSaved:'Profil sauvegardé',
+    amountRequired:'Montant requis',
+    topUp:'Recharger',
+    transfer:'Transférer',
+    history:'Historique'
+  }
 };
-function t(k){ return (i18[state.lang] && i18[state.lang][k]) || i18['fr'][k] || k; }
+
+function t(k){ return (i18[state.lang] && i18[state.lang][k]) || k; }
 
 function save(){ try{ localStorage.setItem(STORAGE, JSON.stringify(state)); }catch(e){} }
 function calc(){
@@ -37,41 +53,41 @@ function calc(){
   return { income: inc, expense: exp, balance: inc-exp };
 }
 
-/* RENDERERS (structure matches screenshot layout) */
+/* RENDERERS */
 function renderDashboard(){
   const s = calc();
   const recent = state.transactions.slice().reverse().slice(0,5);
   return `
     <div class="col-card profile-card">
       <div class="name">${state.user.name}</div>
-      <div class="kv">Balance Amount</div>
+      <div class="kv">Solde du compte</div>
       <div class="balance">${s.balance.toLocaleString()} Ar</div>
       <div style="display:flex; gap:8px; margin-top:8px;">
-        <button class="btn small" onclick="mount('transactions')">Top Up</button>
-        <button class="btn small" onclick="mount('transactions')">Transfer</button>
-        <button class="btn small" onclick="mount('transactions')">History</button>
+        <button class="btn small" onclick="mount('transactions')">${t('topUp')}</button>
+        <button class="btn small" onclick="mount('transactions')">${t('transfer')}</button>
+        <button class="btn small" onclick="mount('transactions')">${t('history')}</button>
       </div>
     </div>
 
     <div>
       <div style="display:flex; gap:12px; margin-bottom:12px;">
-        <div class="stat-tile"><div class="kv">Total Income</div><div class="val">${s.income.toLocaleString()} Ar</div></div>
-        <div class="stat-tile"><div class="kv">Total Expense</div><div class="val">${s.expense.toLocaleString()} Ar</div></div>
-        <div class="stat-tile"><div class="kv">Total Savings</div><div class="val">${state.goals.epargne.toLocaleString()} Ar</div></div>
+        <div class="stat-tile"><div class="kv">Revenu Total</div><div class="val">${s.income.toLocaleString()} Ar</div></div>
+        <div class="stat-tile"><div class="kv">Dépense Totale</div><div class="val">${s.expense.toLocaleString()} Ar</div></div>
+        <div class="stat-tile"><div class="kv">Épargne Totale</div><div class="val">${state.goals.epargne.toLocaleString()} Ar</div></div>
       </div>
 
       <div class="chart-card">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="kv">Cashflow</div>
-          <div class="small kv">This Year</div>
+          <div class="kv">Flux de trésorerie</div>
+          <div class="small kv">Cette année</div>
         </div>
         <div style="height:180px;margin-top:12px;"><canvas id="dashChart"></canvas></div>
       </div>
 
       <div class="table-card" style="margin-top:12px;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="kv">Recent Transactions</div>
-          <div class="small kv">This Month</div>
+          <div class="kv">Transactions récentes</div>
+          <div class="small kv">Ce mois-ci</div>
         </div>
         <div style="margin-top:10px;">
           ${recent.map(tx=>`<div class="tx-row"><div><strong>${tx.label}</strong><div class="small kv">${tx.date}</div></div><div style="text-align:right">${tx.type==='income'?'+':'-'} ${tx.amount.toLocaleString()} Ar</div></div>`).join('')}
@@ -81,27 +97,27 @@ function renderDashboard(){
 
     <div class="right-card">
       <div>
-        <div class="kv">Statistic</div>
+        <div class="kv">Statistique</div>
         <div style="display:flex;gap:10px;align-items:center;margin-top:8px;">
           <div style="flex:1">
             <canvas id="donutChart" height="120"></canvas>
           </div>
           <div style="width:120px">
-            <div class="kv">This Month</div>
+            <div class="kv">Ce mois-ci</div>
             <div style="font-weight:800;margin-top:8px">${s.expense.toLocaleString()} Ar</div>
-            <div class="small kv" style="margin-top:8px">Breakdown</div>
-            <div class="small kv">Rent & Living • 40%</div>
-            <div class="small kv">Investment • 20%</div>
-            <div class="small kv">Food & Drink • 12%</div>
+            <div class="small kv" style="margin-top:8px">Répartition</div>
+            <div class="small kv">Loyer & Vie • 40%</div>
+            <div class="small kv">Investissement • 20%</div>
+            <div class="small kv">Alimentation & Boissons • 12%</div>
           </div>
         </div>
       </div>
 
       <div>
-        <div class="kv">Recent Activity</div>
+        <div class="kv">Activités récentes</div>
         <div style="margin-top:8px; display:flex;flex-direction:column; gap:8px;">
-          <div class="activity-item"><div class="dot">JS</div><div><strong>Jamie Smith</strong><div class="kv">updated account settings</div></div></div>
-          <div class="activity-item"><div class="dot">AJ</div><div><strong>Alex Johnson</strong><div class="kv">logged in</div></div></div>
+          <div class="activity-item"><div class="dot">JS</div><div><strong>Jamie Smith</strong><div class="kv">a mis à jour les paramètres</div></div></div>
+          <div class="activity-item"><div class="dot">AJ</div><div><strong>Alex Johnson</strong><div class="kv">s’est connecté</div></div></div>
         </div>
       </div>
     </div>
@@ -111,10 +127,10 @@ function renderDashboard(){
 function renderTransactions(){
   const rows = state.transactions.slice().reverse().map(tx => `
     <div class="tx-row">
-      <div><strong>${tx.label}</strong><div class="kv">${tx.date} • ${tx.type}</div></div>
+      <div><strong>${tx.label}</strong><div class="kv">${tx.date} • ${tx.type==='income'?t('income'):t('expense')}</div></div>
       <div style="text-align:right">
         <div style="font-weight:800">${tx.type==='income'?'+':'-'} ${tx.amount.toLocaleString()} Ar</div>
-        <div class="small" style="margin-top:6px;"><button class="btn small" onclick="removeTx(${tx.id})">Suppr</button></div>
+        <div class="small" style="margin-top:6px;"><button class="btn small" onclick="removeTx(${tx.id})">Supprimer</button></div>
       </div>
     </div>
   `).join('');
@@ -124,8 +140,8 @@ function renderTransactions(){
       <h3>${t('transactions')}</h3>
       <div style="margin-top:12px;" class="col-card">
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <input id="txLabel" type="text" placeholder="Libellé (ex: Salaire)" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);flex:1;" />
-          <input id="txAmount" type="number" placeholder="Montant" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);width:160px;" />
+          <input id="txLabel" type="text" placeholder="${t('placeholderLabel')}" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);flex:1;" />
+          <input id="txAmount" type="number" placeholder="${t('placeholderAmount')}" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);width:160px;" />
           <select id="txType" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);">
             <option value="income">${t('income')}</option>
             <option value="expense">${t('expense')}</option>
@@ -134,13 +150,13 @@ function renderTransactions(){
         </div>
 
         <div style="margin-top:16px;">
-          <div class="kv">Solde actuel</div>
+          <div class="kv">${t('currentBalance')}</div>
           <div style="font-weight:800;font-size:1.2rem;color:var(--green-600)">${calc().balance.toLocaleString()} Ar</div>
         </div>
 
         <div style="margin-top:12px;">
           <div class="kv">Historique</div>
-          <div style="margin-top:8px;">${rows || '<div class="kv">Aucune transaction</div>'}</div>
+          <div style="margin-top:8px;">${rows || `<div class="kv">${t('noTransactions')}</div>`}</div>
         </div>
       </div>
     </div>
@@ -171,7 +187,7 @@ function renderProfile(){
         <div style="flex:1;">
           <label>Nom<input id="profileName" value="${state.user.name}" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);" /></label>
           <label style="display:block;margin-top:8px;">Email<input id="profileEmail" value="${state.user.email}" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);" /></label>
-          <div style="margin-top:12px;"><button id="saveProfile" class="btn small">Sauvegarder</button></div>
+          <div style="margin-top:12px;"><button id="saveProfile" class="btn small">${t('saveProfile')}</button></div>
         </div>
         <div style="width:160px;text-align:center;">
           <div style="width:96px;height:96px;border-radius:14px;background:var(--accent-grad);display:inline-flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-600);">IMG</div>
@@ -252,27 +268,22 @@ function mount(page){
   applyFont();
 }
 
-function currentPage(){
-  const h = location.hash.replace('#','') || 'dashboard';
-  return h;
-}
+function currentPage(){ return location.hash.replace('#','') || 'dashboard'; }
 
 /* BIND events per page */
 function bind(page){
-  // quick controls
   const langQuick = document.getElementById('langQuick');
-  if(langQuick){ langQuick.value = state.lang; langQuick.onchange = (e)=>{ state.lang = e.target.value; save(); mount(currentPage()); } }
+  if(langQuick){ langQuick.value = state.lang; langQuick.onchange = e=>{ state.lang = e.target.value; save(); mount(currentPage()); } }
   const themeToggle = document.getElementById('themeToggle');
-  if(themeToggle){ themeToggle.onclick = ()=>{ state.theme = state.theme === 'dark' ? 'light' : 'dark'; save(); applyTheme(); } }
+  if(themeToggle){ themeToggle.onclick = ()=>{ state.theme = state.theme==='dark'?'light':'dark'; save(); applyTheme(); } }
 
-  // page-specific binds
   if(page === 'transactions'){
     const add = document.getElementById('addTx');
     if(add) add.onclick = ()=> {
       const label = document.getElementById('txLabel').value.trim() || 'Sans libellé';
       const amount = Math.abs(Number(document.getElementById('txAmount').value || 0));
       const type = document.getElementById('txType').value;
-      if(!amount){ alert('Montant requis'); return; }
+      if(!amount){ alert(t('amountRequired')); return; }
       state.transactions.push({ id: Date.now(), type, label, amount, date: new Date().toISOString().slice(0,10) });
       save(); mount('transactions');
     };
@@ -283,7 +294,7 @@ function bind(page){
     if(btn) btn.onclick = ()=> {
       state.user.name = document.getElementById('profileName').value;
       state.user.email = document.getElementById('profileEmail').value;
-      save(); alert('Profil sauvegardé'); mount('profile');
+      save(); alert(t('profileSaved')); mount('profile');
     };
   }
 
@@ -292,82 +303,59 @@ function bind(page){
     document.getElementById('themeSelect').value = state.theme;
     document.getElementById('fontSelect').value = state.fontSize;
 
-    document.getElementById('langSelect').onchange = e => { state.lang = e.target.value; save(); mount('settings'); };
-    document.getElementById('themeSelect').onchange = e => { state.theme = e.target.value; save(); applyTheme(); };
-    document.getElementById('fontSelect').onchange = e => { state.fontSize = e.target.value; save(); applyFont(); };
+    document.getElementById('langSelect').onchange = e=>{ state.lang=e.target.value; save(); mount('settings'); };
+    document.getElementById('themeSelect').onchange = e=>{ state.theme=e.target.value; save(); applyTheme(); };
+    document.getElementById('fontSelect').onchange = e=>{ state.fontSize=e.target.value; save(); applyFont(); };
   }
 
-  // nav links
-  document.querySelectorAll('.menu-item').forEach(a => a.addEventListener('click', ()=> setTimeout(()=> mount(currentPage()), 80)));
+  document.querySelectorAll('.menu-item').forEach(a => a.addEventListener('click', ()=> setTimeout(()=> mount(currentPage()),80)));
 }
 
 /* CHARTS */
-let dashChart = null, donutChart = null, statMain = null;
+let dashChart=null, donutChart=null, statMain=null;
 function drawCharts(page){
-  if(page === 'dashboard'){
+  if(page==='dashboard'){
     const ctx = document.getElementById('dashChart')?.getContext('2d');
-    if(!ctx) return;
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const inc = new Array(12).fill(0), exp = new Array(12).fill(0);
-    state.transactions.forEach(tx => {
-      const d = new Date(tx.date); if(isNaN(d)) return;
-      const m = d.getMonth();
-      if(tx.type==='income') inc[m]+=tx.amount; else exp[m]+=tx.amount;
-    });
-    if(dashChart) dashChart.destroy();
-    dashChart = new Chart(ctx, {
-      type:'bar',
-      data:{ labels:months, datasets:[
-        { label:'Income', data:inc, backgroundColor:'rgba(47,180,95,0.8)' },
-        { label:'Expense', data:exp, backgroundColor:'rgba(15,122,58,0.15)' }
-      ]},
-      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} } }
-    });
+    if(ctx){
+      const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const inc=new Array(12).fill(0), exp=new Array(12).fill(0);
+      state.transactions.forEach(tx=>{
+        const d=new Date(tx.date); if(isNaN(d)) return;
+        const m=d.getMonth();
+        tx.type==='income'?inc[m]+=tx.amount:exp[m]+=tx.amount;
+      });
+      if(dashChart) dashChart.destroy();
+      dashChart = new Chart(ctx,{ type:'bar', data:{ labels:months, datasets:[ { label:'Revenu', data:inc, backgroundColor:'rgba(47,180,95,0.8)' }, { label:'Dépense', data:exp, backgroundColor:'rgba(15,122,58,0.15)' } ] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} } } });
+    }
 
-    // donut
     const dctx = document.getElementById('donutChart')?.getContext('2d');
     if(dctx){
       const s = calc();
       if(donutChart) donutChart.destroy();
-      donutChart = new Chart(dctx, {
-        type:'doughnut',
-        data:{
-          labels:['Expense','Income'],
-          datasets:[{ data:[s.expense, Math.max(s.income,1)], backgroundColor:['#0f7a3a','#bdeec6'] }]
-        },
-        options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{position:'bottom'} } }
-      });
+      donutChart = new Chart(dctx,{ type:'doughnut', data:{ labels:['Dépense','Revenu'], datasets:[{ data:[s.expense, Math.max(s.income,1)], backgroundColor:['#0f7a3a','#bdeec6'] }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{position:'bottom'} } } });
     }
   }
 
-  if(page === 'statistics'){
-    const ctx = document.getElementById('statMain')?.getContext('2d');
+  if(page==='statistics'){
+    const ctx=document.getElementById('statMain')?.getContext('2d');
     if(!ctx) return;
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const inc = new Array(12).fill(0), exp = new Array(12).fill(0);
-    state.transactions.forEach(tx => {
-      const d = new Date(tx.date); if(isNaN(d)) return;
-      const m = d.getMonth();
-      if(tx.type==='income') inc[m]+=tx.amount; else exp[m]+=tx.amount;
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const inc=new Array(12).fill(0), exp=new Array(12).fill(0);
+    state.transactions.forEach(tx=>{
+      const d=new Date(tx.date); if(isNaN(d)) return;
+      const m=d.getMonth();
+      tx.type==='income'?inc[m]+=tx.amount:exp[m]+=tx.amount;
     });
     if(statMain) statMain.destroy();
-    statMain = new Chart(ctx, {
-      type:'line',
-      data:{ labels:months, datasets:[
-        { label:'Revenus', data:inc, tension:0.3, fill:true },
-        { label:'Dépenses', data:exp, tension:0.3, fill:true }
-      ]},
-      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{position:'bottom'} } }
-    });
+    statMain = new Chart(ctx,{ type:'line', data:{ labels:months, datasets:[ { label:'Revenus', data:inc, tension:0.3, fill:true }, { label:'Dépenses', data:exp, tension:0.3, fill:true } ] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{position:'bottom'} } } });
   }
 }
 
-/* UTIL: remove tx from anywhere */
-function removeTx(id){ state.transactions = state.transactions.filter(x => x.id !== id); save(); mount(currentPage()); }
+function removeTx(id){ state.transactions = state.transactions.filter(x=>x.id!==id); save(); mount(currentPage()); }
 
-/* THEME / FONT helpers */
+/* THEME / FONT */
 function applyTheme(){
-  if(state.theme === 'dark'){
+  if(state.theme==='dark'){
     document.documentElement.style.setProperty('--bg','#071814');
     document.documentElement.style.setProperty('--panel','#0b2a21');
     document.documentElement.style.setProperty('--text','#e8fff4');
@@ -380,21 +368,14 @@ function applyTheme(){
   }
 }
 function applyFont(){
-  if(state.fontSize === 'small') document.documentElement.style.fontSize = '14px';
-  else if(state.fontSize === 'normal') document.documentElement.style.fontSize = '16px';
-  else document.documentElement.style.fontSize = '18px';
+  if(state.fontSize==='small') document.documentElement.style.fontSize='14px';
+  else if(state.fontSize==='normal') document.documentElement.style.fontSize='16px';
+  else document.documentElement.style.fontSize='18px';
 }
 
 /* INIT */
-window.addEventListener('hashchange', ()=> mount(currentPage()));
-document.addEventListener('DOMContentLoaded', ()=> {
-  // set menu item dataset pages
-  document.querySelectorAll('.menu-item').forEach(a => {
-    const href = a.getAttribute('href') || '#dashboard';
-    a.dataset.page = href.replace('#','') || 'dashboard';
-  });
-
-  applyTheme();
-  applyFont();
-  mount(currentPage());
+window.addEventListener('hashchange',()=>mount(currentPage()));
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.menu-item').forEach(a=>{ a.dataset.page=(a.getAttribute('href')||'#dashboard').replace('#','')||'dashboard'; });
+  applyTheme(); applyFont(); mount(currentPage());
 });

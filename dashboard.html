@@ -5,21 +5,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MyBudgetLocal</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js for statistics -->
+  <!-- Chart.js pour statistiques -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="wrap">
-    <!-- LEFT SIDEBAR -->
+    <!-- SIDEBAR GAUCHE -->
     <aside class="sidebar">
       <div class="brand">
-        <div class="logo">M</div>
+        <div class="sidebar-header">
+          <img src="logo/logo.png" alt="Logo ISPM" class="dashboard-logo">
+        </div>
         <div class="brand-name">MyBudgetLocal</div>
       </div>
 
       <nav class="menu">
         <a class="menu-item active" data-page="dashboard" href="#dashboard">
-          <span class="ico"></span> <span class="label">Dashboard</span>
+          <span class="ico"></span> <span class="label">Tableau de bord</span>
         </a>
         <a class="menu-item" data-page="transactions" href="#transactions">
           <span class="ico"></span> <span class="label">Transactions</span>
@@ -39,21 +41,14 @@
       </nav>
 
       <div class="sidebar-footer">
-        <div class="promo">
-          <div class="pad">
-            <strong>Get Pro</strong>
-            <p class="kv">Features & analytics</p>
-            <button class="btn small">Upgrade</button>
-          </div>
-        </div>
-        <div class="copyright">© MyBudgetLocal</div>
+        
       </div>
     </aside>
 
-    <!-- MAIN AREA -->
+    <!-- ZONE PRINCIPALE -->
     <main class="main">
       <header class="topbar">
-        <div class="title" id="pageTitle">Dashboard</div>
+        <div class="title" id="pageTitle">Tableau de bord</div>
         <div class="top-controls">
           <select id="langQuick" title="Langue">
             <option value="fr">FR</option>
@@ -66,7 +61,7 @@
       </header>
 
       <section id="content" class="content">
-        <!-- content injected by app.js -->
+        <!-- contenu injecté par app.js -->
       </section>
     </main>
   </div>

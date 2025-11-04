@@ -1,117 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tableau de bord — ISPM</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MyBudgetLocal</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js for statistics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="app">
-    <!-- ========== Barre latérale ========== -->
+  <div class="wrap">
+    <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
-     <div class="brand">
-  <img src="logo\logo.png" alt="Logo MyBudgetLocal" class="logo-img">
-  <span>MyBudgetLocal</span>
-</div>
+      <div class="brand">
+        <div class="logo">M</div>
+        <div class="brand-name">MyBudgetLocal</div>
+      </div>
 
-
-      <nav class="nav">
-        <a href="#" class="active"><i></i> Tableau de bord</a>
-        <a href="#"><i></i> Paiements</a>
-        <a href="#"><i></i> Transactions</a>
-        <a href="#"><i></i> Investissements</a>
-        <a href="#"><i></i> Épargne</a>
-        <a href="#"><i></i> Messages</a>
+      <nav class="menu">
+        <a class="menu-item active" data-page="dashboard" href="#dashboard">
+          <span class="ico">🏠</span> <span class="label">Dashboard</span>
+        </a>
+        <a class="menu-item" data-page="transactions" href="#transactions">
+          <span class="ico">💸</span> <span class="label">Transactions</span>
+        </a>
+        <a class="menu-item" data-page="statistics" href="#statistics">
+          <span class="ico">📈</span> <span class="label">Statistiques</span>
+        </a>
+        <a class="menu-item" data-page="profile" href="#profile">
+          <span class="ico">👤</span> <span class="label">Profil</span>
+        </a>
+        <a class="menu-item" data-page="goals" href="#goals">
+          <span class="ico">🎯</span> <span class="label">Objectifs</span>
+        </a>
+        <a class="menu-item" data-page="settings" href="#settings">
+          <span class="ico">⚙️</span> <span class="label">Paramètres</span>
+        </a>
       </nav>
 
-      <div class="promo">
-        <div>
-          <strong>Passer en version Pro</strong>
-          <p>Profitez d’analyses détaillées et de graphiques avancés.</p>
+      <div class="sidebar-footer">
+        <div class="promo">
+          <div class="pad">
+            <strong>Get Pro</strong>
+            <p class="kv">Features & analytics</p>
+            <button class="btn small">Upgrade</button>
+          </div>
         </div>
-        <button class="btn">Obtenir Pro</button>
+        <div class="copyright">© MyBudgetLocal</div>
       </div>
     </aside>
 
-    <!-- ========== Contenu principal ========== -->
+    <!-- MAIN AREA -->
     <main class="main">
-      <!-- Barre supérieure -->
-      <div class="topbar">
-        <div class="search">
-          <input type="text" placeholder="Rechercher..." />
+      <header class="topbar">
+        <div class="title" id="pageTitle">Dashboard</div>
+        <div class="top-controls">
+          <select id="langQuick" title="Langue">
+            <option value="fr">FR</option>
+            <option value="en">EN</option>
+            <option value="mg">MG</option>
+          </select>
+          <button id="themeToggle" class="icon-btn">🌗</button>
+          <div class="user">Utilisateur ▾</div>
         </div>
-        <div class="profile">
-          <div class="avatar">AF</div>
-          <span>Andrew Forbist</span>
-        </div>
-      </div>
+      </header>
 
-      <!-- Grille principale -->
-      <div class="grid">
-        <!-- Colonne gauche -->
-        <section class="left">
-          <div class="cards">
-            <div class="card big">
-              <h3>Solde disponible</h3>
-              <p class="amount">$562 000</p>
-              <p class="meta">Carte : **** 9234 &nbsp; | &nbsp; Exp : 12/29</p>
-            </div>
-            <div class="card">
-              <p class="title">Revenu total</p>
-              <p class="amount">$78 000</p>
-            </div>
-            <div class="card">
-              <p class="title">Dépense totale</p>
-              <p class="amount rouge">$43 000</p>
-            </div>
-            <div class="card">
-              <p class="title">Épargne totale</p>
-              <p class="amount vert">$56 000</p>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Flux de trésorerie</h3>
-              <span>Année 2025</span>
-            </div>
-            <div id="chart"></div>
-          </div>
-
-          <div class="panel">
-            <h3>Transactions récentes</h3>
-            <table id="transactions">
-              <thead>
-                <tr><th>Nom</th><th>Date</th><th>Montant</th><th>Statut</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- Colonne droite -->
-        <section class="right">
-          <div class="panel">
-            <h3>Statistiques du mois</h3>
-            <div class="donut">
-              <svg id="donut" width="120" height="120"></svg>
-              <ul class="legend">
-                <li>🏠 Logement et vie — 2 100 $</li>
-                <li>💰 Investissements — 825 $</li>
-                <li>🎓 Éducation — 450 $</li>
-                <li>🍽️ Alimentation — 210 $</li>
-                <li>🎬 Divertissement — 175 $</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="panel">
-            <h3>Activités récentes</h3>
-            <div id="activity"></div>
-          </div>
-        </section>
-      </div>
+      <section id="content" class="content">
+        <!-- content injected by app.js -->
+      </section>
     </main>
   </div>
 

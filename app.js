@@ -1,354 +1,219 @@
-// ---------- Helpers ----------
-function showError(message) {
-  alert(message);
+// ----- données d'exemple -----
+const transactions = [
+  {icon: '🎧', title:'iTunes subscription', sub:'Bills', amount:-2.30},
+  {icon: '🚗', title:'Uber ride', sub:'Transport', amount:-14.25},
+  {icon: '🛒', title:'Countdown', sub:'Groceries', amount:-40.10},
+  {icon: '🛠️', title:'Auto Repairs', sub:'Maintenance', amount:-160.00},
+  {icon: '📱', title:'BP Mobile', sub:'Petrol', amount:-54.00},
+  {icon: '✈️', title:'Ticket Direct', sub:'Vacation', amount:-669.99},
+  {icon: '🛍️', title:'Countdown', sub:'Groceries', amount:130.83}
+];
+
+const accounts = [
+  {name:'Debit', amount:14.25},
+  {name:'Cash', amount:5.30},
+  {name:'Credit Card', amount:-270.00},
+  {name:'Savings', amount:12690.10}
+];
+
+const barData = [
+  {month:'JAN', val:1200},
+  {month:'FEB', val:2300},
+  {month:'MAR', val:4200},
+  {month:'APR', val:3300},
+  {month:'MAY', val:2600},
+  {month:'JUN', val:1800},
+];
+
+// ----- render transactions -----
+function renderTransactions(){
+  const ul = document.getElementById('transactions-list');
+  ul.innerHTML = '';
+  transactions.forEach(tx=>{
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div class="tx-left">
+        <div class="tx-icon">${tx.icon}</div>
+        <div>
+          <div class="tx-title">${tx.title}</div>
+          <div class="tx-sub">${tx.sub}</div>
+        </div>
+      </div>
+      <div class="tx-right">
+        <div class="amount" style="font-weight:700; color:${tx.amount<0? '#ff5c7a':'#20b06b'}">
+          ${tx.amount < 0 ? '-' : '+'}$${Math.abs(tx.amount).toFixed(2)}
+        </div>
+      </div>
+    `;
+    ul.appendChild(li);
+  });
 }
 
-function isEmailValid(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+// ----- render accounts -----
+function renderAccounts(){
+  const container = document.getElementById('accounts-list');
+  container.innerHTML = '';
+  accounts.forEach(ac=>{
+    const div = document.createElement('div');
+    div.className = 'account-row';
+    div.innerHTML = `
+      <div>${ac.name}</div>
+      <div style="font-weight:700; color:${ac.amount<0? '#ff6b6b':'#1e9a6a'}">${ac.amount<0? '-':'+'}$${Math.abs(ac.amount).toFixed(2)}</div>
+    `;
+    container.appendChild(div);
+  });
 }
 
-function formatNumber(n, lang = "fr") {
-  try {
-    const locale = (lang === "en") ? "en-US" : (lang === "mg" ? "fr-FR" : "fr-FR");
-    return new Intl.NumberFormat(locale).format(n);
-  } catch (e) {
-    return String(n);
-  }
+// ----- render recent small -----
+function renderRecent(){
+  const ul = document.getElementById('recent-list');
+  ul.innerHTML = '';
+  transactions.slice(0,5).forEach(t=>{
+    const li = document.createElement('li');
+    li.style.padding = '10px 0';
+    li.style.borderBottom = '1px dashed #eef2ff';
+    li.innerHTML = `<div style="display:flex;justify-content:space-between">
+      <div style="display:flex;gap:10px; align-items:center"><span style="width:26px">${t.icon}</span><div><div style="font-weight:600">${t.title}</div><div style="font-size:0.85rem;color:#7b8096">${t.sub}</div></div></div>
+      <div style="font-weight:700; color:${t.amount<0? '#ff5c7a':'#20b06b'}">${t.amount<0?'-':'+'}$${Math.abs(t.amount).toFixed(2)}</div>
+    </div>`;
+    ul.appendChild(li);
+  });
 }
 
-/* ======================
-   Traductions (simple)
-   ====================== */
-const TRANSLATIONS = {
-  fr: { siteTitle: "Mon Dashboard - MyBudgetLocal", params: "Paramètres", logout: "Déconnexion",
-        revenusTitle: "Revenus", depensesTitle: "Dépenses", calcBtn: "Total",
-        totalRevenusLabel: "Total Revenus :", totalDepensesLabel: "Total Dépenses :", soldeLabel: "Solde restant :",
-        langue: "Langue", theme: "Thème", objectifs: "Objectifs Financiers", visualisation: "Visualisation",
-        clair: "Clair", sombre: "Sombre", epargne: "Épargne", emprunt: "Emprunt", investissement: "Investissement",
-        tableau: "Tableau", graphique: "Graphique",
-        revenu1:"Salaire et autres revenus", revenu2:"Pensions / Allocations", revenu3:"Loyers / Revenus du capital", revenu4:"Autres revenus",
-        depense1:"Loyer et charges", depense2:"Alimentation", depense3:"Transports", depense4:"Loisirs / Culture", depense5:"Autres dépenses",
-        mode_epargne: "Mode: Épargne", mode_emprunt:"Mode: Emprunt", mode_investissement:"Mode: Investissement"
-      },
-  en: { siteTitle: "My Dashboard - MyBudgetLocal", params: "Settings", logout: "Log out",
-        revenusTitle: "Revenues", depensesTitle: "Expenses", calcBtn: "Total",
-        totalRevenusLabel: "Total Revenues :", totalDepensesLabel: "Total Expenses :", soldeLabel: "Remaining balance :",
-        langue: "Language", theme: "Theme", objectifs: "Financial Goals", visualisation: "View",
-        clair: "Light", sombre: "Dark", epargne: "Savings", emprunt: "Loan", investissement: "Investment",
-        tableau: "Table", graphique: "Chart",
-        revenu1:"Salary & other incomes", revenu2:"Pensions / Allowances", revenu3:"Rents / Capital income", revenu4:"Other incomes",
-        depense1:"Rent & utilities", depense2:"Food", depense3:"Transport", depense4:"Leisure / Culture", depense5:"Other expenses",
-        mode_epargne: "Mode: Savings", mode_emprunt:"Mode: Loan", mode_investissement:"Mode: Investment"
-      },
-  mg: { siteTitle: "Tafatafa - MyBudgetLocal", params: "Fikirakirana", logout: "Hivoaka",
-        revenusTitle: "Fidiram-bola", depensesTitle: "Fandaniana", calcBtn: "Kajy ny Totaly",
-        totalRevenusLabel: "Total Fidiram-bola :", totalDepensesLabel: "Total Fandaniana :", soldeLabel: "Fahafahana sisa :",
-        langue: "Fiteny", theme: "Lohahevitra", objectifs: "Tanjon'ny Vola", visualisation: "Fampisehoana",
-        clair: "Mazava", sombre: "Maizina", epargne: "Tahiry", emprunt: "Trosa", investissement: "Fampiasam-bola",
-        tableau: "Tabilao", graphique: "Sary",
-        revenu1:"Karama sy hafa", revenu2:"Pension / Fanampiana", revenu3:"Hofan-trano / Vola mampanoa", revenu4:"Fidiram-bola hafa",
-        depense1:"Hofan-trano sy saran'ny tolotra", depense2:"Sakafo", depense3:"Fitaterana", depense4:"Fialam-boly / Kolontsaina", depense5:"Fandaniana hafa",
-        mode_epargne: "Mode: Tahiry", mode_emprunt:"Mode: Trosa", mode_investissement:"Mode: Fampiasam-bola"
-      }
-};
+// ----- simple bar chart (svg) -----
+function renderBarChart(){
+  const el = document.getElementById('bar-chart');
+  const w = el.clientWidth || 500;
+  const h = 220;
+  const max = Math.max(...barData.map(d=>d.val));
+  const pad = 30;
+  const colW = (w - pad*2) / barData.length;
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', h);
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
 
-const defaultSettings = { lang: "fr", theme: "dark", goal: "epargne", view: "tableau" };
+  barData.forEach((d,i)=>{
+    const x = pad + i * colW + colW*0.1;
+    const bw = colW*0.7;
+    const barH = (d.val / max) * (h - 60);
+    const y = h - 30 - barH;
+    const rect = document.createElementNS(svgNS, 'rect');
+    rect.setAttribute('x', x);
+    rect.setAttribute('y', y);
+    rect.setAttribute('width', bw);
+    rect.setAttribute('height', barH);
+    rect.setAttribute('rx', 6);
+    rect.setAttribute('fill', i % 2 === 0 ? '#6b72ff' : '#97a0ff');
+    svg.appendChild(rect);
 
-// storage helpers
-function loadSettings(){ try { return {...defaultSettings, ...JSON.parse(localStorage.getItem("mb_settings")||"{}")}; } catch(e){ return {...defaultSettings}; } }
-function saveSettings(s){ localStorage.setItem("mb_settings", JSON.stringify(s)); }
+    // label
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', x + bw/2);
+    text.setAttribute('y', h - 10);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('font-size', '11');
+    text.setAttribute('fill', '#7b8096');
+    text.textContent = d.month;
+    svg.appendChild(text);
+  });
 
-/* =========================
-   MAIN
-   ========================= */
-document.addEventListener("DOMContentLoaded", function() {
-  // Signup / Login (index.html) logic (kept minimal, unchanged)
-  const signupForm = document.getElementById("signupForm");
-  if (signupForm) {
-    signupForm.addEventListener("submit", function(e){
-      e.preventDefault();
-      const name = document.getElementById("signupName").value.trim();
-      const email = document.getElementById("signupEmail").value.trim();
-      const password = document.getElementById("signupPass").value;
-      if (!name || !email || !password) { showError("Veuillez remplir le nom, l'email et le mot de passe."); return; }
-      if (!isEmailValid(email)) { showError("Veuillez entrer une adresse email valide."); return; }
-      localStorage.setItem("user", JSON.stringify({ name, email, password }));
-      alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
-      window.location.href = "index.html";
-    });
-  }
+  el.innerHTML = '';
+  el.appendChild(svg);
+}
 
-  const loginForm = document.getElementById("loginForm");
-  if (loginForm) {
-    const savedUser = JSON.parse(localStorage.getItem("user") || "null");
-    if (savedUser && savedUser.name) document.getElementById("loginName").value = savedUser.name;
-    loginForm.addEventListener("submit", function(e){
-      e.preventDefault();
-      const name = document.getElementById("loginName").value.trim();
-      const password = document.getElementById("loginPass").value;
-      if (!name || !password) { showError("Veuillez entrer votre nom d'utilisateur et votre mot de passe."); return; }
-      const user = JSON.parse(localStorage.getItem("user") || "null");
-      if (!user) { showError("Aucun compte trouvé. Veuillez d'abord vous inscrire."); return; }
-      if (user.name === name && user.password === password) {
-        localStorage.setItem("isLoggedIn","true"); localStorage.setItem("userName", user.name);
-        window.location.href = "dashboard.html";
-      } else showError("Nom d'utilisateur ou mot de passe incorrect.");
-    });
-  }
+// ----- donut chart by drawing stroke-dash -----
+function renderDonut(){
+  const el = document.getElementById('donut');
+  const size = 140;
+  const pct = 75; // 75% example
+  const stroke = 16;
+  const radius = (size - stroke)/2;
+  const circ = 2 * Math.PI * radius;
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS,'svg');
+  svg.setAttribute('width', size);
+  svg.setAttribute('height', size);
+  svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
 
-  // If dashboard page
-  if (window.location.pathname.includes("dashboard.html")) {
-    // load settings, protect page
-    let settings = loadSettings();
-    if (!localStorage.getItem("isLoggedIn")) window.location.href = "index.html";
-    else {
-      const userName = localStorage.getItem("userName") || "Utilisateur";
-      const greetingEl = document.getElementById("userGreeting");
-      if (greetingEl) greetingEl.textContent = `${userName}`;
+  // bg circle
+  const bg = document.createElementNS(svgNS,'circle');
+  bg.setAttribute('cx', size/2);
+  bg.setAttribute('cy', size/2);
+  bg.setAttribute('r', radius);
+  bg.setAttribute('stroke','#eef2ff');
+  bg.setAttribute('stroke-width', stroke);
+  bg.setAttribute('fill','none');
+  svg.appendChild(bg);
+
+  // fg
+  const fg = document.createElementNS(svgNS,'circle');
+  fg.setAttribute('cx', size/2);
+  fg.setAttribute('cy', size/2);
+  fg.setAttribute('r', radius);
+  fg.setAttribute('stroke','#6b72ff');
+  fg.setAttribute('stroke-width', stroke);
+  fg.setAttribute('fill','none');
+  fg.setAttribute('stroke-linecap','round');
+  fg.setAttribute('transform', `rotate(-90 ${size/2} ${size/2})`);
+  fg.setAttribute('stroke-dasharray', `${circ} ${circ}`);
+  const dash = (pct/100)*circ;
+  fg.setAttribute('stroke-dashoffset', `${circ - dash}`);
+  svg.appendChild(fg);
+
+  // center text
+  const text = document.createElementNS(svgNS,'text');
+  text.setAttribute('x', size/2);
+  text.setAttribute('y', size/2 + 6);
+  text.setAttribute('font-size','20');
+  text.setAttribute('text-anchor','middle');
+  text.setAttribute('fill','#273044');
+  text.textContent = `${pct}%`;
+  svg.appendChild(text);
+
+  el.innerHTML = '';
+  el.appendChild(svg);
+}
+
+// ----- sidebar collapse (mobile) -----
+function setupInteractions(){
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const collapseBtn = document.getElementById('collapse-btn');
+
+  hamburger?.addEventListener('click', ()=>{
+    sidebar.classList.toggle('open');
+    sidebar.style.display = sidebar.classList.contains('open') ? 'flex' : 'none';
+  });
+
+  collapseBtn?.addEventListener('click', ()=>{
+    if (sidebar.style.width === '80px'){
+      sidebar.style.width = '260px';
+      collapseBtn.textContent = '‹';
+    } else {
+      sidebar.style.width = '80px';
+      collapseBtn.textContent = '›';
     }
+  });
 
-    // apply theme
-    function applyTheme(theme){
-      document.body.classList.remove("light-theme","dark-theme","gradient-theme");
-      if (theme === "light") document.body.classList.add("light-theme");
-      else { document.body.classList.add("gradient-theme"); document.body.classList.add("dark-theme"); }
-    }
-    applyTheme(settings.theme);
+  // simple responsive re-render of svg when width changes
+  window.addEventListener('resize', ()=>{
+    renderBarChart();
+  });
+}
 
-    // mode badge update
-    function updateModeBadgeText(){
-      const dict = TRANSLATIONS[settings.lang] || TRANSLATIONS.fr;
-      const badge = document.getElementById("modeBadge");
-      if (!badge) return;
-      if (settings.goal === "epargne") badge.innerText = dict.mode_epargne;
-      else if (settings.goal === "emprunt") badge.innerText = dict.mode_emprunt;
-      else if (settings.goal === "investissement") badge.innerText = dict.mode_investissement;
-      else badge.innerText = "";
-    }
-    updateModeBadgeText();
+// ----- init -----
+function init(){
+  renderTransactions();
+  renderAccounts();
+  renderRecent();
+  renderBarChart();
+  renderDonut();
+  setupInteractions();
+  // set username if available
+  const username = localStorage.getItem('username') || 'Hayley';
+  document.getElementById('user-name').textContent = username;
+}
 
-    // translations apply
-    function applyTranslations(lang){
-      const dict = TRANSLATIONS[lang] || TRANSLATIONS.fr;
-      document.querySelectorAll("[data-i18n]").forEach(el=>{
-        const key = el.getAttribute("data-i18n");
-        if (dict[key]) el.innerText = dict[key];
-      });
-      if (dict.siteTitle) document.title = dict.siteTitle;
-      // reformat numeric displays (if present)
-      const elTR = document.getElementById("totalRevenusDisplay");
-      const elTD = document.getElementById("totalDepensesDisplay");
-      const elSol = document.getElementById("soldeFinalDisplay");
-      if (elTR && elTR.dataset.raw) elTR.innerText = formatNumber(Number(elTR.dataset.raw), lang);
-      if (elTD && elTD.dataset.raw) elTD.innerText = formatNumber(Number(elTD.dataset.raw), lang);
-      if (elSol && elSol.dataset.raw) elSol.innerText = formatNumber(Number(elSol.dataset.raw), lang);
-    }
-    applyTranslations(settings.lang);
-
-    // SETTINGS modal controls
-    const settingsBtn = document.getElementById("settingsBtn");
-    const settingsModal = document.getElementById("settingsModal");
-    const closeSettings = document.querySelector(".close-settings");
-
-    settingsBtn.addEventListener("click", () => {
-      settingsModal.style.display = "flex";
-      settingsModal.setAttribute("aria-hidden", "false");
-      // when opening modal ensure visualization state is in sync
-      setVizMode(settings.view === "graphique" ? "graphique" : "tableau");
-      updateViz(); // refresh visualization content
-    });
-    closeSettings.addEventListener("click", () => {
-      settingsModal.style.display = "none";
-      settingsModal.setAttribute("aria-hidden", "true");
-    });
-    window.addEventListener("click", (e) => {
-      if (e.target === settingsModal) {
-        settingsModal.style.display = "none";
-        settingsModal.setAttribute("aria-hidden", "true");
-      }
-    });
-
-    // Lang buttons
-    document.querySelectorAll(".lang-btn").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        document.querySelectorAll(".lang-btn").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        settings.lang = btn.dataset.lang;
-        saveSettings(settings);
-        applyTranslations(settings.lang);
-      });
-      // mark active initial
-      if (btn.dataset.lang === settings.lang) btn.classList.add("active");
-    });
-
-    // Theme buttons
-    document.querySelectorAll(".theme-btn").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        document.querySelectorAll(".theme-btn").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        settings.theme = btn.dataset.theme;
-        saveSettings(settings);
-        applyTheme(settings.theme);
-      });
-      if (btn.dataset.theme === settings.theme) btn.classList.add("active");
-    });
-
-    // Goals
-    document.querySelectorAll(".goal-btn").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        document.querySelectorAll(".goal-btn").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        settings.goal = btn.dataset.goal;
-        saveSettings(settings);
-        updateModeBadgeText();
-      });
-      if (btn.dataset.goal === settings.goal) btn.classList.add("active");
-    });
-
-    // Visualization mode (tableau / graphique) inside modal
-    const vizButtons = document.querySelectorAll(".viz-btn");
-    let currentVizMode = settings.view || "tableau";
-    function setVizMode(mode){
-      document.querySelectorAll(".viz-btn").forEach(b=>b.classList.remove("active"));
-      document.querySelectorAll(".viz-btn").forEach(b=>{ if (b.dataset.view === mode) b.classList.add("active"); });
-      currentVizMode = mode;
-      // show/hide chart preview
-      document.getElementById("vizChartWrap").style.display = (mode === "graphique") ? "block" : "none";
-      document.getElementById("viewArea").style.display = (mode === "graphique") ? "block" : "none";
-    }
-    vizButtons.forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        settings.view = btn.dataset.view;
-        saveSettings(settings);
-        setVizMode(settings.view);
-      });
-    });
-    setVizMode(currentVizMode);
-
-    // CALCULATION logic (shared)
-    function computeTotals(){
-      let totalRevenus = 0, totalDepenses = 0;
-      document.querySelectorAll(".revenu").forEach(input => { totalRevenus += Number(input.value) || 0; });
-      document.querySelectorAll(".depense").forEach(input => { totalDepenses += Number(input.value) || 0; });
-      const solde = totalRevenus - totalDepenses;
-      // update displays and dataset.raw for translation formatting
-      const elTR = document.getElementById("totalRevenusDisplay");
-      const elTD = document.getElementById("totalDepensesDisplay");
-      const elSol = document.getElementById("soldeFinalDisplay");
-      if (elTR) { elTR.dataset.raw = totalRevenus; elTR.innerText = formatNumber(totalRevenus, settings.lang); }
-      if (elTD) { elTD.dataset.raw = totalDepenses; elTD.innerText = formatNumber(totalDepenses, settings.lang); }
-      if (elSol) { elSol.dataset.raw = solde; elSol.innerText = formatNumber(solde, settings.lang); }
-      return { totalRevenus, totalDepenses, solde };
-    }
-
-    // Calc button in main dashboard
-    const calcBtn = document.getElementById("calcBtn");
-    if (calcBtn) {
-      calcBtn.addEventListener("click", () => {
-        computeTotals();
-        // if chart visible on main area, redraw
-        if (settings.view === "graphique") drawChart();
-      });
-    }
-
-    // LOGOUT
-    const logoutBtn = document.getElementById("logoutBtn");
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", function () {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("userName");
-        window.location.href = "index.html";
-      });
-    }
-
-    // Simple chart (main area) - re-used from earlier
-    const financeChartCanvas = document.getElementById("financeChart");
-    const financeCtx = financeChartCanvas ? financeChartCanvas.getContext("2d") : null;
-    function drawChart(){
-      if (!financeCtx) return;
-      const totals = computeTotals();
-      const totalRevenus = totals.totalRevenus, totalDepenses = totals.totalDepenses;
-      const w = financeChartCanvas.width = Math.min(900, document.getElementById("viewArea").clientWidth || 700);
-      const h = financeChartCanvas.height = 300;
-      const pad = 40, chartW = w - pad*2, chartH = h - pad*2;
-      financeCtx.clearRect(0,0,w,h);
-      const maxVal = Math.max(totalRevenus, totalDepenses, 1);
-      financeCtx.strokeStyle = "rgba(0,0,0,0.08)";
-      for (let i=0;i<=4;i++){ const y = pad + (chartH*i)/4; financeCtx.beginPath(); financeCtx.moveTo(pad,y); financeCtx.lineTo(pad+chartW,y); financeCtx.stroke(); }
-      const barWidth = Math.min(120, chartW/3), x1 = pad + chartW/4 - barWidth/2, x2 = pad + (chartW*3)/4 - barWidth/2;
-      const themeIsLight = document.body.classList.contains("light-theme");
-      const revColor = themeIsLight ? "#1b7a3a" : "#8ef08e";
-      const depColor = themeIsLight ? "#b71c1c" : "#ff8a8a";
-      const revH = (totalRevenus/maxVal)*chartH, depH = (totalDepenses/maxVal)*chartH;
-      financeCtx.fillStyle = revColor; financeCtx.fillRect(x1, pad + (chartH - revH), barWidth, revH);
-      financeCtx.fillStyle = depColor; financeCtx.fillRect(x2, pad + (chartH - depH), barWidth, depH);
-      financeCtx.fillStyle = themeIsLight ? "#111" : "#fff"; financeCtx.font = "14px sans-serif";
-      const dict = TRANSLATIONS[settings.lang] || TRANSLATIONS.fr;
-      financeCtx.fillText(dict.totalRevenusLabel || "Revenus", x1, pad + chartH + 20);
-      financeCtx.fillText(dict.totalDepensesLabel || "Dépenses", x2, pad + chartH + 20);
-      financeCtx.font = "bold 13px sans-serif";
-      financeCtx.fillText(formatNumber(totalRevenus, settings.lang), x1, pad + (chartH - revH) - 8);
-      financeCtx.fillText(formatNumber(totalDepenses, settings.lang), x2, pad + (chartH - depH) - 8);
-    }
-    window.addEventListener("resize", () => { if (settings.view === "graphique") drawChart(); });
-
-    // --- VISUALISATION modal content update ---
-    function updateViz(){
-      // compute totals from current inputs
-      const totals = computeTotals();
-      // For now (no transactions history), we show the totals as representative for the selected period.
-      const vizTR = document.getElementById("vizTotalRevenus");
-      const vizTD = document.getElementById("vizTotalDepenses");
-      const vizSol = document.getElementById("vizSolde");
-      if (vizTR) vizTR.innerText = formatNumber(totals.totalRevenus, settings.lang);
-      if (vizTD) vizTD.innerText = formatNumber(totals.totalDepenses, settings.lang);
-      if (vizSol) vizSol.innerText = formatNumber(totals.solde, settings.lang);
-
-      // If chart preview is visible, draw a small bar chart in the vizChart canvas
-      const vizChartEl = document.getElementById("vizChart");
-      if (vizChartEl && currentVizMode === "graphique") {
-        const ctx = vizChartEl.getContext("2d");
-        ctx.clearRect(0,0,vizChartEl.width, vizChartEl.height);
-        const w = vizChartEl.width, h = vizChartEl.height, pad = 30;
-        const chartW = w - pad*2, chartH = h - pad*2;
-        const maxVal = Math.max(totals.totalRevenus, totals.totalDepenses, 1);
-        const barW = Math.min(80, chartW/3);
-        const x1 = pad + chartW/3 - barW/2, x2 = pad + (chartW*2)/3 - barW/2;
-        ctx.fillStyle = "#8ef08e";
-        ctx.fillRect(x1, pad + (chartH - (totals.totalRevenus/maxVal)*chartH), barW, (totals.totalRevenus/maxVal)*chartH);
-        ctx.fillStyle = "#ff8a8a";
-        ctx.fillRect(x2, pad + (chartH - (totals.totalDepenses/maxVal)*chartH), barW, (totals.totalDepenses/maxVal)*chartH);
-        ctx.fillStyle = "#111"; ctx.font = "12px sans-serif";
-        ctx.fillText(formatNumber(totals.totalRevenus, settings.lang), x1, pad + (chartH - (totals.totalRevenus/maxVal)*chartH) - 8);
-        ctx.fillText(formatNumber(totals.totalDepenses, settings.lang), x2, pad + (chartH - (totals.totalDepenses/maxVal)*chartH) - 8);
-      }
-    }
-
-    // refresh viz button
-    const refreshViz = document.getElementById("refreshViz");
-    if (refreshViz) refreshViz.addEventListener("click", updateViz);
-
-    // initial update
-    updateViz();
-
-    // when modal viz mode changes via select (period) - currently not used to change totals (no history),
-    // but the UI is ready for future extension where you'll keep transaction history and filter by date.
-    const periodSelect = document.getElementById("periodSelect");
-    if (periodSelect) periodSelect.addEventListener("change", () => {
-      // placeholder: could filter history here
-      updateViz();
-    });
-
-    // If user toggles between tableau/graphique we update immediately
-    document.querySelectorAll(".viz-btn").forEach(b => b.addEventListener("click", () => updateViz()));
-
-    // ensure initial style for navbar title & logo (fix visibility)
-    const siteTitle = document.querySelector(".site-title");
-    if (siteTitle) {
-      siteTitle.style.color = (settings.theme === "light") ? "#111" : "#fff";
-      // ensure logo visible
-      const navLogo = document.querySelector(".nav-logo");
-      if (navLogo) navLogo.style.zIndex = 120;
-    }
-  } // end dashboard
-}); // end DOMContentLoaded
+document.addEventListener('DOMContentLoaded', init);

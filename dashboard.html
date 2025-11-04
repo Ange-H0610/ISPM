@@ -1,126 +1,117 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tableau de bord - MonBudgetLocal</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tableau de bord — ISPM</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar" aria-label="Menu latéral">
-      <div class="logo">
-        <div class="avatar">AH</div>
-        <div>
-          <div class="brand">MonBudgetLocal</div>
-          <div class="subtitle">Gestion financière</div>
-        </div>
-      </div>
+    <!-- ========== Barre latérale ========== -->
+    <aside class="sidebar">
+     <div class="brand">
+  <img src="logo\logo.png" alt="Logo MyBudgetLocal" class="logo-img">
+  <span>MyBudgetLocal</span>
+</div>
 
-      <nav class="nav" aria-label="Navigation principale">
-        <a href="#" class="active">Tableau de bord</a>
-        <a href="#">Budget</a>
-        <a href="#">Rapports</a>
-        <a href="#">Comptes</a>
-        <a href="#">Transactions</a>
-        <a href="#">Paramètres</a>
+
+      <nav class="nav">
+        <a href="#" class="active"><i></i> Tableau de bord</a>
+        <a href="#"><i></i> Paiements</a>
+        <a href="#"><i></i> Transactions</a>
+        <a href="#"><i></i> Investissements</a>
+        <a href="#"><i></i> Épargne</a>
+        <a href="#"><i></i> Messages</a>
       </nav>
 
-      <div class="version">v1.0 • MonBudgetLocal</div>
+      <div class="promo">
+        <div>
+          <strong>Passer en version Pro</strong>
+          <p>Profitez d’analyses détaillées et de graphiques avancés.</p>
+        </div>
+        <button class="btn">Obtenir Pro</button>
+      </div>
     </aside>
 
+    <!-- ========== Contenu principal ========== -->
     <main class="main">
+      <!-- Barre supérieure -->
       <div class="topbar">
-        <div>
-          <div class="greeting"><strong>Bonjour, Ange !</strong></div>
-          <div class="muted">Bienvenue — ton tableau est vide pour l'instant.</div>
+        <div class="search">
+          <input type="text" placeholder="Rechercher..." />
         </div>
-
-        <div class="balance-card">
-          <div class="balance-info">
-            <div class="muted">Montant total</div>
-            <div class="balance">Ar <span id="totalBalance">0.00</span></div>
-          </div>
-          <div class="balance-date" id="currentMonth">—</div>
+        <div class="profile">
+          <div class="avatar">AF</div>
+          <span>Andrew Forbist</span>
         </div>
       </div>
 
-      <section class="top-grid">
-        <div class="card">
-          <h3>TRANSACTIONS
-            <button class="small-btn" id="btnToggleTxForm">Ajouter</button>
-          </h3>
-
-          <form id="txForm" class="hidden form-inline">
-            <input type="text" id="txTitre" placeholder="Libellé" required>
-            <input type="number" step="0.01" id="txMontant" placeholder="Montant (ex: -50 ou 200)" required>
-            <input type="date" id="txDate">
-            <input type="text" id="txCategorie" placeholder="Catégorie">
-            <select id="txCompte">
-              <option value="">— Compte (optionnel) —</option>
-            </select>
-            <button type="submit" class="btn">Enregistrer</button>
-            <button type="button" class="btn ghost" id="btnCancelTx">Annuler</button>
-          </form>
-
-          <div class="transactions" id="transactionsList">
-            <div class="empty">Aucune transaction enregistrée.</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>RÉSUMÉ DES DÉPENSES</h3>
-          <div class="chart-wrap" id="chartArea">
-            <canvas id="spendingChart"></canvas>
-            <div class="empty-chart" id="emptyChartMsg">Les graphiques apparaîtront après ajout de données.</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="grid">
-        <div class="card">
-          <h3>BUDGET QUOTIDIEN
-            <button class="small-btn" id="btnToggleBudgetForm">Définir</button>
-          </h3>
-
-          <form id="budgetForm" class="hidden form-inline">
-            <input type="number" step="0.01" id="budgetTotal" placeholder="Montant total à dépenser" required>
-            <button type="submit" class="btn">Enregistrer</button>
-            <button type="button" class="btn ghost" id="btnCancelBudget">Annuler</button>
-          </form>
-
-          <div class="budget-figure" id="budgetArea">
-            <div class="donut-wrap">
-              <canvas id="donutCanvas" width="120" height="120"></canvas>
+      <!-- Grille principale -->
+      <div class="grid">
+        <!-- Colonne gauche -->
+        <section class="left">
+          <div class="cards">
+            <div class="card big">
+              <h3>Solde disponible</h3>
+              <p class="amount">$562 000</p>
+              <p class="meta">Carte : **** 9234 &nbsp; | &nbsp; Exp : 12/29</p>
             </div>
-            <div>
-              <div class="donut-legend">Montant total à dépenser</div>
-              <div class="toSpend">Ar <span id="toSpend">0</span></div>
-              <div class="right-small">Dépensé : Ar <span id="spentVal">0</span> • Restant : Ar <span id="leftVal">0</span></div>
+            <div class="card">
+              <p class="title">Revenu total</p>
+              <p class="amount">$78 000</p>
+            </div>
+            <div class="card">
+              <p class="title">Dépense totale</p>
+              <p class="amount rouge">$43 000</p>
+            </div>
+            <div class="card">
+              <p class="title">Épargne totale</p>
+              <p class="amount vert">$56 000</p>
             </div>
           </div>
 
-          <div class="muted small-note">Le donut sera mis à jour quand tu enregistres un budget et des transactions.</div>
-        </div>
-
-        <div class="card accounts">
-          <h3>COMPTES
-            <button class="small-btn" id="btnToggleAcctForm">Ajouter</button>
-          </h3>
-
-          <form id="acctForm" class="hidden form-inline">
-            <input type="text" id="acctNom" placeholder="Nom du compte (ex: Espèces)" required>
-            <input type="number" step="0.01" id="acctSolde" placeholder="Solde initial (ex: 100)" required>
-            <button type="submit" class="btn">Enregistrer</button>
-            <button type="button" class="btn ghost" id="btnCancelAcct">Annuler</button>
-          </form>
-
-          <div id="accountsList">
-            <div class="empty">Aucun compte créé.</div>
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Flux de trésorerie</h3>
+              <span>Année 2025</span>
+            </div>
+            <div id="chart"></div>
           </div>
-        </div>
-      </section>
+
+          <div class="panel">
+            <h3>Transactions récentes</h3>
+            <table id="transactions">
+              <thead>
+                <tr><th>Nom</th><th>Date</th><th>Montant</th><th>Statut</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Colonne droite -->
+        <section class="right">
+          <div class="panel">
+            <h3>Statistiques du mois</h3>
+            <div class="donut">
+              <svg id="donut" width="120" height="120"></svg>
+              <ul class="legend">
+                <li>🏠 Logement et vie — 2 100 $</li>
+                <li>💰 Investissements — 825 $</li>
+                <li>🎓 Éducation — 450 $</li>
+                <li>🍽️ Alimentation — 210 $</li>
+                <li>🎬 Divertissement — 175 $</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3>Activités récentes</h3>
+            <div id="activity"></div>
+          </div>
+        </section>
+      </div>
     </main>
   </div>
 

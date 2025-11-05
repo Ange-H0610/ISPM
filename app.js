@@ -56,110 +56,83 @@ function calc(){
 /* RENDERERS */
 function renderDashboard(){
   const s = calc();
-  const recent = state.transactions.slice().reverse().slice(0,5);
+
   return `
-    <div class="col-card profile-card">
-      <div class="name">${state.user.name}</div>
-      <div class="kv">Solde du compte</div>
-      <div class="balance">${s.balance.toLocaleString()} Ar</div>
-      <div style="display:flex; gap:8px; margin-top:8px;">
-        <button class="btn small" onclick="mount('transactions')">${t('topUp')}</button>
-        <button class="btn small" onclick="mount('transactions')">${t('transfer')}</button>
+    <!-- ===== SOLDE DU COMPTE CENTRÉ ===== -->
+    <div class="solde-top" style="display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px;">
+      <div style="text-align:center;">
+        <div class="solde-label">Solde du compte</div>
+        <div class="solde-montant" style="font-size:1.6rem;font-weight:800;color:var(--green-600)">
+          ${s.balance.toLocaleString()} Ar
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
         <button class="btn small" onclick="mount('transactions')">${t('history')}</button>
       </div>
     </div>
 
-    <div>
-      <div style="display:flex; gap:12px; margin-bottom:12px;">
-        <div class="stat-tile"><div class="kv">Revenu Total</div><div class="val">${s.income.toLocaleString()} Ar</div></div>
-        <div class="stat-tile"><div class="kv">Dépense Totale</div><div class="val">${s.expense.toLocaleString()} Ar</div></div>
-        <div class="stat-tile"><div class="kv">Épargne Totale</div><div class="val">${state.goals.epargne.toLocaleString()} Ar</div></div>
-      </div>
+    <!-- ===== STAT RAPIDES MISY FOND MANOKANA + RESPONSIVE ===== -->
+<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin-top:24px; max-width:900px; margin-left:auto; margin-right:auto;">
 
-      <div class="chart-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="kv">Flux de trésorerie</div>
-          <div class="small kv">Cette année</div>
-        </div>
-        <div style="height:180px;margin-top:12px;"><canvas id="dashChart"></canvas></div>
-      </div>
-
-      <div class="table-card" style="margin-top:12px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="kv">Transactions récentes</div>
-          <div class="small kv">Ce mois-ci</div>
-        </div>
-        <div style="margin-top:10px;">
-          ${recent.map(tx=>`<div class="tx-row"><div><strong>${tx.label}</strong><div class="small kv">${tx.date}</div></div><div style="text-align:right">${tx.type==='income'?'+':'-'} ${tx.amount.toLocaleString()} Ar</div></div>`).join('')}
-        </div>
-      </div>
+  <!-- Revenu Total -->
+  <div style="flex:1; min-width:200px; max-width:220px; text-align:center; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+    <div class="kv" style="font-weight:600; font-size:1.1rem;">Revenu Total</div>
+    <div class="val" style="font-weight:900; font-size:1.6rem; color:var(--green-600); margin-top:6px;">
+      ${s.income.toLocaleString()} Ar
     </div>
+  </div>
 
-    <div class="right-card">
-      <div>
-        <div class="kv">Statistique</div>
-        <div style="display:flex;gap:10px;align-items:center;margin-top:8px;">
-          <div style="flex:1">
-            <canvas id="donutChart" height="120"></canvas>
-          </div>
-          <div style="width:120px">
-            <div class="kv">Ce mois-ci</div>
-            <div style="font-weight:800;margin-top:8px">${s.expense.toLocaleString()} Ar</div>
-            <div class="small kv" style="margin-top:8px">Répartition</div>
-            <div class="small kv">Loyer & Vie • 40%</div>
-            <div class="small kv">Investissement • 20%</div>
-            <div class="small kv">Alimentation & Boissons • 12%</div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="kv">Activités récentes</div>
-        <div style="margin-top:8px; display:flex;flex-direction:column; gap:8px;">
-          <div class="activity-item"><div class="dot">JS</div><div><strong>Jamie Smith</strong><div class="kv">a mis à jour les paramètres</div></div></div>
-          <div class="activity-item"><div class="dot">AJ</div><div><strong>Alex Johnson</strong><div class="kv">s’est connecté</div></div></div>
-        </div>
-      </div>
+  <!-- Dépense Totale -->
+  <div style="flex:1; min-width:200px; max-width:220px; text-align:center; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+    <div class="kv" style="font-weight:600; font-size:1.1rem;">Dépense Totale</div>
+    <div class="val" style="font-weight:900; font-size:1.6rem; color:var(--red-600); margin-top:6px;">
+      ${s.expense.toLocaleString()} Ar
     </div>
-  `;
-}
+  </div>
 
-function renderTransactions(){
-  const rows = state.transactions.slice().reverse().map(tx => `
-    <div class="tx-row">
-      <div><strong>${tx.label}</strong><div class="kv">${tx.date} • ${tx.type==='income'?t('income'):t('expense')}</div></div>
-      <div style="text-align:right">
-        <div style="font-weight:800">${tx.type==='income'?'+':'-'} ${tx.amount.toLocaleString()} Ar</div>
-        <div class="small" style="margin-top:6px;"><button class="btn small" onclick="removeTx(${tx.id})">Supprimer</button></div>
-      </div>
+  <!-- Épargne Totale -->
+  <div style="flex:1; min-width:200px; max-width:220px; text-align:center; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+    <div class="kv" style="font-weight:600; font-size:1.1rem;">Épargne Totale</div>
+    <div class="val" style="font-weight:900; font-size:1.6rem; color:var(--blue-600); margin-top:6px;">
+      ${state.goals.epargne.toLocaleString()} Ar
     </div>
-  `).join('');
+  </div>
 
-  return `
-    <div class="card" style="grid-column:1 / -1;">
-      <h3>${t('transactions')}</h3>
-      <div style="margin-top:12px;" class="col-card">
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <input id="txLabel" type="text" placeholder="${t('placeholderLabel')}" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);flex:1;" />
-          <input id="txAmount" type="number" placeholder="${t('placeholderAmount')}" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);width:160px;" />
-          <select id="txType" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);">
-            <option value="income">${t('income')}</option>
-            <option value="expense">${t('expense')}</option>
-          </select>
-          <button id="addTx" class="btn small">${t('add')}</button>
-        </div>
+</div>
 
-        <div style="margin-top:16px;">
-          <div class="kv">${t('currentBalance')}</div>
-          <div style="font-weight:800;font-size:1.2rem;color:var(--green-600)">${calc().balance.toLocaleString()} Ar</div>
-        </div>
+<!-- Flux + Donut flex container -->
+<div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-start; gap:16px; margin-top:24px; max-width:900px; margin-left:auto; margin-right:auto;">
 
-        <div style="margin-top:12px;">
-          <div class="kv">Historique</div>
-          <div style="margin-top:8px;">${rows || `<div class="kv">${t('noTransactions')}</div>`}</div>
-        </div>
-      </div>
+  <!-- Flux de trésorerie -->
+  <div style="flex:1 1 300px; min-width:280px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="kv">Flux de trésorerie</div>
+      <div class="small kv">Cette année</div>
     </div>
+    <div style="height:180px; margin-top:12px;">
+      <canvas id="dashChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Donut chart -->
+  <div style="flex:1 1 300px; min-width:280px; display:flex; gap:12px; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+    <div style="flex:1; max-width:150px;">
+      <canvas id="donutChart" height="180"></canvas>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px;">
+      <div class="kv" style="font-size:1.1rem; font-weight:600;">Ce mois-ci</div>
+      <div style="font-weight:900; font-size:1.6rem; color:var(--green-600); margin-top:4px;">
+        ${s.expense.toLocaleString()} Ar
+      </div>
+      <div class="small kv" style="margin-top:8px; font-weight:500;">Répartition</div>
+      <div class="small kv">Loyer & Vie • 40%</div>
+      <div class="small kv">Investissement • 20%</div>
+      <div class="small kv">Alimentation & Boissons • 12%</div>
+    </div>
+  </div>
+
+</div>
+
   `;
 }
 
@@ -390,3 +363,4 @@ closeSidebar.addEventListener('click', ()=> sidebar.classList.remove('active'));
 document.querySelectorAll('.menu-item').forEach(item => {
   item.addEventListener('click', ()=> sidebar.classList.remove('active'));
 });
+

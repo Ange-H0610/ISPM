@@ -18,35 +18,40 @@
         </div>
         <div class="brand-name">MyBudgetLocal</div>
       </div>
+
       <nav class="menu">
-        <a class="menu-item active" data-page="dashboard" href="#dashboard"><span class="ico"></span> <span class="label">Tableau de bord</span></a>
-        <a class="menu-item" data-page="transactions" href="#transactions"><span class="ico"></span> <span class="label">Transactions</span></a>
-        <a class="menu-item" data-page="statistics" href="#statistics"><span class="ico"></span> <span class="label">Statistiques</span></a>
-        <a class="menu-item" data-page="profile" href="#profile"><span class="ico"></span> <span class="label">Profil</span></a>
-        <a class="menu-item" data-page="goals" href="#goals"><span class="ico"></span> <span class="label">Objectifs</span></a>
-        <a class="menu-item" data-page="settings" href="#settings"><span class="ico"></span> <span class="label">Paramètres</span></a>
+        <a class="menu-item active" data-page="dashboard" href="#dashboard">Tableau de bord</a>
+        <a class="menu-item" data-page="transactions" href="#transactions">Transactions</a>
+        <a class="menu-item" data-page="statistics" href="#statistics">Statistiques</a>
+        <a class="menu-item" data-page="profile" href="#profile">Profil</a>
+        <a class="menu-item" data-page="goals" href="#goals">Objectifs</a>
+        <a class="menu-item" data-page="settings" href="#settings">Paramètres</a>
       </nav>
-      <div class="sidebar-footer"></div>
     </aside>
 
     <!-- MAIN -->
     <main class="main">
       <header class="topbar">
-        <button id="hamburgerBtn" class="hamburger">&#9776;</button>
-        <div class="title" id="pageTitle">Tableau de bord</div>
-        <div class="top-controls">
-          <select id="langQuick" title="Langue">
-            <option value="fr">FR</option>
-            <option value="en">EN</option>
-            <option value="mg">MG</option>
-          </select>
-          <button id="themeToggle" class="icon-btn">🌗</button>
-          <div class="user">Utilisateur ▾</div>
-        </div>
-      </header>
-      <section id="content" class="content">
-        <!-- contenu injecté par app.js -->
-      </section>
+  <div class="left-controls">
+    <button id="hamburgerBtn" class="hamburger">&#9776;</button>
+    <div class="title" id="pageTitle">Tableau de bord</div>
+  </div>
+
+  <div class="right-controls">
+    <select id="langQuick" title="Langue">
+      <option value="fr">FR</option>
+      <option value="en">EN</option>
+      <option value="mg">MG</option>
+    </select>
+    <button id="themeToggle" class="icon-btn">🌗</button>
+  </div>
+</header>
+
+
+<section id="content" class="content">
+  <!-- contenu dynamique -->
+</section>
+
     </main>
   </div>
 

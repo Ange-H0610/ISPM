@@ -17,7 +17,7 @@ try{
 
 // Traductions (inchangées)
 const i18 = {
-  fr:{ dashboard:'Tableau de bord', transactions:'Transactions', statistics:'Statistiques', profile:'Profil', goals:'Objectifs', settings:'Paramètres', currentBalance:'Solde actuel', recent:'Activités récentes', add:'Ajouter', income:'Revenu', expense:'Dépense', placeholderLabel:'Libellé (ex: Salaire)', placeholderAmount:'Montant', noTransactions:'Aucune transaction', saveProfile:'Sauvegarder', profileSaved:'Profil sauvegardé', amountRequired:'Montant requis', topUp:'Recharger', transfer:'Transférer', history:'Historique' },
+  fr:{ dashboard:'Tableau de bord', transactions:'Transactions', statistics:'Statistiques', profile:'Profil', goals:'Objectifs Financières', settings:'Paramètres', currentBalance:'Solde actuel', recent:'Activités récentes', add:'Ajouter', income:'Revenu', expense:'Dépense', placeholderLabel:'Libellé (ex: Salaire)', placeholderAmount:'Montant', noTransactions:'Aucune transaction', saveProfile:'Sauvegarder', profileSaved:'Profil sauvegardé', amountRequired:'Montant requis', topUp:'Recharger', transfer:'Transférer', history:'Historique' },
   en:{ dashboard:'Dashboard', transactions:'Transactions', statistics:'Statistics', profile:'Profile', goals:'Goals', settings:'Settings', currentBalance:'Current Balance', recent:'Recent Activity', add:'Add', income:'Income', expense:'Expense', placeholderLabel:'Label (ex: Salary)', placeholderAmount:'Amount', noTransactions:'No transactions', saveProfile:'Save Profile', profileSaved:'Profile saved', amountRequired:'Amount required', topUp:'Top Up', transfer:'Transfer', history:'History' },
   mg:{ dashboard:'Tabilao', transactions:'Fifanakalozana', statistics:'Statistika', profile:'Mombamomba', goals:'Tanjona', settings:'Fikirana', currentBalance:'Solda ankehitriny', recent:'Hetra farany', add:'Manampy', income:'Vola miditra', expense:'Vola mivoaka', placeholderLabel:'Lohateny (oh: Karama)', placeholderAmount:'Isan-karama', noTransactions:'Tsy misy fifanakalozana', saveProfile:'Tehirizo ny mombamomba', profileSaved:'Mombamomba voatahiry', amountRequired:'Ilaina ny vola', topUp:'Manampy vola', transfer:'Mifindra vola', history:'Tantara' }
 };
@@ -364,28 +364,47 @@ function removeTx(id){ state.transactions = state.transactions.filter(x=>x.id!==
 /* THEME / FONT */
 function applyTheme() {
   if (state.theme === 'dark') {
-    // Fond sombre minimaliste et lisible
+    // --- FOND SOMBRE ---
     document.documentElement.style.setProperty('--bg', '#0b1f1a');        // fond noir-vert foncé
     document.documentElement.style.setProperty('--panel', '#0d2d25');     // cartes/panneaux
     document.documentElement.style.setProperty('--text', '#e8fff4');      // texte clair
-    document.documentElement.style.setProperty('--green-600', '#34d399'); // accent vert lisible
+    document.documentElement.style.setProperty('--green-600', '#28c76f'); // vert principal (Solde du compte)
     document.body.style.backgroundColor = 'var(--bg)';
     document.body.style.color = 'var(--text)';
+
+    // === AJOUT NOUVEAU : Couleur verte sur Revenu & Dépense ===
+    const mainGreen = '#28c76f'; // même vert que "Solde du compte"
+    const revenu = document.querySelector('.total-revenu');
+    const depense = document.querySelector('.total-depense');
+
+    if (revenu) {
+      revenu.style.color = mainGreen;
+      const montant = revenu.querySelector('.amount');
+      if (montant) montant.style.color = mainGreen;
+    }
+
+    if (depense) {
+      depense.style.color = mainGreen;
+      const montant = depense.querySelector('.amount');
+      if (montant) montant.style.color = mainGreen;
+    }
+
   } else {
-    // Remet les couleurs par défaut
+    // --- MODE CLAIR : Remettre valeurs par défaut ---
     document.documentElement.style.removeProperty('--bg');
     document.documentElement.style.removeProperty('--panel');
     document.documentElement.style.removeProperty('--text');
     document.documentElement.style.removeProperty('--green-600');
     document.body.style.backgroundColor = '';
     document.body.style.color = '';
-  }
-}
 
-function applyFont() {
-  if (state.fontSize === 'small') document.documentElement.style.fontSize = '14px';
-  else if (state.fontSize === 'normal') document.documentElement.style.fontSize = '16px';
-  else document.documentElement.style.fontSize = '18px';
+    // Mamerina ny couleurs d’origine amin’ireo sections
+    const revenu = document.querySelector('.total-revenu');
+    const depense = document.querySelector('.total-depense');
+
+    if (revenu) revenu.removeAttribute('style');
+    if (depense) depense.removeAttribute('style');
+  }
 }
 
 /* INIT */
@@ -424,4 +443,11 @@ document.querySelectorAll('.menu-item').forEach(item => {
   item.addEventListener('click', ()=> {
     if(sidebar && sidebar.classList.contains('active')) sidebar.classList.remove('active');
   });
+});
+document.getElementById("logoutBtn").addEventListener("click", function() {
+  // Raha mampiasa localStorage ianao, esorina eto
+  localStorage.clear();
+
+  // Redirect mankany amin'ny page login
+  window.location.href = "index.html"; // na "index.html" raha io no login page-nao
 });

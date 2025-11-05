@@ -1,15 +1,12 @@
 const STORAGE = 'mybudget_v2_state';
 let state = {
-  lang: 'fr',
+  lang: navigator.language.startsWith('fr') ? 'fr' :
+        navigator.language.startsWith('mg') ? 'mg' : 'en',
   theme: 'light',
   fontSize: 'normal',
-  user: { name: 'Andrew Forbist', email: 'user@example.com' },
-  transactions: [
-    { id:1, type:'income', label:'Salaire', amount:562000, date:'2025-10-01' },
-    { id:2, type:'expense', label:'Courses', amount:42000, date:'2025-10-03' },
-    { id:3, type:'expense', label:'Abonnement', amount:12000, date:'2025-10-05' }
-  ],
-  goals: { epargne:84500, emprunt:0, investissement:25000 }
+  user: { name: '', email: '' },
+  transactions: [],       // pas de transactions au départ
+  goals: { epargne:0, emprunt:0, investissement:0 } // tout à zéro
 };
 
 // Charger l'état sauvegardé
@@ -41,6 +38,50 @@ const i18 = {
     topUp:'Recharger',
     transfer:'Transférer',
     history:'Historique'
+  },
+  en:{
+    dashboard:'Dashboard',
+    transactions:'Transactions',
+    statistics:'Statistics',
+    profile:'Profile',
+    goals:'Goals',
+    settings:'Settings',
+    currentBalance:'Current Balance',
+    recent:'Recent Activity',
+    add:'Add',
+    income:'Income',
+    expense:'Expense',
+    placeholderLabel:'Label (ex: Salary)',
+    placeholderAmount:'Amount',
+    noTransactions:'No transactions',
+    saveProfile:'Save Profile',
+    profileSaved:'Profile saved',
+    amountRequired:'Amount required',
+    topUp:'Top Up',
+    transfer:'Transfer',
+    history:'History'
+  },
+  mg:{
+    dashboard:'Tabilao',
+    transactions:'Fifanakalozana',
+    statistics:'Statistika',
+    profile:'Mombamomba',
+    goals:'Tanjona',
+    settings:'Fikirana',
+    currentBalance:'Saldo ankehitriny',
+    recent:'Hetra farany',
+    add:'Manampy',
+    income:'Vola miditra',
+    expense:'Vola mivoaka',
+    placeholderLabel:'Lohateny (oh: Karama)',
+    placeholderAmount:'Isan-karama',
+    noTransactions:'Tsy misy fifanakalozana',
+    saveProfile:'Tehirizo ny mombamomba',
+    profileSaved:'Mombamomba voatahiry',
+    amountRequired:'Ilaina ny vola',
+    topUp:'Manampy vola',
+    transfer:'Mifindra vola',
+    history:'Tantara'
   }
 };
 
@@ -101,38 +142,82 @@ function renderDashboard(){
 </div>
 
 <!-- Flux + Donut flex container -->
-<div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-start; gap:16px; margin-top:24px; max-width:900px; margin-left:auto; margin-right:auto;">
-
-  <!-- Flux de trésorerie -->
-  <div style="flex:1 1 300px; min-width:280px;">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div class="kv">Flux de trésorerie</div>
-      <div class="small kv">Cette année</div>
-    </div>
-    <div style="height:180px; margin-top:12px;">
-      <canvas id="dashChart"></canvas>
-    </div>
-  </div>
-
-  <!-- Donut chart -->
-  <div style="flex:1 1 300px; min-width:280px; display:flex; gap:12px; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
-    <div style="flex:1; max-width:150px;">
-      <canvas id="donutChart" height="180"></canvas>
-    </div>
-    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px;">
-      <div class="kv" style="font-size:1.1rem; font-weight:600;">Ce mois-ci</div>
-      <div style="font-weight:900; font-size:1.6rem; color:var(--green-600); margin-top:4px;">
-        ${s.expense.toLocaleString()} Ar
+<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:12px;margin-top:24px;max-width:900px;margin:auto;">
+      <div style="flex:1 1 300px; min-width:200px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div class="kv">${t('recent')}</div>
+          <div class="small kv">Cette année</div>
+        </div>
+        <div style="height:180px;margin-top:12px;">
+          <canvas id="dashChart"></canvas>
+        </div>
       </div>
-      <div class="small kv" style="margin-top:8px; font-weight:500;">Répartition</div>
-      <div class="small kv">Loyer & Vie • 40%</div>
-      <div class="small kv">Investissement • 20%</div>
-      <div class="small kv">Alimentation & Boissons • 12%</div>
+      <div style="flex:1 1 300px; min-width:200px; display:flex; gap:12px; background-color:#fff; padding:12px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+        <div style="flex:1; max-width:150px;">
+          <canvas id="donutChart" height="180"></canvas>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px;">
+          <div class="kv" style="font-size:1.1rem; font-weight:600;">Ce mois-ci</div>
+          <div style="font-weight:900; font-size:1.6rem; color:var(--green-600); margin-top:4px;">
+            ${s.expense.toLocaleString()} Ar
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
-</div>
 
+  `;
+}
+function renderTransactions(){
+  return `
+    <div class="card" style="grid-column:1 / -1;">
+      <h3>${t('transactions')}</h3>
+      
+      <!-- FORM AJOUT TRANSACTION -->
+      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <select id="txType">
+          <option value="income">${t('income')}</option>
+          <option value="expense">${t('expense')}</option>
+        </select>
+        <input id="txLabel" type="text" placeholder="${t('placeholderLabel')}" />
+        <input id="txAmount" type="number" placeholder="${t('placeholderAmount')}" />
+        <input id="txDate" type="date" />
+        <button id="addTx" class="btn small">${t('add')}</button>
+      </div>
+
+      <!-- RÉPARTITION ÉPARGNE / INVESTISSEMENT / EMPRUNT -->
+      ${state.transactions.length>0 ? `
+      <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <input id="pctEpargne" type="number" min="0" max="100" placeholder="Épargne %" style="width:100px;" />
+        <input id="pctInvest" type="number" min="0" max="100" placeholder="Investissement %" style="width:120px;" />
+        <input id="pctEmprunt" type="number" min="0" max="100" placeholder="Emprunt %" style="width:100px;" />
+        <button id="applyGoals" class="btn small">Appliquer</button>
+      </div>
+      `: ''}
+
+      <!-- LISTE TRANSACTIONS -->
+      <div style="margin-top:16px;">
+        ${state.transactions.length===0 ? `<div>${t('noTransactions')}</div>` :
+          `<table style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th>Type</th><th>Libellé</th><th>Montant</th><th>Date</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${state.transactions.map(tx => `
+                <tr>
+                  <td>${tx.type}</td>
+                  <td>${tx.label}</td>
+                  <td>${tx.amount.toLocaleString()} Ar</td>
+                  <td>${tx.date}</td>
+                  <td><button onclick="removeTx(${tx.id})">Supprimer</button></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>`}
+      </div>
+    </div>
   `;
 }
 
@@ -143,7 +228,7 @@ function renderStatistics(){
       <div style="margin-top:12px;">
         <label class="kv">Année:
           <select id="yearSelect" style="padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);">
-            ${[2023,2024,2025,2026].map(y=>`<option value="${y}">${y}</option>`).join('')}
+            ${[2025,2026,2027,2028].map(y=>`<option value="${y}">${y}</option>`).join('')}
           </select>
         </label>
       </div>
@@ -245,11 +330,7 @@ function currentPage(){ return location.hash.replace('#','') || 'dashboard'; }
 
 /* BIND events per page */
 function bind(page){
-  const langQuick = document.getElementById('langQuick');
-  if(langQuick){ langQuick.value = state.lang; langQuick.onchange = e=>{ state.lang = e.target.value; save(); mount(currentPage()); } }
-  const themeToggle = document.getElementById('themeToggle');
-  if(themeToggle){ themeToggle.onclick = ()=>{ state.theme = state.theme==='dark'?'light':'dark'; save(); applyTheme(); } }
-
+  
   if(page === 'transactions'){
     const add = document.getElementById('addTx');
     if(add) add.onclick = ()=> {
@@ -282,6 +363,25 @@ function bind(page){
   }
 
   document.querySelectorAll('.menu-item').forEach(a => a.addEventListener('click', ()=> setTimeout(()=> mount(currentPage()),80)));
+}
+// =======================
+// APPLY I18N
+// =======================
+function applyTranslations(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    el.textContent=t(key);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const key=el.getAttribute('data-i18n-placeholder');
+    el.placeholder=t(key);
+  });
+  document.querySelectorAll('.menu-item').forEach(item=>{
+    const key=item.dataset.page;
+    item.textContent=t(key);
+  });
+  const pageTitle=document.getElementById('pageTitle');
+  if(pageTitle) pageTitle.textContent=t(currentPage());
 }
 
 /* CHARTS */
@@ -346,11 +446,21 @@ function applyFont(){
   else document.documentElement.style.fontSize='18px';
 }
 
+
 /* INIT */
 window.addEventListener('hashchange',()=>mount(currentPage()));
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.menu-item').forEach(a=>{ a.dataset.page=(a.getAttribute('href')||'#dashboard').replace('#','')||'dashboard'; });
   applyTheme(); applyFont(); mount(currentPage());
+
+   // LANG QUICK
+  const langQuick=document.getElementById('langQuick');
+  if(langQuick){
+    langQuick.value=state.lang;
+    langQuick.onchange=e=>{ state.lang=e.target.value; save(); applyTranslations(); mount(currentPage()); };
+  }
+
+  applyTranslations();
 });
 const hamburgerBtn = document.getElementById('hamburgerBtn');
 const sidebar = document.querySelector('.sidebar');

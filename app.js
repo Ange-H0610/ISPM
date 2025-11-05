@@ -5,8 +5,8 @@ let state = {
   theme: 'light',
   fontSize: 'normal',
   user: { name: '', email: '' },
-  transactions: [],       // pas de transactions au départ
-  goals: { epargne:0, emprunt:0, investissement:0 } // tout à zéro
+  transactions: [],
+  goals: { epargne:0, emprunt:0, investissement:0 }
 };
 
 // Charger l'état sauvegardé
@@ -15,74 +15,11 @@ try{
   if(raw) state = JSON.parse(raw);
 }catch(e){ console.warn('Erreur de chargement', e); }
 
-// Traductions françaises
+// Traductions (inchangées)
 const i18 = {
-  fr:{
-    dashboard:'Tableau de bord',
-    transactions:'Transactions',
-    statistics:'Statistiques',
-    profile:'Profil',
-    goals:'Objectifs',
-    settings:'Paramètres',
-    currentBalance:'Solde actuel',
-    recent:'Activités récentes',
-    add:'Ajouter',
-    income:'Revenu',
-    expense:'Dépense',
-    placeholderLabel:'Libellé (ex: Salaire)',
-    placeholderAmount:'Montant',
-    noTransactions:'Aucune transaction',
-    saveProfile:'Sauvegarder',
-    profileSaved:'Profil sauvegardé',
-    amountRequired:'Montant requis',
-    topUp:'Recharger',
-    transfer:'Transférer',
-    history:'Historique'
-  },
-  en:{
-    dashboard:'Dashboard',
-    transactions:'Transactions',
-    statistics:'Statistics',
-    profile:'Profile',
-    goals:'Goals',
-    settings:'Settings',
-    currentBalance:'Current Balance',
-    recent:'Recent Activity',
-    add:'Add',
-    income:'Income',
-    expense:'Expense',
-    placeholderLabel:'Label (ex: Salary)',
-    placeholderAmount:'Amount',
-    noTransactions:'No transactions',
-    saveProfile:'Save Profile',
-    profileSaved:'Profile saved',
-    amountRequired:'Amount required',
-    topUp:'Top Up',
-    transfer:'Transfer',
-    history:'History'
-  },
-  mg:{
-    dashboard:'Tabilao',
-    transactions:'Fifanakalozana',
-    statistics:'Statistika',
-    profile:'Mombamomba',
-    goals:'Tanjona',
-    settings:'Fikirana',
-    currentBalance:'Saldo ankehitriny',
-    recent:'Hetra farany',
-    add:'Manampy',
-    income:'Vola miditra',
-    expense:'Vola mivoaka',
-    placeholderLabel:'Lohateny (oh: Karama)',
-    placeholderAmount:'Isan-karama',
-    noTransactions:'Tsy misy fifanakalozana',
-    saveProfile:'Tehirizo ny mombamomba',
-    profileSaved:'Mombamomba voatahiry',
-    amountRequired:'Ilaina ny vola',
-    topUp:'Manampy vola',
-    transfer:'Mifindra vola',
-    history:'Tantara'
-  }
+  fr:{ dashboard:'Tableau de bord', transactions:'Transactions', statistics:'Statistiques', profile:'Profil', goals:'Objectifs', settings:'Paramètres', currentBalance:'Solde actuel', recent:'Activités récentes', add:'Ajouter', income:'Revenu', expense:'Dépense', placeholderLabel:'Libellé (ex: Salaire)', placeholderAmount:'Montant', noTransactions:'Aucune transaction', saveProfile:'Sauvegarder', profileSaved:'Profil sauvegardé', amountRequired:'Montant requis', topUp:'Recharger', transfer:'Transférer', history:'Historique' },
+  en:{ dashboard:'Dashboard', transactions:'Transactions', statistics:'Statistics', profile:'Profile', goals:'Goals', settings:'Settings', currentBalance:'Current Balance', recent:'Recent Activity', add:'Add', income:'Income', expense:'Expense', placeholderLabel:'Label (ex: Salary)', placeholderAmount:'Amount', noTransactions:'No transactions', saveProfile:'Save Profile', profileSaved:'Profile saved', amountRequired:'Amount required', topUp:'Top Up', transfer:'Transfer', history:'History' },
+  mg:{ dashboard:'Tabilao', transactions:'Fifanakalozana', statistics:'Statistika', profile:'Mombamomba', goals:'Tanjona', settings:'Fikirana', currentBalance:'Solda ankehitriny', recent:'Hetra farany', add:'Manampy', income:'Vola miditra', expense:'Vola mivoaka', placeholderLabel:'Lohateny (oh: Karama)', placeholderAmount:'Isan-karama', noTransactions:'Tsy misy fifanakalozana', saveProfile:'Tehirizo ny mombamomba', profileSaved:'Mombamomba voatahiry', amountRequired:'Ilaina ny vola', topUp:'Manampy vola', transfer:'Mifindra vola', history:'Tantara' }
 };
 
 function t(k){ return (i18[state.lang] && i18[state.lang][k]) || k; }
@@ -94,7 +31,7 @@ function calc(){
   return { income: inc, expense: exp, balance: inc-exp };
 }
 
-/* RENDERERS */
+/* RENDERERS (inchangés sauf petites corrections internes) */
 function renderDashboard(){
   const s = calc();
 
@@ -102,7 +39,7 @@ function renderDashboard(){
     <!-- ===== SOLDE DU COMPTE CENTRÉ ===== -->
     <div class="solde-top" style="display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px;">
       <div style="text-align:center;">
-        <div class="solde-label">Solde du compte</div>
+        <div class="solde-label">${t('currentBalance') || 'Solde du compte'}</div>
         <div class="solde-montant" style="font-size:1.6rem;font-weight:800;color:var(--green-600)">
           ${s.balance.toLocaleString()} Ar
         </div>
@@ -114,8 +51,6 @@ function renderDashboard(){
 
     <!-- ===== STAT RAPIDES MISY FOND MANOKANA + RESPONSIVE ===== -->
 <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin-top:24px; max-width:900px; margin-left:auto; margin-right:auto;">
-
-  <!-- Revenu Total -->
   <div style="flex:1; min-width:200px; max-width:220px; text-align:center; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
     <div class="kv" style="font-weight:600; font-size:1.1rem;">Revenu Total</div>
     <div class="val" style="font-weight:900; font-size:1.6rem; color:var(--green-600); margin-top:6px;">
@@ -123,7 +58,6 @@ function renderDashboard(){
     </div>
   </div>
 
-  <!-- Dépense Totale -->
   <div style="flex:1; min-width:200px; max-width:220px; text-align:center; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
     <div class="kv" style="font-weight:600; font-size:1.1rem;">Dépense Totale</div>
     <div class="val" style="font-weight:900; font-size:1.6rem; color:var(--red-600); margin-top:6px;">
@@ -131,14 +65,12 @@ function renderDashboard(){
     </div>
   </div>
 
-  <!-- Épargne Totale -->
   <div style="flex:1; min-width:200px; max-width:220px; text-align:center; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
     <div class="kv" style="font-weight:600; font-size:1.1rem;">Épargne Totale</div>
     <div class="val" style="font-weight:900; font-size:1.6rem; color:var(--blue-600); margin-top:6px;">
       ${state.goals.epargne.toLocaleString()} Ar
     </div>
   </div>
-
 </div>
 
 <!-- Flux + Donut flex container -->
@@ -164,16 +96,13 @@ function renderDashboard(){
         </div>
       </div>
     </div>
-
-
   `;
 }
+
 function renderTransactions(){
   return `
     <div class="card" style="grid-column:1 / -1;">
       <h3>${t('transactions')}</h3>
-      
-      <!-- FORM AJOUT TRANSACTION -->
       <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
         <select id="txType">
           <option value="income">${t('income')}</option>
@@ -185,7 +114,6 @@ function renderTransactions(){
         <button id="addTx" class="btn small">${t('add')}</button>
       </div>
 
-      <!-- RÉPARTITION ÉPARGNE / INVESTISSEMENT / EMPRUNT -->
       ${state.transactions.length>0 ? `
       <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
         <input id="pctEpargne" type="number" min="0" max="100" placeholder="Épargne %" style="width:100px;" />
@@ -195,7 +123,6 @@ function renderTransactions(){
       </div>
       `: ''}
 
-      <!-- LISTE TRANSACTIONS -->
       <div style="margin-top:16px;">
         ${state.transactions.length===0 ? `<div>${t('noTransactions')}</div>` :
           `<table style="width:100%; border-collapse:collapse;">
@@ -311,7 +238,8 @@ function renderSettings(){
 function mount(page){
   const content = document.getElementById('content');
   document.querySelectorAll('.menu-item').forEach(m => m.classList.toggle('active', m.dataset.page === page));
-  document.getElementById('pageTitle').textContent = t(page);
+  const pageTitle = document.getElementById('pageTitle');
+  if(pageTitle) pageTitle.textContent = t(page);
   let html = '';
   if(page === 'dashboard') html = renderDashboard();
   else if(page === 'transactions') html = renderTransactions();
@@ -319,26 +247,31 @@ function mount(page){
   else if(page === 'profile') html = renderProfile();
   else if(page === 'goals') html = renderGoals();
   else if(page === 'settings') html = renderSettings();
-  content.innerHTML = html;
+  if(content) content.innerHTML = html;
   bind(page);
   drawCharts(page);
   applyTheme();
   applyFont();
+  applyTranslations(); // s'assure que tout est traduit après montage
 }
 
-function currentPage(){ return location.hash.replace('#','') || 'dashboard'; }
+function currentPage(){ return (location.hash.replace('#','') || 'dashboard'); }
 
 /* BIND events per page */
 function bind(page){
-  
   if(page === 'transactions'){
     const add = document.getElementById('addTx');
     if(add) add.onclick = ()=> {
-      const label = document.getElementById('txLabel').value.trim() || 'Sans libellé';
-      const amount = Math.abs(Number(document.getElementById('txAmount').value || 0));
-      const type = document.getElementById('txType').value;
+      const label = (document.getElementById('txLabel')?.value || '').trim() || 'Sans libellé';
+      const amount = Math.abs(Number(document.getElementById('txAmount')?.value || 0));
+      const type = document.getElementById('txType')?.value || 'expense';
+      let dateValue = document.getElementById('txDate')?.value;
+      if(!dateValue){
+        // format YYYY-MM-DD
+        dateValue = new Date().toISOString().slice(0,10);
+      }
       if(!amount){ alert(t('amountRequired')); return; }
-      state.transactions.push({ id: Date.now(), type, label, amount, date: new Date().toISOString().slice(0,10) });
+      state.transactions.push({ id: Date.now(), type, label, amount, date: dateValue });
       save(); mount('transactions');
     };
   }
@@ -346,45 +279,54 @@ function bind(page){
   if(page === 'profile'){
     const btn = document.getElementById('saveProfile');
     if(btn) btn.onclick = ()=> {
-      state.user.name = document.getElementById('profileName').value;
-      state.user.email = document.getElementById('profileEmail').value;
+      state.user.name = document.getElementById('profileName')?.value || '';
+      state.user.email = document.getElementById('profileEmail')?.value || '';
       save(); alert(t('profileSaved')); mount('profile');
     };
   }
 
   if(page === 'settings'){
-    document.getElementById('langSelect').value = state.lang;
-    document.getElementById('themeSelect').value = state.theme;
-    document.getElementById('fontSelect').value = state.fontSize;
+    const langSelect = document.getElementById('langSelect');
+    const themeSelect = document.getElementById('themeSelect');
+    const fontSelect = document.getElementById('fontSelect');
+    if(langSelect) langSelect.value = state.lang;
+    if(themeSelect) themeSelect.value = state.theme;
+    if(fontSelect) fontSelect.value = state.fontSize;
 
-    document.getElementById('langSelect').onchange = e=>{ state.lang=e.target.value; save(); mount('settings'); };
-    document.getElementById('themeSelect').onchange = e=>{ state.theme=e.target.value; save(); applyTheme(); };
-    document.getElementById('fontSelect').onchange = e=>{ state.fontSize=e.target.value; save(); applyFont(); };
+    if(langSelect) langSelect.onchange = e=>{ state.lang=e.target.value; save(); applyTranslations(); mount('settings'); };
+    if(themeSelect) themeSelect.onchange = e=>{ state.theme=e.target.value; save(); applyTheme(); };
+    if(fontSelect) fontSelect.onchange = e=>{ state.fontSize=e.target.value; save(); applyFont(); };
   }
 
-  document.querySelectorAll('.menu-item').forEach(a => a.addEventListener('click', ()=> setTimeout(()=> mount(currentPage()),80)));
+  // menu items: remount current page when clicked (mobile friendly)
+  document.querySelectorAll('.menu-item').forEach(a => a.addEventListener('click', ()=> {
+    // small delay to let hashchange happen
+    setTimeout(()=> mount(currentPage()),80);
+    // close sidebar on mobile if present
+    const sidebar = document.querySelector('.sidebar');
+    if(sidebar && sidebar.classList.contains('active')) sidebar.classList.remove('active');
+  }));
 }
-// =======================
-// APPLY I18N
-// =======================
+
+/* I18N */
 function applyTranslations(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key=el.getAttribute('data-i18n');
-    el.textContent=t(key);
+    if(key) el.textContent=t(key);
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
     const key=el.getAttribute('data-i18n-placeholder');
-    el.placeholder=t(key);
+    if(key) el.placeholder=t(key);
   });
   document.querySelectorAll('.menu-item').forEach(item=>{
     const key=item.dataset.page;
-    item.textContent=t(key);
+    if(key) item.textContent=t(key);
   });
   const pageTitle=document.getElementById('pageTitle');
   if(pageTitle) pageTitle.textContent=t(currentPage());
 }
 
-/* CHARTS */
+/* CHARTS (inchangés) */
 let dashChart=null, donutChart=null, statMain=null;
 function drawCharts(page){
   if(page==='dashboard'){
@@ -446,14 +388,15 @@ function applyFont(){
   else document.documentElement.style.fontSize='18px';
 }
 
-
 /* INIT */
 window.addEventListener('hashchange',()=>mount(currentPage()));
 document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('.menu-item').forEach(a=>{ a.dataset.page=(a.getAttribute('href')||'#dashboard').replace('#','')||'dashboard'; });
+  document.querySelectorAll('.menu-item').forEach(a=>{
+    a.dataset.page = (a.getAttribute('href')||'#dashboard').replace('#','')||'dashboard';
+  });
   applyTheme(); applyFont(); mount(currentPage());
 
-   // LANG QUICK
+  // LANG QUICK
   const langQuick=document.getElementById('langQuick');
   if(langQuick){
     langQuick.value=state.lang;
@@ -462,15 +405,23 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   applyTranslations();
 });
+
+// Hamburger / Sidebar safe guards
 const hamburgerBtn = document.getElementById('hamburgerBtn');
 const sidebar = document.querySelector('.sidebar');
 const closeSidebar = document.getElementById('closeSidebar');
 
-hamburgerBtn.addEventListener('click', ()=> sidebar.classList.add('active'));
-closeSidebar.addEventListener('click', ()=> sidebar.classList.remove('active'));
+if(hamburgerBtn && sidebar){
+  hamburgerBtn.addEventListener('click', ()=> sidebar.classList.add('active'));
+}
+if(closeSidebar && sidebar){
+  closeSidebar.addEventListener('click', ()=> sidebar.classList.remove('active'));
+}
 
-// Fermer sidebar en cliquant sur un menu-item (mobile)
+// Fermer sidebar en cliquant sur un menu-item (mobile) - already handled in bind()
+// but ensure we don't add duplicate listeners if elements missing
 document.querySelectorAll('.menu-item').forEach(item => {
-  item.addEventListener('click', ()=> sidebar.classList.remove('active'));
+  item.addEventListener('click', ()=> {
+    if(sidebar && sidebar.classList.contains('active')) sidebar.classList.remove('active');
+  });
 });
-

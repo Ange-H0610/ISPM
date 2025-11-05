@@ -66,7 +66,9 @@ html,body{
   box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+   align-items: center;
+  text-align: center;
+
   transition: all 0.3s ease;
 }
 
@@ -156,4 +158,36 @@ html,body{
   .hamburger{ display:block; }
   .close-btn{ display:block; }
   .topbar{ flex-wrap:wrap; gap:10px; }
+}
+/* ======== DROPDOWN SELECT FIX ======== */
+select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--green-500);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+select:focus {
+  border-color: var(--green-600);
+  box-shadow: 0 0 0 2px rgba(47,180,95,0.2);
+}
+
+/* Option text visible on all devices */
+option {
+  background: var(--panel);
+  color: var(--text);
+}
+
+/* Optional: better appearance on small screens */
+@media (max-width: 768px) {
+  select {
+    width: 100%;
+    font-size: 1rem;
+    padding: 10px;
+  }
 }

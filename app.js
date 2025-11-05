@@ -65,13 +65,6 @@ function renderDashboard(){
     </div>
   </div>
 
-  <div style="flex:1; min-width:200px; max-width:220px; text-align:center; background-color:#fff; padding:16px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-    <div class="kv" style="font-weight:600; font-size:1.1rem;">Épargne Totale</div>
-    <div class="val" style="font-weight:900; font-size:1.6rem; color:var(--blue-600); margin-top:6px;">
-      ${state.goals.epargne.toLocaleString()} Ar
-    </div>
-  </div>
-</div>
 
 <!-- Flux + Donut flex container -->
 <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:12px;margin-top:24px;max-width:900px;margin:auto;">
@@ -369,23 +362,30 @@ function drawCharts(page){
 function removeTx(id){ state.transactions = state.transactions.filter(x=>x.id!==id); save(); mount(currentPage()); }
 
 /* THEME / FONT */
-function applyTheme(){
-  if(state.theme==='dark'){
-    document.documentElement.style.setProperty('--bg','#071814');
-    document.documentElement.style.setProperty('--panel','#0b2a21');
-    document.documentElement.style.setProperty('--text','#e8fff4');
-    document.documentElement.style.setProperty('--green-600','#34d399');
+function applyTheme() {
+  if (state.theme === 'dark') {
+    // Fond sombre minimaliste et lisible
+    document.documentElement.style.setProperty('--bg', '#0b1f1a');        // fond noir-vert foncé
+    document.documentElement.style.setProperty('--panel', '#0d2d25');     // cartes/panneaux
+    document.documentElement.style.setProperty('--text', '#e8fff4');      // texte clair
+    document.documentElement.style.setProperty('--green-600', '#34d399'); // accent vert lisible
+    document.body.style.backgroundColor = 'var(--bg)';
+    document.body.style.color = 'var(--text)';
   } else {
+    // Remet les couleurs par défaut
     document.documentElement.style.removeProperty('--bg');
     document.documentElement.style.removeProperty('--panel');
     document.documentElement.style.removeProperty('--text');
     document.documentElement.style.removeProperty('--green-600');
+    document.body.style.backgroundColor = '';
+    document.body.style.color = '';
   }
 }
-function applyFont(){
-  if(state.fontSize==='small') document.documentElement.style.fontSize='14px';
-  else if(state.fontSize==='normal') document.documentElement.style.fontSize='16px';
-  else document.documentElement.style.fontSize='18px';
+
+function applyFont() {
+  if (state.fontSize === 'small') document.documentElement.style.fontSize = '14px';
+  else if (state.fontSize === 'normal') document.documentElement.style.fontSize = '16px';
+  else document.documentElement.style.fontSize = '18px';
 }
 
 /* INIT */

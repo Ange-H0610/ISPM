@@ -191,3 +191,73 @@ option {
     padding: 10px;
   }
 }
+
+/* ======== STYLE MODERNE POUR LES SELECTS ======== */
+select {
+  background: var(--panel);
+  color: var(--text);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+select:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(58, 191, 240, 0.3);
+  transform: scale(1.02);
+}
+
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(58, 191, 240, 0.4);
+}
+
+/* Apparence des options */
+option {
+  background-color: var(--panel);
+  color: var(--text);
+  font-weight: 500;
+  padding: 8px;
+}
+
+/* ======== COULEURS GLOBALES ======== */
+:root {
+  --panel: #f5f5f5;
+  --text: #111;
+  --accent: #3abff0;
+}
+
+body.dark-mode {
+  --panel: #1c1c1c;
+  --text: #ffffff;
+  --accent: #4dc2ff;
+}
+
+/* Ajustement visuel en mode sombre */
+body.dark-mode select {
+  background: linear-gradient(145deg, #1f1f1f, #161616);
+  color: var(--text);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(77, 194, 255, 0.3);
+}
+
+body.dark-mode select:hover {
+  box-shadow: 0 0 14px rgba(77, 194, 255, 0.5);
+  transform: scale(1.03);
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 768px) {
+  select {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+  }
+}

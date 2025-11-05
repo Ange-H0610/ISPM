@@ -365,10 +365,10 @@ function removeTx(id){ state.transactions = state.transactions.filter(x=>x.id!==
 function applyTheme() {
   if (state.theme === 'dark') {
     // Fond sombre minimaliste et lisible
-    document.documentElement.style.setProperty('--bg', '#0b1f1a');        // fond noir-vert foncé
-    document.documentElement.style.setProperty('--panel', '#0d2d25');     // cartes/panneaux
-    document.documentElement.style.setProperty('--text', '#e8fff4');      // texte clair
-    document.documentElement.style.setProperty('--green-600', '#34d399'); // accent vert lisible
+    document.documentElement.style.setProperty('--bg', '#14201dff');        // fond noir-vert foncé
+    document.documentElement.style.setProperty('--panel', '#0d2a22ff');     // cartes/panneaux
+    document.documentElement.style.setProperty('--text', '#1f7859ff');      // texte clair
+    document.documentElement.style.setProperty('--violet-600', '#55ad83c7'); // accent vert lisible
     document.body.style.backgroundColor = 'var(--bg)';
     document.body.style.color = 'var(--text)';
   } else {
@@ -376,7 +376,7 @@ function applyTheme() {
     document.documentElement.style.removeProperty('--bg');
     document.documentElement.style.removeProperty('--panel');
     document.documentElement.style.removeProperty('--text');
-    document.documentElement.style.removeProperty('--green-600');
+    document.documentElement.style.removeProperty('--violet-600');
     document.body.style.backgroundColor = '';
     document.body.style.color = '';
   }

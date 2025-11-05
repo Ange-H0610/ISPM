@@ -5,49 +5,34 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MyBudgetLocal</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Chart.js pour statistiques -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="wrap">
-    <!-- SIDEBAR GAUCHE -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
+      <button id="closeSidebar" class="close-btn">&times;</button>
       <div class="brand">
         <div class="sidebar-header">
           <img src="logo/logo.png" alt="Logo ISPM" class="dashboard-logo">
         </div>
         <div class="brand-name">MyBudgetLocal</div>
       </div>
-
       <nav class="menu">
-        <a class="menu-item active" data-page="dashboard" href="#dashboard">
-          <span class="ico"></span> <span class="label">Tableau de bord</span>
-        </a>
-        <a class="menu-item" data-page="transactions" href="#transactions">
-          <span class="ico"></span> <span class="label">Transactions</span>
-        </a>
-        <a class="menu-item" data-page="statistics" href="#statistics">
-          <span class="ico"></span> <span class="label">Statistiques</span>
-        </a>
-        <a class="menu-item" data-page="profile" href="#profile">
-          <span class="ico"></span> <span class="label">Profil</span>
-        </a>
-        <a class="menu-item" data-page="goals" href="#goals">
-          <span class="ico"></span> <span class="label">Objectifs</span>
-        </a>
-        <a class="menu-item" data-page="settings" href="#settings">
-          <span class="ico"></span> <span class="label">Paramètres</span>
-        </a>
+        <a class="menu-item active" data-page="dashboard" href="#dashboard"><span class="ico"></span> <span class="label">Tableau de bord</span></a>
+        <a class="menu-item" data-page="transactions" href="#transactions"><span class="ico"></span> <span class="label">Transactions</span></a>
+        <a class="menu-item" data-page="statistics" href="#statistics"><span class="ico"></span> <span class="label">Statistiques</span></a>
+        <a class="menu-item" data-page="profile" href="#profile"><span class="ico"></span> <span class="label">Profil</span></a>
+        <a class="menu-item" data-page="goals" href="#goals"><span class="ico"></span> <span class="label">Objectifs</span></a>
+        <a class="menu-item" data-page="settings" href="#settings"><span class="ico"></span> <span class="label">Paramètres</span></a>
       </nav>
-
-      <div class="sidebar-footer">
-        
-      </div>
+      <div class="sidebar-footer"></div>
     </aside>
 
-    <!-- ZONE PRINCIPALE -->
+    <!-- MAIN -->
     <main class="main">
       <header class="topbar">
+        <button id="hamburgerBtn" class="hamburger">&#9776;</button>
         <div class="title" id="pageTitle">Tableau de bord</div>
         <div class="top-controls">
           <select id="langQuick" title="Langue">
@@ -59,7 +44,6 @@
           <div class="user">Utilisateur ▾</div>
         </div>
       </header>
-
       <section id="content" class="content">
         <!-- contenu injecté par app.js -->
       </section>
@@ -67,5 +51,6 @@
   </div>
 
   <script src="app.js"></script>
+  <script src="hamburger.js"></script>
 </body>
 </html>

@@ -379,3 +379,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.menu-item').forEach(a=>{ a.dataset.page=(a.getAttribute('href')||'#dashboard').replace('#','')||'dashboard'; });
   applyTheme(); applyFont(); mount(currentPage());
 });
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const sidebar = document.querySelector('.sidebar');
+const closeSidebar = document.getElementById('closeSidebar');
+
+hamburgerBtn.addEventListener('click', ()=> sidebar.classList.add('active'));
+closeSidebar.addEventListener('click', ()=> sidebar.classList.remove('active'));
+
+// Fermer sidebar en cliquant sur un menu-item (mobile)
+document.querySelectorAll('.menu-item').forEach(item => {
+  item.addEventListener('click', ()=> sidebar.classList.remove('active'));
+});

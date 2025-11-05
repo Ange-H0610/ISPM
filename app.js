@@ -364,47 +364,28 @@ function removeTx(id){ state.transactions = state.transactions.filter(x=>x.id!==
 /* THEME / FONT */
 function applyTheme() {
   if (state.theme === 'dark') {
-    // --- FOND SOMBRE ---
+    // Fond sombre minimaliste et lisible
     document.documentElement.style.setProperty('--bg', '#0b1f1a');        // fond noir-vert foncé
     document.documentElement.style.setProperty('--panel', '#0d2d25');     // cartes/panneaux
     document.documentElement.style.setProperty('--text', '#e8fff4');      // texte clair
-    document.documentElement.style.setProperty('--green-600', '#28c76f'); // vert principal (Solde du compte)
+    document.documentElement.style.setProperty('--green-600', '#34d399'); // accent vert lisible
     document.body.style.backgroundColor = 'var(--bg)';
     document.body.style.color = 'var(--text)';
-
-    // === AJOUT NOUVEAU : Couleur verte sur Revenu & Dépense ===
-    const mainGreen = '#28c76f'; // même vert que "Solde du compte"
-    const revenu = document.querySelector('.total-revenu');
-    const depense = document.querySelector('.total-depense');
-
-    if (revenu) {
-      revenu.style.color = mainGreen;
-      const montant = revenu.querySelector('.amount');
-      if (montant) montant.style.color = mainGreen;
-    }
-
-    if (depense) {
-      depense.style.color = mainGreen;
-      const montant = depense.querySelector('.amount');
-      if (montant) montant.style.color = mainGreen;
-    }
-
   } else {
-    // --- MODE CLAIR : Remettre valeurs par défaut ---
+    // Remet les couleurs par défaut
     document.documentElement.style.removeProperty('--bg');
     document.documentElement.style.removeProperty('--panel');
     document.documentElement.style.removeProperty('--text');
     document.documentElement.style.removeProperty('--green-600');
     document.body.style.backgroundColor = '';
     document.body.style.color = '';
-
-    // Mamerina ny couleurs d’origine amin’ireo sections
-    const revenu = document.querySelector('.total-revenu');
-    const depense = document.querySelector('.total-depense');
-
-    if (revenu) revenu.removeAttribute('style');
-    if (depense) depense.removeAttribute('style');
   }
+}
+
+function applyFont() {
+  if (state.fontSize === 'small') document.documentElement.style.fontSize = '14px';
+  else if (state.fontSize === 'normal') document.documentElement.style.fontSize = '16px';
+  else document.documentElement.style.fontSize = '18px';
 }
 
 /* INIT */

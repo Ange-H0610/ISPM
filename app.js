@@ -1,43 +1,26 @@
-document.getElementById("date").textContent =
-  new Date().toLocaleString();
+const dateEl = document.getElementById("date");
+const moisEl = document.getElementById("mois");
 
-const revenus = 0;
-const depenses = 0;
+const now = new Date();
+dateEl.textContent = "Dernière mise à jour : " + now.toLocaleString("fr-FR");
+moisEl.textContent = now.toLocaleDateString("fr-FR",{month:"short",year:"numeric"});
 
-const solde = revenus - depenses;
-
-document.getElementById("revenus").textContent = revenus.toFixed(2) + " Ar";
-document.getElementById("depenses").textContent = depenses.toFixed(2) + " Ar";
-document.getElementById("solde").textContent = solde.toFixed(2) + " Ar";
-
-new Chart(document.getElementById("lineChart"), {
-  type: "line",
-  data: {
-    labels: ["Jan","Fev","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"],
-    datasets: [
-      {
-        label: "Revenus",
-        data: Array(12).fill(0),
-        borderColor: "#22c55e",
-        tension: .4
-      },
-      {
-        label: "Dépenses",
-        data: Array(12).fill(0),
-        borderColor: "#ef4444",
-        tension: .4
-      }
-    ]
+/* Compteur animé */
+function animateValue(el, to){
+  let start = 0;
+  const dur = 800;
+  const t0 = performance.now();
+  function tick(t){
+    const p = Math.min((t - t0)/dur, 1);
+    const v = Math.floor(start + (to-start)*p);
+    el.textContent = v.toLocaleString('fr-FR') + " Ar";
+    if(p<1) requestAnimationFrame(tick);
   }
-});
+  requestAnimationFrame(tick);
+}
 
-new Chart(document.getElementById("pieChart"), {
-  type: "pie",
-  data: {
-    labels: ["Alimentation","Transport","Loyer","Autres"],
-    datasets: [{
-      data: [0,0,0,0],
-      backgroundColor: ["#22c55e","#3b82f6","#8b5cf6","#f97316"]
-    }]
-  }
-});
+/* Valeurs démo réalistes */
+animateValue(document.querySelectorAll('.value')[0], 420000);
+animateValue(document.querySelectorAll('.value')[1], 650000);
+animateValue(document.querySelectorAll('.value')[2], 230000);
+animateValue(document.querySelectorAll('.value')[3], 120000);

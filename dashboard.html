@@ -2,103 +2,127 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>MyBudgetLocal | Tableau de bord</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tahiry – Tableau de bord</title>
 
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
-<header class="navbar">
+<!-- NAVBAR -->
+<nav class="navbar">
   <div class="nav-left">
-    <span class="logo">💳 MyBudgetLocal</span>
-    <nav>
-      <a href="#">Accueil</a>
-      <a class="active" href="#">Tableau de bord</a>
-      <a href="#">Revenus</a>
-      <a href="#">Dépenses</a>
-      <a href="#">Analyse</a>
-      <a href="#">Budget</a>
-      <a href="#">Liste d'achat</a>
-    </nav>
+    <div class="logo">
+      <i class="fa-solid fa-wallet"></i>
+      <span>Tahiry</span>
+    </div>
+  </div>
+
+  <div class="nav-center">
+    <a href="#"><i class="fa fa-house"></i> Accueil</a>
+    <a class="active" href="#"><i class="fa fa-chart-line"></i> Tableau de bord</a>
+    <a href="#"><i class="fa fa-arrow-up"></i> Revenus</a>
+    <a href="#"><i class="fa fa-arrow-down"></i> Dépenses</a>
+    <a href="#"><i class="fa fa-chart-pie"></i> Analyse</a>
+    <a href="#"><i class="fa fa-wallet"></i> Budget</a>
+    <a href="#"><i class="fa fa-cart-shopping"></i> Liste d'achat</a>
   </div>
 
   <div class="nav-right">
-    <button class="btn add">+ Ajouter</button>
-    <span class="user">Utilisateur ⌄</span>
+    <button class="btn-add">
+      <i class="fa fa-plus"></i> Ajouter
+    </button>
+    
+    <i class="fa fa-bell"></i>
+    <div class="avatar">
+      <i class="fa fa-user-circle"></i>
+      Ange-H
+      <i class="fa fa-chevron-down"></i>
+    </div>
   </div>
-</header>
+</nav>
 
+<!-- CONTENT -->
 <main class="container">
 
-  <!-- HEADER -->
+  <!-- HEADER CARD -->
   <section class="header-card">
-    <div>
-      <h1>📊 Tableau de Bord</h1>
-      <p>Bienvenue sur MyBudgetLocal, aperçu de vos finances</p>
-      <small>Dernière mise à jour : <span id="date"></span></small>
+    <div class="header-left">
+      <h1>
+        <i class="fa fa-chart-line"></i>
+        Tableau de Bord
+      </h1>
+      <p>Bienvenue Ange-H, voici un aperçu de vos finances</p>
+      <small id="date"></small>
     </div>
 
     <div class="header-actions">
-      <div class="circle green">↑</div>
-      <div class="circle red">↓</div>
+      <div class="action">
+        <div class="circle green">
+          <i class="fa fa-arrow-up"></i>
+        </div>
+        <span>Revenus</span>
+      </div>
+
+      <div class="action">
+        <div class="circle pink">
+          <i class="fa fa-arrow-down"></i>
+        </div>
+        <span>Dépenses</span>
+      </div>
     </div>
   </section>
 
   <!-- STATS -->
   <section class="stats">
-    <div class="stat-card">
-      <p>Solde Total</p>
-      <h2 class="green" id="solde">0.00 Ar</h2>
-      <span class="positive">↑ Positif</span>
-    </div>
 
     <div class="stat-card">
-      <p>Revenus Totaux</p>
-      <h2 class="green" id="revenus">0.00 Ar</h2>
-      <span>0 transactions</span>
-    </div>
-
-    <div class="stat-card">
-      <p>Dépenses Totales</p>
-      <h2 class="red" id="depenses">0.00 Ar</h2>
-      <span>0 transactions</span>
+      <div class="stat-info">
+        <h4>Solde Total</h4>
+        <div class="value green">0.00 Ar</div>
+        <small class="positive">
+          <i class="fa fa-arrow-up"></i> Positif
+        </small>
+      </div>
+      <div class="stat-icon purple">
+        <i class="fa fa-wallet"></i>
+      </div>
     </div>
 
     <div class="stat-card">
-      <p>Ce Mois</p>
-      <h2 class="blue">0.00 Ar</h2>
-      <span>Décembre</span>
-    </div>
-  </section>
-
-  <!-- CHARTS -->
-  <section class="grid-2">
-    <div class="card">
-      <h3>📈 Évolution Mensuelle</h3>
-      <canvas id="lineChart"></canvas>
+      <div class="stat-info">
+        <h4>Revenus Totaux</h4>
+        <div class="value green">0.00 Ar</div>
+        <small>0 transactions</small>
+      </div>
+      <div class="stat-icon green">
+        <i class="fa fa-arrow-up"></i>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>🥧 Dépenses par Catégorie</h3>
-      <canvas id="pieChart"></canvas>
-    </div>
-  </section>
-
-  <!-- LISTS -->
-  <section class="grid-2">
-    <div class="card empty green-border">
-      <h3>Derniers Revenus</h3>
-      <p>Aucun revenu enregistré</p>
-      <button class="btn green">+ Ajouter un revenu</button>
+    <div class="stat-card">
+      <div class="stat-info">
+        <h4>Dépenses Totales</h4>
+        <div class="value red">0.00 Ar</div>
+        <small>0 transactions</small>
+      </div>
+      <div class="stat-icon red">
+        <i class="fa fa-arrow-down"></i>
+      </div>
     </div>
 
-    <div class="card empty red-border">
-      <h3>Dernières Dépenses</h3>
-      <p>Aucune dépense enregistrée</p>
-      <button class="btn red">+ Ajouter une dépense</button>
+    <div class="stat-card">
+      <div class="stat-info">
+        <h4>Ce Mois</h4>
+        <div class="value green">0.00 Ar</div>
+        <small id="mois"></small>
+      </div>
+      <div class="stat-icon blue">
+        <i class="fa fa-calendar"></i>
+      </div>
     </div>
+
   </section>
 
 </main>

@@ -430,5 +430,5 @@ document.getElementById("logoutBtn").addEventListener("click", function() {
   localStorage.clear();
 
   // Redirect mankany amin'ny page login
-  window.location.href = "index.html"; // na "index.html" raha io no login page-nao
+  window.location.href = "login.html"; // na "login.html" raha io no login page-nao
 });

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyBudgetLocal - Connexion</title>
+  <link rel="stylesheet" href="auth.css" />
+    <link rel="icon" href="logo\logo.png">
+</head>
+<body class="index-page">
+
+  <div class="auth-wrapper">
+    <div class="logo-top">
+      <img src="logo\logo.png" alt="Logo MyBudgetLocal" class="main-logo">
+    </div>
+
+    <div class="auth-card">
+      <h1 class="big-title">Se connecter à<br>votre compte</h1>
+      <p class="subtitle">Bienvenue sur l'espace utilisateur de MyBudgetLocal.<br>Veuillez entrer vos identifiants pour accéder à votre tableau de bord.</p>
+
+      <form id="loginForm" class="auth-form" novalidate>
+        <input type="text" id="loginName" placeholder="Nom d'utilisateur" required autocomplete="username">
+        <input type="password" id="loginPass" placeholder="Mot de passe" required autocomplete="current-password">
+        <button type="submit" class="btn primary-btn">SE CONNECTER</button>
+      </form>
+
+      <p class="switch-auth">
+        Pas encore de compte ? <a href="signup.html">Inscrivez-vous</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>

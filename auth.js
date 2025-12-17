@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       localStorage.setItem("user", JSON.stringify({ name, email, password }));
       alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
-      window.location.href = "index.html";
+      window.location.href = "login.html";
     });
   }
 

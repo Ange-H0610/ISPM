@@ -6,8 +6,9 @@
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
+/* ===== FOND GENERAL (VERT PLUS FONCÉ) ===== */
 body {
-    background: #f5f7fa;
+    background: linear-gradient(135deg, #064e3b, #022c22);
 }
 
 /* ================= NAVBAR ================= */
@@ -19,8 +20,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(90deg, #5b4bff, #8a3ffc);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    background: linear-gradient(90deg, #065f46, #064e3b);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.35);
     z-index: 1000;
 }
 
@@ -45,7 +46,7 @@ body {
 
 .signup {
     padding: 8px 20px;
-    background: #ffd600;
+    background: #facc15;
     color: #000 !important;
     border-radius: 25px;
     font-weight: bold;
@@ -54,7 +55,7 @@ body {
 /* ================= HERO ================= */
 .hero {
     height: 80vh;
-    background: linear-gradient(135deg, #5b4bff, #8a3ffc);
+    background: linear-gradient(135deg, #065f46, #022c22);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,10 +69,12 @@ body {
     font-size: 56px;
     font-weight: 800;
 }
+
 .hero h2 {
     font-size: 35px;
     font-weight: 800;
 }
+
 .hero p {
     font-size: 30px;
     margin-top: 15px;
@@ -81,7 +84,7 @@ body {
 .btn-start {
     margin-top: 30px;
     padding: 14px 35px;
-    background: #ffd600;
+    background: #facc15;
     color: black;
     border-radius: 30px;
     font-size: 18px;
@@ -110,13 +113,53 @@ body {
 
 /* ================= FEATURE CARD ================= */
 .feature {
-    padding: 45px 35px;
-    border-radius: 22px;
+    padding: 48px 38px;
+    border-radius: 24px;
     text-align: center;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
-/* ================= ICONES (POSITION EXACT IMAGE) ================= */
+.feature:hover {
+    transform: translateY(-12px);
+    box-shadow:
+        0 25px 45px rgba(0, 0, 0, 0.18),
+        0 0 30px rgba(34, 197, 94, 0.25);
+}
+
+.feature:hover .icon {
+    transform: rotate(8deg) scale(1.1);
+    transition: all 0.35s ease;
+}
+.feature::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -60%;
+    width: 220%;
+    height: 220%;
+    background: radial-gradient(
+        circle at top left,
+        rgba(255,255,255,0.35),
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.feature:hover::before {
+    opacity: 1;
+}
+
+
+.feature:hover .icon {
+    transform: scale(1.15) rotate(20deg);
+}
+
+/* ================= ICONES ================= */
 .icon {
     width: 64px;
     height: 64px;
@@ -127,6 +170,7 @@ body {
     justify-content: center;
     font-size: 28px;
     color: white;
+    transition: transform 0.35s ease;
 }
 
 /* ================= TITRES ================= */
@@ -146,20 +190,39 @@ body {
 }
 
 /* ================= FOND DES CARTES ================= */
-.feature:nth-child(1) { background: #eef3ff; }
-.feature:nth-child(2) { background: #eafff2; }
-.feature:nth-child(3) { background: #f5efff; }
-.feature:nth-child(4) { background: #fff6e5; }
-.feature:nth-child(5) { background: #ffecec; }
-.feature:nth-child(6) { background: #e9fffb; }
+/* ================= FOND DES CARTES (DEGRADÉS DOUX) ================= */
+.feature:nth-child(1) {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+}
+
+.feature:nth-child(2) {
+    background: linear-gradient(135deg, #f0fdf4, #bbf7d0);
+}
+
+.feature:nth-child(3) {
+    background: linear-gradient(135deg, #ecfeff, #ccfbf1);
+}
+
+.feature:nth-child(4) {
+    background: linear-gradient(135deg, #f7fee7, #d9f99d);
+}
+
+.feature:nth-child(5) {
+    background: linear-gradient(135deg, #f0fdfa, #99f6e4);
+}
+
+.feature:nth-child(6) {
+    background: linear-gradient(135deg, #ecfeff, #a7f3d0);
+}
+
 
 /* ================= COULEUR DES ICONES ================= */
-.icon-blue   { background: #3b82f6; }
-.icon-green  { background: #22c55e; }
-.icon-purple { background: #a855f7; }
-.icon-red    { background: #f97316; }
-.icon-orange { background: #ef4444; }
-.icon-yellow { background: #14b8a6; }
+.icon-blue   { background: #065f46; }
+.icon-green  { background: #047857; }
+.icon-purple { background: #0f766e; }
+.icon-red    { background: #134e4a; }
+.icon-orange { background: #115e59; }
+.icon-yellow { background: #0d9488; }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 992px) {

@@ -244,3 +244,128 @@ body {
         font-size: 18px;
     }
 }
+/* ================= RESPONSIVE GLOBAL ================= */
+
+/* ===== TABLETTE & MOBILE ===== */
+@media (max-width: 992px) {
+
+    /* NAVBAR */
+    .navbar {
+        padding: 14px 25px;
+    }
+
+    .navbar ul {
+        gap: 18px;
+    }
+
+    /* HERO */
+    .hero {
+        height: auto;
+        padding: 110px 25px 70px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .hero h2 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 20px;
+    }
+
+    /* FEATURES */
+    .features-section {
+        padding: 55px 25px;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+}
+
+/* ===== MOBILE SEULEMENT ===== */
+@media (max-width: 600px) {
+
+    /* NAVBAR */
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .navbar ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 14px;
+    }
+
+    .navbar ul li a {
+        font-size: 14px;
+    }
+
+    .signup {
+        padding: 6px 16px;
+        font-size: 14px;
+    }
+
+    /* HERO */
+    .hero {
+        padding: 100px 15px 60px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero h2 {
+        font-size: 26px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .btn-start {
+        padding: 12px 26px;
+        font-size: 16px;
+    }
+
+    /* FEATURES */
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .feature {
+        padding: 35px 22px;
+    }
+
+    .feature h3 {
+        font-size: 20px;
+    }
+
+    .feature p {
+        font-size: 14px;
+        max-width: 100%;
+    }
+}
+
+/* ===== GRAND ÉCRAN / PC ===== */
+@media (min-width: 1200px) {
+
+    .hero h1 {
+        font-size: 58px;
+    }
+
+    .hero h2 {
+        font-size: 40px;
+    }
+
+    .features-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}

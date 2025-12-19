@@ -369,3 +369,148 @@ body {
         margin: 0 auto;
     }
 }
+
+/* ================= MODE PREMIUM (ACCUEIL) ================= */
+.premium-info {
+    margin-top: 18px;
+    text-decoration: none;
+    text-align: center;
+    color: #e5e7eb;
+}
+
+.premium-badge {
+      margin-top: 30px;
+    padding: 14px 20px;
+    background: #facc15;
+    color: black;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+
+}
+
+/* ================= PAGE PREMIUM ================= */
+.premium-page {
+    padding: 120px 40px 70px;
+    text-align: center;
+    color: white;
+}
+
+.subtitle {
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.premium-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.premium-card {
+    background: white;
+    color: #065f46;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+/* ================= FORMULAIRE ================= */
+.premium-form {
+    background: white;
+    color: #065f46;
+    max-width: 420px;
+    margin: auto;
+    padding: 35px;
+    border-radius: 25px;
+}
+
+.premium-form input,
+.premium-form select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+#successMsg {
+    margin-top: 15px;
+    font-weight: bold;
+    color: green;
+}
+
+/* RESPONSIVE PREMIUM */
+@media (max-width: 768px) {
+    .premium-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* ================= HERO BOUTONS ================= */
+.hero-buttons {
+    margin-top: 35px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    justify-content: center;
+}
+
+/* Bouton gratuit */
+.btn-free {
+    background: #facc15;
+    color: #000;
+}
+
+/* Badge premium à côté */
+.premium-info {
+    text-decoration: none;
+}
+
+.premium-badge {
+    padding: 12px 22px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #fde047, #f59e0b);
+    color: #000;
+    font-weight: 700;
+    font-size: 16px;
+    display: inline-block;
+}
+
+/* Hover */
+.btn-free:hover,
+.premium-badge:hover {
+    transform: translateY(-3px);
+    transition: 0.3s ease;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .hero-buttons {
+        flex-direction: column;
+    }
+}
+/* ================= HERO BUTTONS UNIFORME ================= */
+.hero-buttons a {
+    padding: 14px 35px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 260px; /* mitovy largeur */
+}
+
+/* GRATUIT */
+.btn-free {
+    background: #facc15;
+    color: #000;
+}
+
+/* PREMIUM */
+.premium-badge {
+    background: linear-gradient(135deg, #fde047, #f59e0b);
+    color: #000;
+}

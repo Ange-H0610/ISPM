@@ -10,3 +10,16 @@ links.forEach(link => {
         }
     });
 });
+
+// Simulation paiement Premium
+const premiumForm = document.getElementById("premiumForm");
+
+if (premiumForm) {
+    premiumForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        document.getElementById("successMsg").innerText =
+            "✅ Paiement enregistré. Mode Premium activé (simulation).";
+        premiumForm.reset();
+    });
+}
+

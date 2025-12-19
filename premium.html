@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mode Premium - MyBudgetLocal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">MyBudgetLocal</div>
+    <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="login.html">Connexion</a></li>
+    </ul>
+</nav>
+
+<section class="premium-page">
+    <h1>Mode Premium</h1>
+    <p class="subtitle">Débloquez toutes les fonctionnalités avancées</p>
+
+    <div class="premium-grid">
+        <div class="premium-card">
+            <h3>📊 Statistiques avancées</h3>
+            <p>Graphiques complets et rapports détaillés.</p>
+        </div>
+
+        <div class="premium-card">
+            <h3>☁️ Sauvegarde cloud</h3>
+            <p>Accès sécurisé depuis tous vos appareils.</p>
+        </div>
+
+        <div class="premium-card">
+            <h3>🔐 Sécurité renforcée</h3>
+            <p>Données chiffrées et protection totale.</p>
+        </div>
+    </div>
+
+    <!-- FORMULAIRE PAIEMENT -->
+    <form id="premiumForm" class="premium-form">
+        <h2>Paiement Premium</h2>
+
+        <input type="text" placeholder="Nom complet" required>
+        <input type="email" placeholder="Email" required>
+        <input type="tel" placeholder="Téléphone" required>
+
+        <select required>
+            
+            <option>Airtel Money</option>
+            <option>Mvola</option>
+            <option>Orange Money</option>
+        </select>
+
+        <button type="submit" class="btn-start">
+            Payer et activer Premium
+        </button>
+
+        <p id="successMsg"></p>
+    </form>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

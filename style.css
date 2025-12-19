@@ -20,6 +20,9 @@ body{
 /* NAVBAR */
 .navbar{
   height:78px;
+  position:sticky;
+  top:0;
+  z-index:1000; /* 🔥 important */
   backdrop-filter: blur(12px);
   background:linear-gradient(90deg,#5b5ce2dd,#7c3aeddd,#9333eadd);
   display:flex;

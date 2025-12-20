@@ -49,7 +49,7 @@ body{
 
 .nav-center a.active,
 .nav-center a:hover{
-  background:rgba(255,255,255,.18);
+  background:rgba(79,70,229,.25);
 }
 
 .nav-right{
@@ -628,4 +628,358 @@ i.fa-solid{
 .page-header i,
 .list-header i{
   font-size:22px;
+}
+
+.btn.blue{
+  background:#3b82f6;
+}
+/* OBJECTIFS FINANCIERS */
+.text-indigo{ color:#4f46e5; }
+.bg-indigo{ background:#4f46e5; }
+
+.empty-icon.indigo{
+  background:#eef2ff;
+  color:#4f46e5;
+}
+
+.btn.indigo{
+  background:#4f46e5;
+}
+.text-indigo{ color:#4f46e5; }
+.bg-indigo{ background:#4f46e5; }
+.text-blue{ color:#2563eb; }
+.objectifs-tables{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.objectif-card{
+  background:#fff;
+  padding:16px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+
+.objectif-card h3{
+  margin-bottom:12px;
+}
+
+.objectif-card table{
+  width:100%;
+  font-size:14px;
+}
+
+.objectif-card td{
+  padding:6px 0;
+}
+
+.objectif-card td:last-child{
+  font-weight:600;
+  text-align:right;
+}
+*{box-sizing:border-box;font-family:Segoe UI,Arial}
+body{background:#f4f6fb;margin:0}
+
+.container{max-width:1200px;margin:auto;padding:32px}
+
+/* HEADER */
+.page-header{
+  background:#fff;
+  padding:26px;
+  border-radius:22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 12px 30px rgba(0,0,0,.1);
+}
+
+.header-actions{display:flex;gap:12px}
+
+/* BUTTONS */
+.btn{
+  border:none;
+  padding:12px 18px;
+  border-radius:14px;
+  font-weight:600;
+  color:#fff;
+  cursor:pointer;
+}
+.btn.blue{background:#3b82f6}
+.btn.indigo{background:#6366f1}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-top:30px;
+}
+
+.stat-card{
+  background:#fff;
+  padding:24px;
+  border-radius:22px;
+  box-shadow:0 10px 26px rgba(0,0,0,.1);
+}
+
+.value{font-size:26px;font-weight:700}
+.indigo{color:#6366f1}
+.blue{color:#3b82f6}
+.red{color:#ef4444}
+
+/* TABLES */
+.objectifs-tables{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-top:30px;
+}
+
+.objectif-card{
+  background:#fff;
+  padding:24px;
+  border-radius:22px;
+  box-shadow:0 10px 26px rgba(0,0,0,.1);
+}
+
+.objectif-card h3{margin-bottom:12px}
+
+table{width:100%;border-collapse:collapse}
+td{padding:8px 0}
+
+/* PROGRESS */
+.progress{
+  background:#e5e7eb;
+  height:10px;
+  border-radius:8px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.bar{
+  height:100%;
+  width:0%;
+}
+.bar.indigo{background:#6366f1}
+.bar.blue{background:#3b82f6}
+.bar.red{background:#ef4444}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .stats,.objectifs-tables{grid-template-columns:1fr}
+  .page-header{flex-direction:column;gap:16px}
+}
+body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fb;color:#333}
+.container{max-width:1200px;margin:auto;padding:32px}
+
+/* HEADER */
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#fff;
+  padding:32px;
+  border-radius:26px;
+  box-shadow:0 12px 30px rgba(0,0,0,.1);
+  flex-wrap:wrap;
+  gap:20px;
+}
+.page-header h1{font-size:28px}
+.page-header p{color:#64748b}
+.header-actions{display:flex;gap:12px;flex-wrap:wrap}
+
+/* BUTTONS */
+.btn{border:none;padding:12px 20px;border-radius:14px;color:#fff;font-weight:600;cursor:pointer;transition:.3s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn.blue{background:#3b82f6}
+.btn.indigo{background:#6366f1}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-top:30px;
+}
+.stat-card{
+  background:#fff;
+  padding:24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-radius:22px;
+  box-shadow:0 10px 26px rgba(0,0,0,.1);
+}
+.value{font-size:26px;font-weight:700}
+.indigo{color:#6366f1}
+.blue{color:#3b82f6}
+.red{color:#ef4444}
+.stat-icon{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.stat-icon i{font-size:26px;color:#fff}
+.bg-indigo{background:#6366f1}
+.bg-blue{background:#3b82f6}
+.bg-red{background:#ef4444}
+
+/* OBJECTIF CARDS (tables) */
+.objectifs-tables{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-top:30px;
+}
+.objectif-card{
+  background:#fff;
+  padding:24px;
+  border-radius:22px;
+  box-shadow:0 10px 26px rgba(0,0,0,.1);
+}
+.objectif-card h3{margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{padding:6px 0}
+td:last-child{text-align:right;font-weight:600}
+
+/* PROGRESS BAR */
+.progress{background:#e5e7eb;height:10px;border-radius:8px;overflow:hidden;margin-top:10px}
+.bar{height:100%;width:0%}
+.bar.indigo{background:#6366f1}
+.bar.blue{background:#3b82f6}
+.bar.red{background:#ef4444}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .stats,.objectifs-tables{grid-template-columns:1fr}
+  .page-header{flex-direction:column;gap:16px}
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* mety hitranga rehefa screen kely */
+  gap: 20px;       /* espace eo amin'ny titre sy boutons */
+  background: #fff;
+  padding: 32px;
+  border-radius: 26px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.1);
+}
+
+.page-header h1 {
+  font-size: 28px;
+  flex: 1; /* mamela ny titre haka espace malalaka eo ankavia */
+  min-width: 200px; /* mba tsy hihena loatra rehefa screen kely */
+}
+
+.header-actions .btn {
+  display: inline-flex;             /* hizotra tsara miaraka amin'ny icon */
+  align-items: center;              /* afovoany vertical */
+  justify-content: center;          /* afovoany horizontal */
+  padding: 14px 24px;               /* habe mahazatra, tsy miantona */
+  font-size: 16px;                  /* mazava tsara ny texte */
+  font-weight: 600;
+  border-radius: 12px;              /* mahitsy sy maoderina */
+  color: #fff;                      /* soratra fotsy */
+  text-decoration: none;
+  cursor: pointer;
+  background: #6366f1;              /* ho an'ny Ajouter / Mettre à jour */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12); /* effet maivana */
+  transition: all 0.3s ease;
+  min-width: 160px;                  /* texte sy icon tsy hikatona */
+}
+
+.header-actions .btn:hover {
+  transform: translateY(-2px);      /* effet mihetsika kely rehefa hover */
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
+
+.header-actions .btn i {
+  margin-right: 8px;                 /* elanelana tsara eo amin'ny icon sy texte */
+  font-size: 18px;                   /* mazava ny icon */
+}
+/* Modal background */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.5);
+}
+
+/* Modal content box */
+.modal-content {
+  background: #fff;
+  margin: 80px auto;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.25);
+  position: relative;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #4f46e5;
+}
+
+.form-group {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.form-group input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+/* BOUTONS */
+.btn {
+  border: none;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  color: #fff; /* ✅ soratra blanc foana */
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,.15);
+  transition: .3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0,0,0,.18);
+}
+
+/* Boutons spécifiques couleurs */
+.btn.blue { background: #3b82f6; color: #fff; } 
+.btn.indigo { background: #6366f1; color: #fff; } 
+.btn.red { background: #ef4444; color: #fff; }
+.btn.green { background: #22c55e; color: #fff; }
+.modal-buttons .btn {
+  color: #fff; /* blanc foana */
 }

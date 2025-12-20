@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion du Budget</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="budget.css">
+  <link rel="icon" href="logo/logo.png">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<main class="container">
+
+  <!-- HEADER -->
+  <section class="page-header">
+    <div>
+      <h1><i class="fa-solid fa-wallet"></i> Gestion des Budgets</h1>
+      <p>Définissez des limites de budget pour chaque catégorie de dépenses</p>
+    </div>
+  </section>
+
+  <!-- CARDS BUDGET -->
+  <section class="budget-cards">
+
+    <!-- Exemple card -->
+    <div class="budget-card" id="alimentationCard">
+      <div class="card-header">
+        <div class="icon"><i class="fa-solid fa-utensils"></i></div>
+        <div class="title"><strong>Alimentation</strong><br><small>Dépensé ce mois</small></div>
+      </div>
+      <div class="card-body">
+        <div class="spent" id="alimentationSpent">0 Ar</div>
+        <input type="number" id="alimentationLimit" placeholder="Ex: 50000">
+        <label>
+          <input type="checkbox" id="alimentationNotif" checked> Notifications de budget
+        </label>
+        <div class="info"><i class="fa-solid fa-circle-info"></i> Définissez une limite de budget</div>
+      </div>
+    </div>
+
+    <div class="budget-card" id="transportCard">
+      <div class="card-header">
+        <div class="icon"><i class="fa-solid fa-car"></i></div>
+        <div class="title"><strong>Transport</strong><br><small>Dépensé ce mois</small></div>
+      </div>
+      <div class="card-body">
+        <div class="spent" id="transportSpent">0 Ar</div>
+        <input type="number" id="transportLimit" placeholder="Ex: 50000">
+        <label>
+          <input type="checkbox" id="transportNotif" checked> Notifications de budget
+        </label>
+        <div class="info"><i class="fa-solid fa-circle-info"></i> Définissez une limite de budget</div>
+      </div>
+    </div>
+
+    <div class="budget-card" id="logementCard">
+      <div class="card-header">
+        <div class="icon"><i class="fa-solid fa-house"></i></div>
+        <div class="title"><strong>Logement</strong><br><small>Dépensé ce mois</small></div>
+      </div>
+      <div class="card-body">
+        <div class="spent" id="logementSpent">0 Ar</div>
+        <input type="number" id="logementLimit" placeholder="Ex: 50000">
+        <label>
+          <input type="checkbox" id="logementNotif" checked> Notifications de budget
+        </label>
+        <div class="info"><i class="fa-solid fa-circle-info"></i> Définissez une limite de budget</div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script src="budget.js"></script>
+</body>
+</html>

@@ -15,19 +15,28 @@
 <main class="container">
 
   <!-- ===== HEADER ===== -->
-  <section class="page-header">
-    <div>
-      <h1 class="text-green">
-        <i class="fa-solid fa-arrow-up"></i> Mes Revenus
-      </h1>
-      <p>Gérez tous vos revenus enregistrés</p>
-      <small><i class="fa fa-calendar"></i> Total : <strong id="totalHeader">0.00 Ar</strong></small>
-    </div>
+<section class="page-header">
+  <div>
+    <h1 class="text-green">
+      <i class="fa-solid fa-arrow-up"></i> Mes Revenus
+    </h1>
+    <p>Gérez tous vos revenus enregistrés</p>
+    <small>
+      <i class="fa fa-calendar"></i>
+      Total : <strong id="totalHeader">0.00 Ar</strong>
+    </small>
+  </div>
+
+  <div style="display:flex; gap:12px;">
+    <a href="dashboard.html" class="btn blue">
+      <i class="fa-solid fa-arrow-left"></i> Dashboard
+    </a>
 
     <button class="btn green" id="addRevenuBtn">
       <i class="fa fa-plus"></i> Ajouter un Revenu
     </button>
-  </section>
+  </div>
+</section>
 
   <!-- ===== STATS ===== -->
   <section class="stats revenus-stats">

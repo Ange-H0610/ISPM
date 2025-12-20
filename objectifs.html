@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Objectifs Financiers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="logo/logo.png">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<main class="container">
+
+  <!-- HEADER -->
+  <section class="page-header">
+    <div>
+      <h1><i class="fa-solid fa-bullseye"></i> Objectifs Financiers</h1>
+      <p>Suivi clair de votre épargne, investissement et emprunt</p>
+    </div>
+
+    <div class="header-actions">
+      <a href="dashboard.html" class="btn blue">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+      <button class="btn indigo" id="addObjectifBtn">
+        <i class="fa-solid fa-plus"></i> Mettre à jour
+      </button>
+    </div>
+  </section>
+<!-- Modal -->
+<div id="updateModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Mettre à jour les objectifs</h2>
+    <form id="updateForm">
+      <div class="form-group">
+        <label>Épargne - Objectif</label>
+        <input type="number" id="epargneCibleInput" min="0">
+      </div>
+      <div class="form-group">
+        <label>Épargne - Actuel</label>
+        <input type="number" id="epargneActuelInput" min="0">
+      </div>
+      <div class="form-group">
+        <label>Investissement - Objectif</label>
+        <input type="number" id="investCibleInput" min="0">
+      </div>
+      <div class="form-group">
+        <label>Investissement - Actuel</label>
+        <input type="number" id="investActuelInput" min="0">
+      </div>
+      <div class="form-group">
+        <label>Emprunt - Total</label>
+        <input type="number" id="empruntCibleInput" min="0">
+      </div>
+      <div class="form-group">
+        <label>Emprunt - Payé</label>
+        <input type="number" id="empruntActuelInput" min="0">
+      </div>
+      <div class="modal-buttons">
+        <button type="submit" class="btn indigo">Valider</button>
+        <button type="button" class="btn red close-btn">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <!-- STATS (3 ambony) -->
+  <section class="stats">
+    <div class="stat-card">
+      <div>
+        <h4>Épargne</h4>
+        <div class="value indigo" id="epargneTotal">0 Ar</div>
+        <small>Progression</small>
+      </div>
+      <div class="stat-icon bg-indigo">
+        <i class="fa-solid fa-piggy-bank"></i>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <h4>Investissement</h4>
+        <div class="value blue" id="investTotal">0 Ar</div>
+        <small>Capital investi</small>
+      </div>
+      <div class="stat-icon bg-blue">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <h4>Emprunt</h4>
+        <div class="value red" id="empruntTotal">0 Ar</div>
+        <small>Reste à payer</small>
+      </div>
+      <div class="stat-icon bg-red">
+        <i class="fa-solid fa-hand-holding-dollar"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABLEAUX (3 ambany) -->
+  <section class="objectifs-tables">
+    <div class="objectif-card">
+      <h3 class="text-indigo"><i class="fa-solid fa-piggy-bank"></i> Épargne</h3>
+      <table>
+        <tr><td>Objectif</td><td id="epargneCible">0 Ar</td></tr>
+        <tr><td>Actuel</td><td id="epargneActuel">0 Ar</td></tr>
+        <tr><td>Progression</td><td id="epargnePct">0%</td></tr>
+      </table>
+      <div class="progress"><div class="bar indigo" id="epargneBar"></div></div>
+    </div>
+
+    <div class="objectif-card">
+      <h3 class="text-blue"><i class="fa-solid fa-chart-line"></i> Investissement</h3>
+      <table>
+        <tr><td>Objectif</td><td id="investCible">0 Ar</td></tr>
+        <tr><td>Investi</td><td id="investActuel">0 Ar</td></tr>
+        <tr><td>Progression</td><td id="investPct">0%</td></tr>
+      </table>
+      <div class="progress"><div class="bar blue" id="investBar"></div></div>
+    </div>
+
+    <div class="objectif-card">
+      <h3 class="text-red"><i class="fa-solid fa-hand-holding-dollar"></i> Emprunt</h3>
+      <table>
+        <tr><td>Total</td><td id="empruntCible">0 Ar</td></tr>
+        <tr><td>Payé</td><td id="empruntActuel">0 Ar</td></tr>
+        <tr><td>Remboursé</td><td id="empruntPct">0%</td></tr>
+      </table>
+      <div class="progress"><div class="bar red" id="empruntBar"></div></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="objectifs.js"></script>
+</body>
+</html>

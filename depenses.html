@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Dépenses</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="logo/logo.png">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="container">
+
+<main class="container">
+
+  <!-- HEADER -->
+  <section class="page-header">
+    <div>
+      <h1 class="text-red">
+        <i class="fa-solid fa-arrow-down"></i> Mes Dépenses
+      </h1>
+      <p>Gérez toutes vos dépenses enregistrées</p>
+      <small>
+        <i class="fa-solid fa-calendar"></i>
+        Total : <strong id="totalHeader">0.00 Ar</strong>
+      </small>
+    </div>
+
+    <button class="btn red" id="addDepenseBtn">
+      <i class="fa-solid fa-plus"></i> Ajouter une Dépense
+    </button>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats depenses-stats">
+
+    <div class="stat-card">
+      <div>
+        <h4>Total des Dépenses</h4>
+        <div class="value text-red" id="totalDepenses">0.00 Ar</div>
+        <small>Toutes les dépenses</small>
+      </div>
+      <div class="stat-icon bg-red">
+        <i class="fa-solid fa-money-bill-wave"></i>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <h4>Nombre de Dépenses</h4>
+        <div class="value" id="countDepenses">0</div>
+        <small>Transactions</small>
+      </div>
+      <div class="stat-icon bg-blue">
+        <i class="fa-solid fa-list"></i>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div>
+        <h4>Moyenne par Dépense</h4>
+        <div class="value text-purple" id="avgDepenses">0.00 Ar</div>
+        <small>Par transaction</small>
+      </div>
+      <div class="stat-icon purple">
+        <i class="fa-solid fa-calculator"></i>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- LISTE -->
+  <section class="list-card">
+
+    <div class="list-header">
+      <h3><i class="fa-solid fa-table"></i> Liste des Dépenses</h3>
+    </div>
+
+    <table class="revenus-table" id="depensesTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Motif</th>
+          <th>Montant</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="empty-state" id="emptyDepenses">
+      <div class="empty-icon red">
+        <i class="fa-solid fa-wallet"></i>
+      </div>
+      <h4>Aucune dépense enregistrée</h4>
+      <p>Ajoutez votre première dépense pour commencer.</p>
+    </div>
+
+  </section>
+
+</main>
+
+<script src="depenses.js"></script>
+</body>
+</html>

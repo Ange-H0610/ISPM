@@ -1,85 +1,146 @@
+/* ================= DATE ================= */
 const dateEl = document.getElementById("date");
 const moisEl = document.getElementById("mois");
 
 const now = new Date();
 dateEl.textContent = "Dernière mise à jour : " + now.toLocaleString("fr-FR");
-moisEl.textContent = now.toLocaleDateString("fr-FR",{month:"short",year:"numeric"});
+moisEl.textContent = now.toLocaleDateString("fr-FR",{month:"long",year:"numeric"});
 
-// Animation chiffres
-function animateValue(el, to){
-  let start = 0;
-  const duration = 800;
-  const startTime = performance.now();
-
-  function update(time){
-    const progress = Math.min((time - startTime)/duration, 1);
-    const value = Math.floor(progress * to);
-    el.textContent = value.toLocaleString("fr-FR") + " Ar";
-    if(progress < 1) requestAnimationFrame(update);
-  }
-  requestAnimationFrame(update);
-}
-
-document.querySelectorAll(".value").forEach((el,i)=>{
-  const values = [420000,650000,230000,120000];
-  animateValue(el, values[i]);
-});
-
-// CHART OPTIONS
-const commonOptions = {
-  responsive:true,
-  maintainAspectRatio:false,
-  plugins:{ legend:{ display:false } }
+/* ================= DATA FAKE (TEMPORAIRE) ================= */
+let data = {
+  revenus: [],
+  depenses: []
 };
 
-// ÉVOLUTION
-new Chart(monthlyChart,{
+/* ================= NOTIFICATION ================= */
+document.querySelector(".fa-bell").addEventListener("click", ()=>{
+  alert("🔔 Aucune notification pour le moment");
+});
+
+/* ================= AVATAR ================= */
+document.querySelector(".avatar").addEventListener("click", ()=>{
+  const user = JSON.parse(localStorage.getItem("mybudget_user"));
+  alert(
+    `👤 Profil utilisateur\nNom : ${user?.name || "Utilisateur"}\nStatut : Actif`
+  );
+});
+
+
+/* ================= BOUTON AJOUTER ================= */
+document.querySelector(".btn-add").addEventListener("click", ()=>{
+  const type = prompt("Ajouter : revenu ou dépense ?");
+  if(!type) return;
+
+  const montant = Number(prompt("Montant ?"));
+  if(!montant) return alert("Montant invalide");
+
+  if(type.toLowerCase().includes("rev")){
+    data.revenus.push(montant);
+    alert("✅ Revenu ajouté");
+  }else{
+    data.depenses.push(montant);
+    alert("❌ Dépense ajoutée");
+  }
+  refreshStats();
+});
+
+/* ================= ACTIONS RAPIDES ================= */
+const qa = document.querySelectorAll(".qa");
+
+qa[0].onclick = ()=> fakeAdd("revenu");
+qa[1].onclick = ()=> fakeAdd("dépense");
+qa[2].onclick = ()=> showList("revenus");
+qa[3].onclick = ()=> showList("dépenses");
+
+function fakeAdd(type){
+  const m = Number(prompt("Montant du "+type));
+  if(!m) return;
+  type === "revenu" ? data.revenus.push(m) : data.depenses.push(m);
+  refreshStats();
+}
+
+function showList(type){
+  const list = data[type];
+  alert(
+    `📋 ${type.toUpperCase()}\n` +
+    (list.length ? list.join(" Ar\n")+" Ar" : "Aucune donnée")
+  );
+}
+
+/* ================= EMPTY STATE BOUTONS ================= */
+document.querySelectorAll(".empty-state .btn").forEach(btn=>{
+  btn.onclick = ()=> alert("➕ Fonction ajout déclenchée");
+});
+
+/* ================= STATS CLICK ================= */
+document.querySelectorAll(".stat-card").forEach(card=>{
+  card.onclick = ()=>{
+    alert("📊 Détail statistique\n(Fonction prête)");
+  };
+});
+
+/* ================= ANIMATION CHIFFRES ================= */
+function animate(el, to){
+  let n = 0;
+  const i = setInterval(()=>{
+    n += Math.ceil(to/30);
+    if(n >= to){ n = to; clearInterval(i); }
+    el.textContent = n.toLocaleString("fr-FR")+" Ar";
+  },20);
+}
+
+function refreshStats(){
+  const totalRev = data.revenus.reduce((a,b)=>a+b,0);
+  const totalDep = data.depenses.reduce((a,b)=>a+b,0);
+  const solde = totalRev - totalDep;
+
+  const values = document.querySelectorAll(".value");
+  animate(values[0], solde);
+  animate(values[1], totalRev);
+  animate(values[2], totalDep);
+  animate(values[3], solde);
+}
+
+/* ================= CHARTS ================= */
+const monthlyChart = new Chart(document.getElementById("monthlyChart"),{
   type:"line",
   data:{
     labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
     datasets:[
-      { label:"Revenus", data:Array(12).fill(0), borderColor:"#22c55e", tension:.4 },
-      { label:"Dépenses", data:Array(12).fill(0), borderColor:"#ef4444", tension:.4 }
+      {label:"Revenus",data:Array(12).fill(0),borderColor:"#22c55e",tension:.4},
+      {label:"Dépenses",data:Array(12).fill(0),borderColor:"#ef4444",tension:.4}
     ]
   },
-  options:commonOptions
+  options:{responsive:true,maintainAspectRatio:false}
 });
 
-// CATÉGORIES
-new Chart(categoryChart,{
+const categoryChart = new Chart(document.getElementById("categoryChart"),{
   type:"doughnut",
   data:{
     labels:["Alimentation","Transport","Loisirs","Autres"],
-    datasets:[{
-      data:[0,0,0,0],
-      backgroundColor:["#6366f1","#22c55e","#f59e0b","#ef4444"]
-    }]
+    datasets:[{data:[0,0,0,0],backgroundColor:["#6366f1","#22c55e","#f59e0b","#ef4444"]}]
   },
-  options:{ responsive:true, maintainAspectRatio:false }
-});
-// REVENUS PAR CATÉGORIE
-const revenusCategoryChart = document.getElementById("revenusCategoryChart");
-
-new Chart(revenusCategoryChart,{
-  type:"doughnut",
-  data:{
-    labels:["Salaire","Business","Autres"],
-    datasets:[{
-      data:[0,0,0],
-      backgroundColor:["#22c55e","#6366f1","#f59e0b"]
-    }]
-  },
-  options:{
-    responsive:true,
-    maintainAspectRatio:false
-  }
+  options:{responsive:true,maintainAspectRatio:false}
 });
 
-// MENU MOBILE
-const menuToggle = document.getElementById("menuToggle");
-const navMenu = document.getElementById("navMenu");
-
-menuToggle.addEventListener("click", ()=>{
-  navMenu.classList.toggle("show");
+/* ================= AGRANDIR CHART ================= */
+document.querySelectorAll(".expand").forEach(btn=>{
+  btn.onclick = ()=>{
+    alert("🔍 Mode agrandi (à brancher modal)");
+  };
 });
 
+/* ================= MENU MOBILE ================= */
+menuToggle.onclick = ()=> navMenu.classList.toggle("show");
+
+/* ================= INIT ================= */
+refreshStats();
+/* ================= USER ================= */
+const user = JSON.parse(localStorage.getItem("mybudget_user"));
+const userNameEl = document.getElementById("userName");
+
+if(!user || !user.isLoggedIn){
+  window.location.href = "login.html";
+}else{
+  userNameEl.textContent = user.name;
+}

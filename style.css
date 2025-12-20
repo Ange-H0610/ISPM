@@ -550,3 +550,82 @@ i.fa-solid{
     font-size:22px;
   }
 }
+
+/*revenu*/
+
+
+/* ===== PAGE HEADER ===== */
+.page-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#fff;
+  padding:32px;
+  border-radius:26px;
+  box-shadow:var(--shadow-soft);
+}
+
+.page-header h1{
+  font-size:28px;
+}
+
+.page-header p{
+  color:#64748b;
+}
+
+/* ===== LISTE ===== */
+.list-card{
+  margin-top:36px;
+  background:#fff;
+  padding:28px;
+  border-radius:26px;
+  box-shadow:var(--shadow-soft);
+}
+
+.list-header{
+  margin-bottom:18px;
+}
+
+.revenus-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.revenus-table th{
+  text-align:left;
+  padding:14px;
+  background:#f1f5f9;
+  font-weight:600;
+}
+
+.revenus-table td{
+  padding:14px;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.revenus-table tr:hover{
+  background:#f9fafb;
+}
+
+.revenus-table td:last-child{
+  text-align:right;
+}
+
+.revenus-table button{
+  border:none;
+  padding:8px 12px;
+  border-radius:10px;
+  background:#ef4444;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* MASQUER TABLE SI VIDE */
+#revenusTable.hidden{
+  display:none;
+}
+.stat-icon i,
+.page-header i,
+.list-header i{
+  font-size:22px;
+}

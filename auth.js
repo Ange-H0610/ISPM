@@ -1,74 +1,77 @@
 // ==========================
-//   auth.js (Login & Signup)
+// auth.js (Login & Signup)
 // ==========================
 
-// ---------- Helpers ----------
-function showError(message) {
+function showError(message){
   alert(message);
 }
 
-function isEmailValid(email) {
+function isEmailValid(email){
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  // --- SIGNUP ---
+document.addEventListener("DOMContentLoaded", ()=>{
+
+  /* ================= SIGNUP ================= */
   const signupForm = document.getElementById("signupForm");
-  if (signupForm) {
-    signupForm.addEventListener("submit", function (e) {
+
+  if(signupForm){
+    signupForm.addEventListener("submit", e=>{
       e.preventDefault();
 
       const name = document.getElementById("signupName").value.trim();
       const email = document.getElementById("signupEmail").value.trim();
       const password = document.getElementById("signupPass").value;
 
-      if (!name || !email || !password) {
-        showError("Veuillez remplir le nom, l'email et le mot de passe.");
-        return;
-      }
-      if (!isEmailValid(email)) {
-        showError("Veuillez entrer une adresse email valide.");
-        return;
+      if(!name || !email || !password){
+        return showError("Veuillez remplir tous les champs.");
       }
 
-      localStorage.setItem("user", JSON.stringify({ name, email, password }));
-      alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+      if(!isEmailValid(email)){
+        return showError("Adresse email invalide.");
+      }
+
+      const user = {
+        name,
+        email,
+        password,
+        isLoggedIn: false
+      };
+
+      localStorage.setItem("mybudget_user", JSON.stringify(user));
+      alert("✅ Inscription réussie !");
       window.location.href = "login.html";
     });
   }
 
-  // --- LOGIN ---
+  /* ================= LOGIN ================= */
   const loginForm = document.getElementById("loginForm");
-  if (loginForm) {
-    const savedUser = JSON.parse(localStorage.getItem("user") || "null");
-    if (savedUser && savedUser.name) {
-      document.getElementById("loginName").value = savedUser.name;
-    }
 
-    loginForm.addEventListener("submit", function (e) {
+  if(loginForm){
+    const savedUser = JSON.parse(localStorage.getItem("mybudget_user"));
+
+    loginForm.addEventListener("submit", e=>{
       e.preventDefault();
 
       const name = document.getElementById("loginName").value.trim();
       const password = document.getElementById("loginPass").value;
 
-      if (!name || !password) {
-        showError("Veuillez entrer votre nom d'utilisateur et votre mot de passe.");
-        return;
+      if(!name || !password){
+        return showError("Veuillez entrer votre nom et mot de passe.");
       }
 
-      const user = JSON.parse(localStorage.getItem("user") || "null");
-      if (!user) {
-        showError("Aucun compte trouvé. Veuillez d'abord vous inscrire.");
-        return;
+      if(!savedUser){
+        return showError("Aucun compte trouvé. Veuillez vous inscrire.");
       }
 
-      if (user.name === name && user.password === password) {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userName", user.name);
+      if(savedUser.name === name && savedUser.password === password){
+        savedUser.isLoggedIn = true;
+        localStorage.setItem("mybudget_user", JSON.stringify(savedUser));
         window.location.href = "dashboard.html";
-      } else {
-        showError("Nom d'utilisateur ou mot de passe incorrect.");
+      }else{
+        showError("Nom ou mot de passe incorrect.");
       }
     });
   }
+
 });

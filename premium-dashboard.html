@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>MyBudgetLocal Premium – Tableau de bord</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+ <link rel="icon" href="logo\logo.png">
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="premium-dashboard">
+
+<!-- ================= NAVBAR PREMIUM ================= -->
+<nav class="navbar premium-navbar">
+    <div class="logo">
+        <i class="fa-solid fa-crown"></i> MyBudgetLocal Premium
+    </div>
+
+    <!-- Burger menu bouton (visible seulement mobile) -->
+    <button class="burger-menu" id="burgerMenu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <ul class="nav-links">
+        <li><a href="#" class="nav-link active" data-section="dashboard">Tableau de bord</a></li>
+        <li><a href="#" class="nav-link" data-section="analyses">Analyses avancées</a></li>
+        <li><a href="#" class="nav-link" data-section="rapports">Rapports</a></li>
+        <li><a href="#" class="nav-link" data-section="cloud">Sauvegarde cloud</a></li>
+        <li>
+            <button id="homeBtn" class="premium-badge">
+                <i class="fa-solid fa-house"></i> Accueil
+            </button>
+        </li>
+    </ul>
+</nav>
+
+
+<!-- ================= CONTENU ================= -->
+<main class="premium-container">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="premium-section active-section" id="dashboard">
+        <div class="premium-header">
+            <h1>Tableau de bord Premium</h1>
+            <p>Vue complète et avancée de vos finances</p>
+        </div>
+
+        <div class="premium-stats">
+            <div class="premium-stat-card gold">
+                <h4>Solde global</h4>
+                <span id="solde">0 Ar</span>
+            </div>
+
+            <div class="premium-stat-card green">
+                <h4>Revenus totaux</h4>
+                <span id="revenus">0 Ar</span>
+            </div>
+
+            <div class="premium-stat-card red">
+                <h4>Dépenses totales</h4>
+                <span id="depenses">0 Ar</span>
+            </div>
+
+            <div class="premium-stat-card blue">
+                <h4>Épargne estimée</h4>
+                <span id="epargne">0 Ar</span>
+            </div>
+        </div>
+
+        <button class="premium-action" id="addTransaction">
+            ➕ Ajouter une transaction
+        </button>
+    </section>
+
+    <!-- ===== ANALYSES ===== -->
+    <section class="premium-section" id="analyses">
+        <h2>Analyses avancées</h2>
+        <p>Analyse automatique de vos dépenses et revenus.</p>
+
+  <button type="button" class="premium-action" id="analyseBtn">Générer une analyse</button>
+
+<div id="analyseResult"></div>
+
+    </section>
+
+    <!-- ===== RAPPORTS ===== -->
+    <section class="premium-section" id="rapports">
+        <h2>Rapports financiers</h2>
+        <p>Téléchargez vos rapports mensuels et annuels.</p>
+
+        <button class="premium-action" id="reportBtn">
+    Télécharger le rapport
+</button>
+
+<div id="reportResult"></div>
+
+    </section>
+
+    <!-- ===== CLOUD ===== -->
+    <section class="premium-section" id="cloud">
+        <h2>Sauvegarde cloud</h2>
+       <p>
+    Sauvegardez vos données financières afin de les récupérer
+    automatiquement même après fermeture du navigateur.
+</p>
+
+
+       <button class="premium-action" id="cloudBtn">
+    Synchroniser maintenant
+</button>
+<div class="cloud-features">
+    <div class="cloud-card">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <h4>Sauvegarde sécurisée</h4>
+        <p>Enregistre vos données financières.</p>
+    </div>
+
+    <div class="cloud-card">
+        <i class="fa-solid fa-cloud-arrow-down"></i>
+        <h4>Restauration automatique</h4>
+        <p>Récupère vos données au démarrage.</p>
+    </div>
+
+    <div class="cloud-card">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h4>Données protégées</h4>
+        <p>Vos informations restent privées.</p>
+    </div>
+</div>
+
+<p id="cloudStatus"></p>
+
+    </section>
+
+</main>
+
+<!-- JS -->
+<script src="premium.js"></script>
+</body>
+</html>

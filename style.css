@@ -778,16 +778,36 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:#f4f6fb;color:#
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:#fff;
-  padding:32px;
-  border-radius:26px;
-  box-shadow:0 12px 30px rgba(0,0,0,.1);
   flex-wrap:wrap;
   gap:20px;
 }
-.page-header h1{font-size:28px}
-.page-header p{color:#64748b}
-.header-actions{display:flex;gap:12px;flex-wrap:wrap}
+
+.header-left{
+  flex:1;
+  min-width:260px;
+}
+
+.header-actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+/* bouton mitovy hauteur */
+.header-actions .btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  height:48px;
+  padding:0 22px;
+  font-size:15px;
+  font-weight:600;
+  border-radius:14px;
+  color:#fff;
+  text-decoration:none;
+}
+
 
 /* BUTTONS */
 .btn{border:none;padding:12px 20px;border-radius:14px;color:#fff;font-weight:600;cursor:pointer;transition:.3s ease}
@@ -855,8 +875,8 @@ td:last-child{text-align:right;font-weight:600}
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; /* mety hitranga rehefa screen kely */
-  gap: 20px;       /* espace eo amin'ny titre sy boutons */
+  flex-wrap: wrap; 
+  gap: 20px;      
   background: #fff;
   padding: 32px;
   border-radius: 26px;
@@ -865,35 +885,35 @@ td:last-child{text-align:right;font-weight:600}
 
 .page-header h1 {
   font-size: 28px;
-  flex: 1; /* mamela ny titre haka espace malalaka eo ankavia */
-  min-width: 200px; /* mba tsy hihena loatra rehefa screen kely */
+  flex: 1; 
+  min-width: 200px; 
 }
 
 .header-actions .btn {
-  display: inline-flex;             /* hizotra tsara miaraka amin'ny icon */
-  align-items: center;              /* afovoany vertical */
-  justify-content: center;          /* afovoany horizontal */
-  padding: 14px 24px;               /* habe mahazatra, tsy miantona */
-  font-size: 16px;                  /* mazava tsara ny texte */
+  display: inline-flex;            
+  align-items: center;            
+  justify-content: center;          
+  padding: 14px 24px;              
+  font-size: 16px;                  
   font-weight: 600;
-  border-radius: 12px;              /* mahitsy sy maoderina */
-  color: #fff;                      /* soratra fotsy */
+  border-radius: 12px;             
+  color: #fff;                      
   text-decoration: none;
   cursor: pointer;
-  background: #6366f1;              /* ho an'ny Ajouter / Mettre à jour */
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12); /* effet maivana */
+  background: #6366f1;             
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12); 
   transition: all 0.3s ease;
-  min-width: 160px;                  /* texte sy icon tsy hikatona */
+  min-width: 160px;                 
 }
 
 .header-actions .btn:hover {
-  transform: translateY(-2px);      /* effet mihetsika kely rehefa hover */
+  transform: translateY(-2px);     
   box-shadow: 0 10px 22px rgba(0,0,0,0.18);
 }
 
 .header-actions .btn i {
-  margin-right: 8px;                 /* elanelana tsara eo amin'ny icon sy texte */
-  font-size: 18px;                   /* mazava ny icon */
+  margin-right: 8px;                
+  font-size: 18px;                   
 }
 /* Modal background */
 .modal {
@@ -964,7 +984,7 @@ td:last-child{text-align:right;font-weight:600}
   padding: 12px 18px;
   border-radius: 14px;
   font-weight: 600;
-  color: #fff; /* ✅ soratra blanc foana */
+  color: #fff; 
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(0,0,0,.15);
   transition: .3s ease;
@@ -983,3 +1003,136 @@ td:last-child{text-align:right;font-weight:600}
 .modal-buttons .btn {
   color: #fff; /* blanc foana */
 }
+.btn.blue{background:#3b82f6}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; 
+  gap: 20px;       
+  background: #fff;
+  padding: 32px;
+  border-radius: 26px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.1);
+}
+
+.page-header h1 {
+  font-size: 28px;
+  flex: 1; 
+  min-width: 200px; 
+}
+
+.header-actions .btn {
+  min-width: 160px;
+}
+
+.header-actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
+
+.header-actions .btn i {
+  margin-right: 8px;                 
+  font-size: 18px;                  
+}
+
+/* ===== BOUTONS LISTE ACHAT (JS GENERATED) ===== */
+
+.list-actions{
+  display:flex;
+  gap:14px;
+  margin-top:18px;
+}
+
+.list-actions button{
+  background:#6366f1; /* default */
+  border:none;
+  padding:12px 22px;
+  border-radius:14px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  color:#fff;
+  box-shadow:0 10px 22px rgba(0,0,0,.18);
+  transition:.3s ease;
+}
+
+.list-actions button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 32px rgba(0,0,0,.25);
+}
+
+/* ===== GLOBAL ===== */
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Roboto,Arial,sans-serif; }
+body { background:#f4f6fb; color:#333; }
+.container { max-width:1200px; margin:auto; padding:32px; }
+
+/* ===== HEADER ===== */
+.page-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:20px;
+  background:#fff;
+  padding:32px;
+  border-radius:26px;
+  box-shadow:0 12px 30px rgba(0,0,0,.1);
+}
+.page-header h1 { font-size:28px; flex:1; min-width:200px; }
+.header-actions { display:flex; gap:14px; flex-wrap:wrap; }
+
+/* BUTTONS */
+.btn {
+  border:none;
+  padding:12px 22px;
+  border-radius:14px;
+  font-weight:600;
+  color:#fff;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:.3s ease;
+}
+.btn:hover { transform:translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.18); }
+.btn.blue{background:#3b82f6;}
+.btn.indigo{background:#6366f1;}
+
+/* ===== STATISTIQUES ===== */
+.budget-summary { margin-top:30px; background:#fff; padding:22px; border-radius:18px; box-shadow:0 12px 28px rgba(0,0,0,.12); }
+.budget-summary table { width:100%; border-collapse:collapse; font-size:16px; }
+.budget-summary td { padding:12px; border-bottom:1px solid #e5e7eb; }
+
+/* ===== LISTE ===== */
+.budget-cards { margin-top:30px; display:grid; gap:20px; }
+.budget-card {
+  background:#fff;
+  padding:22px;
+  border-radius:18px;
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
+}
+.budget-card .card-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.budget-card .card-header .icon { width:48px; height:48px; border-radius:12px; background:#6366f1; display:flex; align-items:center; justify-content:center; color:#fff; font-size:22px; }
+.budget-card ul { margin-top:12px; }
+.budget-card li { padding:6px 0; }
+
+/* ===== BOUTONS LISTE ===== */
+.list-actions { display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; }
+.list-actions button {
+  border:none; padding:10px 18px; border-radius:12px; font-weight:600; cursor:pointer;
+  color:#fff; min-width:120px; transition:.3s ease; box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+.list-actions .add { background:#22c55e; }
+.list-actions .cancel { background:#f59e0b; }
+.list-actions .delete { background:#ef4444; }
+.list-actions button:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.25); }
+
+/* EMPTY STATE */
+.empty-list { text-align:center; padding:40px 0; color:#64748b; font-size:16px; }
+
+/* RESPONSIVE */
+@media(max-width:900px){ .page-header{flex-direction:column; gap:16px;} .budget-cards{grid-template-columns:1fr;} }
+@media(max-width:500px){ .page-header{padding:20px;} }

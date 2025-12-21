@@ -5,70 +5,108 @@
   <title>Gestion du Budget</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="budget.css">
-  <link rel="icon" href="logo/logo.png">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
 <main class="container">
 
-  <!-- HEADER -->
   <section class="page-header">
-    <div>
-      <h1><i class="fa-solid fa-wallet"></i> Gestion des Budgets</h1>
-      <p>Définissez des limites de budget pour chaque catégorie de dépenses</p>
+    <div> 
+        <h1><i class="fa-solid fa-wallet"></i> Gestion des Budgets</h1>
+      <p>Définissez des limites et ajoutez vos dépenses</p>
+ 
+    </div>
+  <div class="header-actions">
+      <a href="dashboard.html" class="btn blue">
+        <i class="fa-solid fa-arrow-left"></i> Tableau de bord
+      </a>
     </div>
   </section>
 
-  <!-- CARDS BUDGET -->
+
   <section class="budget-cards">
 
-    <!-- Exemple card -->
-    <div class="budget-card" id="alimentationCard">
+    <!-- Alimentation -->
+    <div class="budget-card" data-key="alimentation">
       <div class="card-header">
         <div class="icon"><i class="fa-solid fa-utensils"></i></div>
-        <div class="title"><strong>Alimentation</strong><br><small>Dépensé ce mois</small></div>
+        <div class="title"><strong>Alimentation</strong></div>
       </div>
       <div class="card-body">
-        <div class="spent" id="alimentationSpent">0 Ar</div>
-        <input type="number" id="alimentationLimit" placeholder="Ex: 50000">
-        <label>
-          <input type="checkbox" id="alimentationNotif" checked> Notifications de budget
-        </label>
-        <div class="info"><i class="fa-solid fa-circle-info"></i> Définissez une limite de budget</div>
+        <div class="spent">Dépensé : <span id="alimentationSpent">0</span> Ar</div>
+        <input type="number" id="alimentationLimit" placeholder="Limite mensuelle">
+        <input type="number" id="alimentationAdd" placeholder="Ajouter une dépense">
+        <button class="btn-add" onclick="addExpense('alimentation')">➕ Ajouter</button>
+        <div class="progress-box">
+          <div class="progress-bar">
+            <div class="progress" id="alimentationProgress"></div>
+          </div>
+          <small id="alimentationReste">Reste : 0 Ar</small>
+        </div>
       </div>
     </div>
 
-    <div class="budget-card" id="transportCard">
+    <!-- Transport -->
+    <div class="budget-card" data-key="transport">
       <div class="card-header">
         <div class="icon"><i class="fa-solid fa-car"></i></div>
-        <div class="title"><strong>Transport</strong><br><small>Dépensé ce mois</small></div>
+        <div class="title"><strong>Transport</strong></div>
       </div>
       <div class="card-body">
-        <div class="spent" id="transportSpent">0 Ar</div>
-        <input type="number" id="transportLimit" placeholder="Ex: 50000">
-        <label>
-          <input type="checkbox" id="transportNotif" checked> Notifications de budget
-        </label>
-        <div class="info"><i class="fa-solid fa-circle-info"></i> Définissez une limite de budget</div>
+        <div class="spent">Dépensé : <span id="transportSpent">0</span> Ar</div>
+        <input type="number" id="transportLimit" placeholder="Limite mensuelle">
+        <input type="number" id="transportAdd" placeholder="Ajouter une dépense">
+        <button class="btn-add" onclick="addExpense('transport')">➕ Ajouter</button>
+        <div class="progress-box">
+          <div class="progress-bar">
+            <div class="progress" id="transportProgress"></div>
+          </div>
+          <small id="transportReste">Reste : 0 Ar</small>
+        </div>
       </div>
     </div>
 
-    <div class="budget-card" id="logementCard">
+    <!-- Logement -->
+    <div class="budget-card" data-key="logement">
       <div class="card-header">
         <div class="icon"><i class="fa-solid fa-house"></i></div>
-        <div class="title"><strong>Logement</strong><br><small>Dépensé ce mois</small></div>
+        <div class="title"><strong>Logement</strong></div>
       </div>
       <div class="card-body">
-        <div class="spent" id="logementSpent">0 Ar</div>
-        <input type="number" id="logementLimit" placeholder="Ex: 50000">
-        <label>
-          <input type="checkbox" id="logementNotif" checked> Notifications de budget
-        </label>
-        <div class="info"><i class="fa-solid fa-circle-info"></i> Définissez une limite de budget</div>
+        <div class="spent">Dépensé : <span id="logementSpent">0</span> Ar</div>
+        <input type="number" id="logementLimit" placeholder="Limite mensuelle">
+        <input type="number" id="logementAdd" placeholder="Ajouter une dépense">
+        <button class="btn-add" onclick="addExpense('logement')">➕ Ajouter</button>
+        <div class="progress-box">
+          <div class="progress-bar">
+            <div class="progress" id="logementProgress"></div>
+          </div>
+          <small id="logementReste">Reste : 0 Ar</small>
+        </div>
       </div>
     </div>
 
+  </section>
+
+  <div class="budget-footer">
+    <button class="btn cancel" onclick="resetBudgets()">Annuler</button>
+    <button class="btn save" onclick="saveBudgets()">💾 Sauvegarder</button>
+  </div>
+
+  <section class="budget-summary">
+    <h2>Résumé</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Catégorie</th>
+          <th>Dépensé (Ar)</th>
+          <th>Limite (Ar)</th>
+          <th>Reste (Ar)</th>
+        </tr>
+      </thead>
+      <tbody id="summaryTable"></tbody>
+    </table>
   </section>
 
 </main>

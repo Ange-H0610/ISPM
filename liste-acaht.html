@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste d'Achat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="container">
+
+  <!-- HEADER -->
+  <section class="page-header">
+    <div class="header-left">
+      <h1><i class="fa-solid fa-list"></i> Liste d'Achat </h1>
+      <p>Gérez vos listes de courses et suivez vos achats</p>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn indigo" onclick="createList()">
+        <i class="fa-solid fa-plus"></i> Créer une Liste
+      </button>
+
+      <a href="dashboard.html" class="btn blue">
+        <i class="fa-solid fa-arrow-left"></i> Tableau de bord
+      </a>
+    </div>
+  </section>
+
+  <!-- STATISTIQUES -->
+  <section class="budget-summary">
+    <h2>Statistiques</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>Total Dépensé</td>
+          <td id="totalSpent">0.00 Ar</td>
+        </tr>
+        <tr>
+          <td>Nombre Total d'Achats</td>
+          <td id="totalItems">0</td>
+        </tr>
+        <tr>
+          <td>Produits à Acheter</td>
+          <td id="pendingItems">0</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- LISTE DES ACHATS -->
+  <section id="listsContainer" class="budget-cards">
+    <div class="empty-list">
+      <p>Aucune liste d'achat active</p>
+      <small>Créez une nouvelle liste pour commencer</small>
+    </div>
+  </section>
+
+</main>
+
+<script src="liste_achat.js"></script>
+</body>
+</html>

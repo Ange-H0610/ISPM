@@ -1,42 +1,79 @@
-// Récupération des budgets depuis localStorage
-let budgets = JSON.parse(localStorage.getItem("budgets")) || {
-  alimentation: {spent:0, limit:50000, notif:true},
-  transport: {spent:0, limit:50000, notif:true},
-  logement: {spent:0, limit:50000, notif:true}
+const defaultBudgets = {
+  alimentation:{spent:0,limit:0},
+  transport:{spent:0,limit:0},
+  logement:{spent:0,limit:0}
 };
 
-// Fonction pour afficher
-function refreshBudgets() {
-  document.getElementById("alimentationSpent").textContent = budgets.alimentation.spent + " Ar";
-  document.getElementById("alimentationLimit").value = budgets.alimentation.limit;
-  document.getElementById("alimentationNotif").checked = budgets.alimentation.notif;
+let budgets = JSON.parse(localStorage.getItem("budgets")) || defaultBudgets;
 
-  document.getElementById("transportSpent").textContent = budgets.transport.spent + " Ar";
-  document.getElementById("transportLimit").value = budgets.transport.limit;
-  document.getElementById("transportNotif").checked = budgets.transport.notif;
+function refreshCard(key){
+  const spent = budgets[key].spent;
+  const limit = budgets[key].limit;
+  const reste = limit - spent;
 
-  document.getElementById("logementSpent").textContent = budgets.logement.spent + " Ar";
-  document.getElementById("logementLimit").value = budgets.logement.limit;
-  document.getElementById("logementNotif").checked = budgets.logement.notif;
+  document.getElementById(key+"Spent").textContent = spent.toLocaleString();
+  document.getElementById(key+"Reste").textContent = "Reste : " + reste.toLocaleString() + " Ar";
+
+  const percent = limit > 0 ? Math.min((spent/limit)*100,100) : 0;
+  const bar = document.getElementById(key+"Progress");
+  bar.style.width = percent+"%";
+  bar.style.background = spent>limit ? "#dc2626" : "linear-gradient(135deg,#7c3aed,#5b21b6)";
+
+  if(spent>limit){
+    alert("⚠️ Budget " + key + " depasse !");
+  }
 }
 
-// Sauvegarde automatique à chaque changement
-document.querySelectorAll("input[type=number]").forEach(input=>{
-  input.addEventListener("input", e=>{
-    if(e.target.id.includes("alimentation")) budgets.alimentation.limit = +e.target.value;
-    if(e.target.id.includes("transport")) budgets.transport.limit = +e.target.value;
-    if(e.target.id.includes("logement")) budgets.logement.limit = +e.target.value;
-    localStorage.setItem("budgets", JSON.stringify(budgets));
-  });
-});
+function addExpense(key){
+  const limitInput = document.getElementById(key+"Limit");
+  const addInput = document.getElementById(key+"Add");
 
-document.querySelectorAll("input[type=checkbox]").forEach(box=>{
-  box.addEventListener("change", e=>{
-    if(e.target.id.includes("alimentation")) budgets.alimentation.notif = e.target.checked;
-    if(e.target.id.includes("transport")) budgets.transport.notif = e.target.checked;
-    if(e.target.id.includes("logement")) budgets.logement.notif = e.target.checked;
-    localStorage.setItem("budgets", JSON.stringify(budgets));
-  });
-});
+  const limit = Number(limitInput.value) || 0;
+  const add = Number(addInput.value) || 0;
 
-refreshBudgets();
+  budgets[key].limit = limit;
+  budgets[key].spent += add;
+
+  addInput.value = "";
+
+  refreshCard(key);
+  updateSummary();
+  localStorage.setItem("budgets",JSON.stringify(budgets));
+}
+
+function refreshAll(){
+  for(const key in budgets){
+    document.getElementById(key+"Limit").value = budgets[key].limit;
+    refreshCard(key);
+  }
+  updateSummary();
+}
+
+function updateSummary(){
+  const tbody = document.getElementById("summaryTable");
+  tbody.innerHTML = "";
+  for(const key in budgets){
+    const reste = budgets[key].limit - budgets[key].spent;
+    tbody.innerHTML += `<tr>
+      <td>${key}</td>
+      <td>${budgets[key].spent.toLocaleString()}</td>
+      <td>${budgets[key].limit.toLocaleString()}</td>
+      <td class="${reste>=0?'positive':'negative'}">${reste.toLocaleString()}</td>
+    </tr>`;
+  }
+}
+
+function saveBudgets(){
+  localStorage.setItem("budgets",JSON.stringify(budgets));
+  alert("Budgets sauvegardes !");
+}
+
+function resetBudgets(){
+  budgets = JSON.parse(JSON.stringify(defaultBudgets));
+  refreshAll();
+}
+
+refreshAll();
+function goToDashboard(){
+  window.location.href = "dashboard.html"; // Soloina araka ny anaran'ny dashboard anao
+}

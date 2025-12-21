@@ -1,3 +1,16 @@
+/* ================= GLOBAL STATE ================= */
+function getState() {
+  return JSON.parse(localStorage.getItem("mybudget_state")) || {
+    revenus: [],
+    depenses: [],
+    listeAchat: []
+  };
+}
+
+function saveState(state) {
+  localStorage.setItem("mybudget_state", JSON.stringify(state));
+}
+
 /* ================= USER ================= */
 const user = JSON.parse(localStorage.getItem("mybudget_user"));
 const userNameEl = document.getElementById("userName");
@@ -32,21 +45,59 @@ function animate(el, to) {
 /* ================= STATS ================= */
 function refreshStats() {
   const state = getState();
-
-  const totalRev = state.revenus.reduce((s, r) => s + Number(r.montant), 0);
-  const totalDep = state.depenses.reduce((s, d) => s + Number(d.montant), 0);
-  const solde = totalRev - totalDep;
-
   const values = document.querySelectorAll(".value");
-  animate(values[0], solde);
-  animate(values[1], totalRev);
-  animate(values[2], totalDep);
-  animate(values[3], solde);
 
+  let totalRevenus = 0;
+  let totalDepenses = 0;
+  let totalMois = 0;
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  /* === REVENUS === */
+  state.revenus.forEach(r => {
+    const montant = Number(r.montant) || 0;
+    totalRevenus += montant;
+
+    const d = new Date(r.date);
+    if (d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
+      totalMois += montant;
+    }
+  });
+
+  /* === DEPENSES === */
+  state.depenses.forEach(d => {
+    const montant = Number(d.montant) || 0;
+    totalDepenses += montant;
+
+    const date = new Date(d.date);
+    if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
+      totalMois -= montant;
+    }
+  });
+
+  const soldeTotal = totalRevenus - totalDepenses;
+
+  /* === AFFICHAGE === */
+  animate(values[0], soldeTotal);      // Solde total
+  animate(values[1], totalRevenus);   // Revenus totaux
+  animate(values[2], totalDepenses);  // Dépenses totales
+  animate(values[3], totalMois);      // Ce mois-ci
+
+  /* === TRANSACTIONS === */
   document.querySelectorAll(".stat-card small")[1].textContent =
     state.revenus.length + " transactions";
+
   document.querySelectorAll(".stat-card small")[2].textContent =
     state.depenses.length + " transactions";
+
+  /* === COULEURS AUTO === */
+  values[0].classList.toggle("text-red", soldeTotal < 0);
+  values[0].classList.toggle("text-green", soldeTotal >= 0);
+
+  values[3].classList.toggle("text-red", totalMois < 0);
+  values[3].classList.toggle("text-green", totalMois >= 0);
 }
 
 /* ================= LAST TRANSACTIONS ================= */
@@ -75,33 +126,96 @@ function loadLast() {
   }
 }
 
-/* ================= CHART ================= */
-const monthlyChart = new Chart(document.getElementById("monthlyChart"), {
-  type: "line",
-  data: {
-    labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-    datasets: [
-      { label: "Revenus", data: Array(12).fill(0), borderColor: "#22c55e", tension: .4 },
-      { label: "Dépenses", data: Array(12).fill(0), borderColor: "#ef4444", tension: .4 }
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false }
-});
 
-function updateChart() {
-  const state = getState();
-  const rev = Array(12).fill(0);
-  const dep = Array(12).fill(0);
+/* ================= MENU MOBILE ================= */
+const menuToggle = document.getElementById("menuToggle");
+const navMenu = document.getElementById("navMenu");
 
-  state.revenus.forEach(r => rev[new Date(r.date).getMonth()] += Number(r.montant));
-  state.depenses.forEach(d => dep[new Date(d.date).getMonth()] += Number(d.montant));
-
-  monthlyChart.data.datasets[0].data = rev;
-  monthlyChart.data.datasets[1].data = dep;
-  monthlyChart.update();
+if (menuToggle && navMenu) {
+  menuToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("show");
+  });
 }
 
-/* ================= INIT ================= */
-refreshStats();
-loadLast();
-updateChart();
+/* ================= DASHBOARD GRAPHIQUE ================= */
+let dashboardChart;
+
+function renderDashboardGraph() {
+  const state = getState();
+  const canvas = document.getElementById("dashboardChart");
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  if (!state.revenus.length && !state.depenses.length) return;
+
+  const allDates = [
+    ...state.revenus.map(r => r.date),
+    ...state.depenses.map(d => d.date)
+  ].sort();
+
+  const labels = [...new Set(
+    allDates.map(d => new Date(d).toLocaleDateString("fr-FR"))
+  )];
+
+  const revenusData = labels.map(date =>
+    state.revenus
+      .filter(r => new Date(r.date).toLocaleDateString("fr-FR") === date)
+      .reduce((s, r) => s + Number(r.montant), 0)
+  );
+
+  const depensesData = labels.map(date =>
+    state.depenses
+      .filter(d => new Date(d.date).toLocaleDateString("fr-FR") === date)
+      .reduce((s, d) => s + Number(d.montant), 0)
+  );
+
+  if (dashboardChart) dashboardChart.destroy();
+
+  dashboardChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Revenus",
+          data: revenusData,
+          borderColor: "#22c55e",
+          backgroundColor: "rgba(34,197,94,.18)",
+          fill: true,
+          tension: 0.55,
+          borderWidth: 3
+        },
+        {
+          label: "Dépenses",
+          data: depensesData,
+          borderColor: "#ef4444",
+          backgroundColor: "rgba(239,68,68,.18)",
+          fill: true,
+          tension: 0.55,
+          borderWidth: 3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { usePointStyle: true } }
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+// Bouton mise à jour
+document.getElementById("updateDashboardGraph").addEventListener("click", renderDashboardGraph);
+
+document.addEventListener("DOMContentLoaded", () => {
+  refreshStats();
+  loadLast();
+  renderDashboardGraph();
+});

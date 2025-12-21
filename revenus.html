@@ -105,6 +105,20 @@
     </div>
 
   </section>
+<!-- Bouton pour mise à jour du graphique -->
+<div class="graph-actions" style="margin-top:24px; text-align:right;">
+  <button id="updateGraphBtn" class="btn blue">
+    <i class="fa-solid fa-arrows-rotate"></i> Mise à jour du graphe
+  </button>
+</div>
+
+<!-- Conteneur graphique -->
+<div style="margin-top:16px; background:#fff; padding:20px; border-radius:18px; box-shadow:0 12px 28px rgba(0,0,0,.12);">
+  <canvas id="revenusChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </main>
 <script src="revenus.js"></script>

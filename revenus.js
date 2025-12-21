@@ -88,3 +88,55 @@ function removeRevenu(index){
 
 /* ================= INIT ================= */
 render();
+/* ================= GRAPHIQUE ================= */
+const ctx = document.getElementById("revenusChart").getContext("2d");
+let revenusChart;
+
+function renderGraph(){
+  const labels = revenus.map(r => new Date(r.date).toLocaleDateString("fr-FR"));
+  const data = revenus.map(r => r.montant);
+
+  if(revenusChart) revenusChart.destroy(); // delete old chart
+
+  revenusChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Montant des Revenus',
+        data: data,
+        backgroundColor: 'rgba(34,197,94,0.7)',
+        borderColor: 'rgba(34,197,94,1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+/* ================= BOUTON MISE À JOUR ================= */
+document.getElementById("updateGraphBtn").addEventListener("click", () => {
+  renderGraph();
+});
+
+/* ================= INIT GRAPHIQUE ================= */
+renderGraph();
+function addRevenu(montant, source) {
+  const state = getState();
+
+  state.revenus.push({
+    montant: Number(montant),
+    source: source,
+    date: new Date().toISOString()
+  });
+
+  saveState(state);
+}

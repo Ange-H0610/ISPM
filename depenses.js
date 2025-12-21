@@ -88,3 +88,55 @@ function removeDepense(index){
 
 /* ================= INIT ================= */
 render();
+/* ================= GRAPHIQUE ================= */
+const ctx = document.getElementById("depensesChart").getContext("2d");
+let depensesChart;
+
+function renderGraph(){
+  const labels = depenses.map(d => new Date(d.date).toLocaleDateString("fr-FR"));
+  const data = depenses.map(d => d.montant);
+
+  if(depensesChart) depensesChart.destroy(); // delete old chart
+
+  depensesChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Montant des Dépenses',
+        data: data,
+        backgroundColor: 'rgba(239,68,68,0.7)',
+        borderColor: 'rgba(239,68,68,1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+/* ================= BOUTON MISE À JOUR ================= */
+document.getElementById("updateGraphBtn").addEventListener("click", () => {
+  renderGraph();
+});
+
+/* ================= INIT GRAPHIQUE ================= */
+renderGraph();
+function addDepense(montant, label) {
+  const state = getState();
+
+  state.depenses.push({
+    montant: Number(montant),
+    label: label,
+    date: new Date().toISOString()
+  });
+
+  saveState(state);
+}

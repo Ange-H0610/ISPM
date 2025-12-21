@@ -26,7 +26,7 @@
     <a href="depenses.html"><i class="fa-solid fa-arrow-trend-down"></i> Dépenses</a>
     <a href="objectifs.html"><i class="fa-solid fa-bullseye"></i> Objectifs financiers</a>
     <a href="budget.html"><i class="fa-solid fa-sack-dollar"></i> Budget</a>
-    <a href="liste-achat.html"><i class="fa-solid fa-cart-flatbed"></i> Liste d'achat</a>
+    <a href="liste_achat.html"><i class="fa-solid fa-cart-flatbed"></i> Liste d'achat</a>
   </div>
 
   <div class="nav-right">
@@ -100,62 +100,26 @@
   </div>
 
 </section>
+<section class="dashboard-graph" style="margin-top:36px; background:#fff; padding:20px; border-radius:22px; box-shadow:0 12px 28px rgba(0,0,0,.12);">
+  <h3 style="margin-bottom:16px;"><i class="fa-solid fa-chart-column"></i> Revenus vs Dépenses</h3>
+  <canvas id="dashboardChart" width="600" height="300"></canvas>
+  <div style="text-align:right; margin-top:12px;">
+    <button id="updateDashboardGraph" class="btn indigo">
+      <i class="fa-solid fa-arrows-rotate"></i> Mise à jour du graphe
+    </button>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- ================= CHART ================= -->
-<section class="dashboard-charts">
-  <div class="chart-card">
-    <div class="chart-header">
-      <h3><i class="fa-solid fa-chart-line"></i> Évolution Mensuelle</h3>
-      <div class="chart-legend">
-        <span class="text-green">● Revenus</span>
-        <span class="text-red">● Dépenses</span>
-      </div>
-    </div>
-    <div class="chart-body">
-      <canvas id="monthlyChart"></canvas>
-    </div>
-  </div>
-</section>
 
-<!-- ================= DERNIÈRES TRANSACTIONS ================= -->
-<section class="last-sections">
 
-  <!-- Derniers Revenus -->
-  <div class="last-card">
-    <div class="last-header">
-      <h3 class="green"><i class="fa-solid fa-arrow-up"></i> Derniers Revenus</h3>
-      <a href="revenus.html" class="see-all green">Voir tout →</a>
-    </div>
-    <div class="empty-state" id="lastRevenus">
-      <h4>Aucun revenu enregistré</h4>
-      <p>Commencez par ajouter votre premier revenu pour suivre vos finances.</p>
-      <button class="btn green" onclick="location.href='revenus.html'">
-        <i class="fa-solid fa-plus"></i> Ajouter votre premier revenu
-      </button>
-    </div>
-  </div>
-
-  <!-- Dernières Dépenses -->
-  <div class="last-card">
-    <div class="last-header">
-      <h3 class="red"><i class="fa-solid fa-arrow-down"></i> Dernières Dépenses</h3>
-      <a href="depenses.html" class="see-all red">Voir tout →</a>
-    </div>
-    <div class="empty-state" id="lastDepenses">
-      <h4>Aucune dépense enregistrée</h4>
-      <p>Commencez par ajouter votre première dépense pour suivre vos finances.</p>
-      <button class="btn red" onclick="location.href='depenses.html'">
-        <i class="fa-solid fa-plus"></i> Ajouter votre première dépense
-      </button>
-    </div>
-  </div>
-
-</section>
 
 </main>
 
 <!-- SCRIPTS -->
-<script src="storage.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="app.js"></script>
 </body>

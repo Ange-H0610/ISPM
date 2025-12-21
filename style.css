@@ -1174,3 +1174,6 @@ body { background:#f4f6fb; color:#333; }
 
 .see-all.green { color: #16a34a; }
 .see-all.red { color: #dc2626; }
+canvas{
+  border-radius: 18px;
+}

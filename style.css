@@ -1136,3 +1136,41 @@ body { background:#f4f6fb; color:#333; }
 /* RESPONSIVE */
 @media(max-width:900px){ .page-header{flex-direction:column; gap:16px;} .budget-cards{grid-template-columns:1fr;} }
 @media(max-width:500px){ .page-header{padding:20px;} }
+/* ================= LAST TRANSACTIONS ================= */
+.last-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.last-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.last-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: #111827; /* noir visible */
+}
+
+.last-header h3.green {
+  color: #16a34a;
+}
+
+.last-header h3.red {
+  color: #dc2626;
+}
+
+.see-all {
+  font-size: .85rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.see-all.green { color: #16a34a; }
+.see-all.red { color: #dc2626; }
